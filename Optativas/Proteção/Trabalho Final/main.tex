@@ -1,0 +1,80 @@
+%  ################# Modelo de Relatório Analógica ##############################################
+%   Author: Luiz Alberto Marinho
+%   Descrição: Feito com base no modelo passado pelo professor Renê e com os pacotes ja prontos da 
+%  norma ABNT desenvolvidos por: "abnTeX2 group". 
+%       Dúvidas de como usar os pacotes da ABNT acessar: 
+%   https://pt.overleaf.com/latex/templates/modelo-canonico-de-artigo-cientifico-com-abntex2/bycmpjrpdxnr
+%       Acessar o arquivo chamado preambulo para ver os pacotes adicionados nesse documento
+%
+%
+%
+%
+%
+
+\documentclass[
+	% -- opções da classe memoir --
+	article,			% indica que é um artigo acadêmico
+	11pt,				% tamanho da fonte
+	oneside,			% para impressão apenas no verso. Oposto a twoside
+	a4paper,			% tamanho do papel. 
+	% -- opções da classe abntex2 --
+	%chapter=TITLE,		% títulos de capítulos convertidos em letras maiúsculas
+	%section=TITLE,		% títulos de seções convertidos em letras maiúsculas
+	%subsection=TITLE,	% títulos de subseções convertidos em letras maiúsculas
+	%subsubsection=TITLE % títulos de subsubseções convertidos em letras maiúsculas
+	% -- opções do pacote babel --
+	english,			% idioma adicional para hifenização
+	brazil,				% o último idioma é o principal do documento
+	sumario=tradicional
+	]{abntex2}\usepackage{preambulo}
+
+    % Títulos com fonte serifada (Latin Modern Roman)
+\renewcommand{\ABNTEXchapterfont}{\rmfamily\bfseries}
+\renewcommand{\ABNTEXsectionfont}{\rmfamily\bfseries}
+\renewcommand{\ABNTEXsubsectionfont}{\rmfamily\bfseries}
+\renewcommand{\ABNTEXsubsubsectionfont}{\rmfamily\bfseries}
+\renewcommand{\ABNTEXsubsubsubsectionfont}{\rmfamily}
+\usepackage{eso-pic}
+\usepackage{transparent}
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+
+
+\begin{document}
+
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[R]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[R]{\thepage}\renewcommand{\headrulewidth}{0pt}}
+
+  
+   % ----
+    % Início do documento
+    % ----
+    
+    \input{capa}    
+    \newpage
+    \tableofcontents
+    \newpage
+    \input{Textuais/1.Apresentação/1.Apresentação}
+    \input{Textuais/2.Diagrama/2.Diagrama}
+    \input{Textuais/3.TCs/3.TCs}
+    \input{Textuais/4. Coordenação proteções/4.Coordenação proteções}
+    \input{Textuais/5.Seletividade/5.Seletividade}
+    \input{Textuais/6.Conclusões/6.Conclusões}
+    \input{Textuais/7.Melhorias/7.Melhorias}
+    \newpage
+% Referências bibliográficas
+% ----------------------------------------------------------
+\printbibliography
+
+% ----------------------------------------------------------
+% Anexos
+% ----------------------------------------------------------
+
+
+\end{document}
+

@@ -1,0 +1,20 @@
+\newpage
+\section{\textbf{Diagrama Unifilar de Proteção}}
+
+O diagrama unifilar de proteção da SE Campus do Pici é apresentado na Figura~\ref{fig:diagrama_unifilar_protecao}. Nele estão representados os equipamentos de manobra e de proteção da subestação, os transformadores de corrente (TCs) associados a cada vão e as funções de proteção, identificadas pela nomenclatura ANSI/IEEE C37.2, atribuídas a cada relé. As cores distinguem o setor de 69~kV (vermelho), o setor de 13,8~kV (azul) e a proteção dos transformadores de potência (magenta).
+
+\begin{figure}[htbp]
+    \centering
+    \caption{Diagrama unifilar de proteção da SE Campus do Pici.}
+    \includegraphics[width=16cm]{Imagens/Diagrama SEP.pdf}
+    \label{fig:diagrama_unifilar_protecao}
+    {\small Fonte: Elaborado pelos autores.}
+\end{figure}
+
+No setor de 69~kV, a entrada de linha é protegida pelo disjuntor 12L1, precedido pela chave seccionadora 32L1-5, que tem lâmina de aterramento. O relé desse vão contempla as funções de sobrecorrente de fase e de neutro instantâneas e temporizadas (50/51 e 50N/51N), desequilíbrio de corrente (46), sequência de fase de tensão (47), sobretensão de fase e de neutro (59/59N) e falha de disjuntor (50BF/62BF). O barramento de 69~kV (02B1) alimenta os transformadores 02T1 e 02T2 por meio dos disjuntores 12T1 e 12T2, cada um com seccionadoras de isolamento (32T1-4/-5 e 32T2-4/-5) e de \textit{by-pass} (32T1-6 e 32T2-6). Os relés desses vãos incorporam, além das funções de sobrecorrente, as funções de subtensão (27), desequilíbrio de corrente (46), sobretensão (59/59N), sobrecorrente direcional (67), religamento (79) e falha de disjuntor (50BF/62BF).
+
+Cada transformador possui um relé dedicado, que recebe as correntes dos TCs dos lados de alta e de média tensão e do neutro do enrolamento em estrela aterrada. Esse relé executa a proteção diferencial (87), a sobrecorrente de retaguarda nos dois lados do transformador (50/51 e 50N/51N AT e MT), a sobrecorrente de neutro (51G) e a subtensão (27). A atuação dessas funções, assim como a dos dispositivos de proteção intrínseca do transformador (63, 63A, 26, 49, 71 e 80), que supervisionam grandezas como acúmulo de gás, temperatura do óleo e dos enrolamentos e nível de óleo, é direcionada ao relé de bloqueio (86T) e ao relé antibombeamento (94), que comandam a abertura dos disjuntores dos dois lados do transformador (12T1/11T1 e 12T2/11T2).
+
+No setor de 13,8~kV, os transformadores se conectam ao barramento 01B1 pelos disjuntores gerais 11T1 e 11T2, cujos relés repetem o conjunto de funções dos disjuntores de 69~kV. Desse barramento partem os três alimentadores de distribuição (01L1, 01L2 e 01L3), protegidos pelos religadores 21L1, 21L2 e 21L3, com as funções de sobrecorrente de fase e de neutro (50/51 e 50N/51N), religamento automático (79) e falha de disjuntor (50BF/62BF). Todos os vãos, tanto de 69~kV quanto de 13,8~kV, dispõem de chaves de \textit{by-pass} que permitem a manutenção dos equipamentos sem interromper o fornecimento.
+
+Todos os relés são dispositivos eletrônicos inteligentes (IEDs) alimentados em corrente contínua pelo sistema de serviços auxiliares (O1U1, Vcc) e integrados ao sistema SCADA da subestação. A troca de sinais entre os relés por mensagens GOOSE, padronizadas pela norma IEC 61850, viabiliza a implementação da falha de disjuntor e da seletividade lógica entre a proteção geral do barramento de 13,8~kV e as saídas de alimentadores. Os relés também disponibilizam funções de medição e oscilografia, que permitem o registro e a análise pós-falta das perturbações.

@@ -1,0 +1,73 @@
+% -------------------------
+% PREÂMBULO PERSONALIZADO
+% -------------------------
+
+% Codificação e fonte
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+
+% Matemática
+\usepackage{amsmath, amsfonts, amssymb}
+\usepackage{microtype}
+
+% Cores
+\usepackage{xcolor}
+\definecolor{lightgray}{gray}{0.95}
+
+% Links e referências
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    citecolor=black,
+    urlcolor=black
+}
+\usepackage{lastpage}
+
+% Tabelas
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{colortbl}
+\usepackage{makecell}
+\usepackage{tabularx}
+\newcolumntype{M}[1]{>{\centering\arraybackslash}m{#1}}
+
+% Figuras
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{subcaption}
+
+% ---------- ESPAÇAMENTO ABNT ----------
+% Margens: superior 3 cm, esquerda 3 cm, inferior 2 cm, direita 2 cm
+\usepackage[a4paper, top=3cm, bottom=2cm, left=3cm, right=2cm]{geometry}
+
+% Entrelinhas 1,5
+\OnehalfSpacing
+
+% Recuo de parágrafo 1,25 cm, sem espaço extra entre parágrafos
+\setlength{\parindent}{1.25cm}
+\setlength{\parskip}{0pt}
+
+% Recuo também no primeiro parágrafo após títulos
+\usepackage{indentfirst}
+% ---------------------------------------
+
+% Códigos
+\usepackage{listings}
+\lstset{
+    backgroundcolor=\color{lightgray},
+    basicstyle=\ttfamily\footnotesize,
+    frame=single,
+    breaklines=true,
+    tabsize=2,
+    showstringspaces=false
+}
+
+% Numeração de equações por seção
+\numberwithin{equation}{section}
+
+% Bibliografia
+\usepackage[backend=biber, style=abnt, citestyle=abnt, sorting=nyt]{biblatex}
+\addbibresource{referencias.bib}
