@@ -6,7 +6,21 @@
 *.fdb_latexmk
 *.fls
 *.log
-*.pdf
 *.run.xml
 *.synctex.gz
 *.toc
+*.out
+
+# PDFs gerados pelos documentos do trabalho de Proteção
+/Optativas/Proteção/Trabalho Final/main.pdf
+/Optativas/Proteção/Trabalho Final/Slides/document.pdf
+
+# Dependências, arquivos temporários e cópias de segurança locais
+node_modules/
+tmp/
+__pycache__/
+*.pyc
+*.bak
+
+# Repositório independente, mantido separadamente
+/Optativas/Supervisão, Controle e Automação de Sistemas Elétricos de Potência/superv-control-ufc/

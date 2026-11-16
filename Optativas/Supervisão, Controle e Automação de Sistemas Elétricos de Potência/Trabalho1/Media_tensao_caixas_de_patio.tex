@@ -1,0 +1,986 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazilian]{babel}
+\usepackage{lmodern}
+\usepackage[a4paper,top=2.2cm,bottom=2.2cm,left=2.3cm,right=2.3cm]{geometry}
+\usepackage{amsmath,array,booktabs,longtable,tabularx,pdflscape}
+\usepackage{xcolor,enumitem,parskip,tikz}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!55!black,
+ pdftitle={Vão de Média Tensão e Caixas de Pátio},pdfauthor={Luiz Alberto Marinho}}
+\setlist[itemize]{leftmargin=*,itemsep=2pt,topsep=3pt}
+\setlist[enumerate]{leftmargin=*,itemsep=2pt,topsep=3pt}
+\setlength{\emergencystretch}{2em}
+\setcounter{topnumber}{4}
+\setcounter{totalnumber}{6}
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\textfraction}{0.07}
+\renewcommand{\floatpagefraction}{0.85}
+\renewcommand{\arraystretch}{1.2}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcommand{\tagg}[1]{\texttt{#1}}
+\newcommand{\res}{\textbf{RESERVA}}
+\newcommand{\fonte}[1]{\par\smallskip{\footnotesize\textit{Fonte: #1.}\par}}
+\newcommand{\cabana}{$6\times2{,}5\,\mathrm{mm^2}$}
+\newcommand{\cabdig}{$12\times1{,}5\,\mathrm{mm^2}$}
+\title{\textbf{Vão de Média Tensão\\(Barramento 13,8 kV)\\e Caixas de Pátio}\\[6pt]
+\large Levantamento de pontos e proposta de interligação}
+\author{Luiz Alberto Marinho}
+\date{16 de outubro de 2026}
+\begin{document}
+\maketitle
+\begin{center}\small Supervisão, Controle e Automação de Sistemas Elétricos de Potência\\
+Trabalho Complementar 1 -- Subestação do Campus do Pici/UFC\end{center}
+\vspace{8mm}
+\noindent\textbf{Condição do documento.} Estudo acadêmico baseado nos três PDFs fornecidos.
+As tabelas identificam os bornes de TCs e TPs disponíveis nos anexos e propõem cabos,
+caixas e réguas do PPC~2. Por premissa adotada para este trabalho em 16/10/2026,
+o funcional Siemens das páginas 4--8 é aplicado aos disjuntores 11T1 e 11T2
+do barramento de 13,8~kV. Os 16 terminais de comando e indicação foram identificados
+sob essa premissa; o estudo acadêmico não equivale à confirmação da instalação física.
+As divergências e informações necessárias ao
+fechamento executivo estão registradas na Seção~\ref{sec:pendencias}.
+\vfill
+\noindent\textbf{Resultado do recorte:} 2 disjuntores, 6 TCs, 3 TPs, 3 caixas de pátio e
+4 réguas de 40 bornes no PPC~2. A lista proposta contém 21 cabos de sinais e
+138 linhas de vias, incluindo 46 reservas. O dimensionamento das alimentações auxiliares e a fiação interna
+dos IEDs permanecem pendentes.
+\newpage
+\tableofcontents
+\newpage
+
+\section{Introdução e delimitação do escopo}
+O objetivo é organizar a fiação de supervisão, comando, medição e proteção do
+barramento de 13,8~kV, conforme o item~2.3 do enunciado~\cite{enunciado}.
+O recorte abrange os disjuntores 1 e 2 da classe de 15~kV, os dois conjuntos de TCs
+associados e o conjunto de TPs do barramento, além das respectivas caixas de pátio.
+As terminações de sinais são destinadas ao PPC~2.
+
+As caixas de pátio tratadas aqui são as dos TCs e TPs de média tensão. As caixas de
+69~kV, a entrada de linha, os acessórios dos transformadores de força e os religadores
+de saída pertencem às demais partes do trabalho. As seccionadoras mostradas no
+unifilar são referências topológicas; não integram a lista de equipamentos do item~2.3.
+O segundo conjunto é incluído mesmo estando indicado em verde, como implantação
+futura, no unifilar~\cite{unifilar}.
+
+O escopo individual inclui levantamento de equipamentos e pontos, planejamento
+da fiação de 11T1/11T2, circuitos secundários de TCs/TPs, caixas de pátio,
+cabos, distribuição de bornes do PPC~2 e lista De--Para. A elaboração do
+\textbf{diagrama multifilar completo está fora deste escopo individual}.
+Os três desenhos já existentes na Seção~\ref{sec:multifilar-mt} são referências
+opcionais; os dados para integração pelo responsável pelo multifilar estão
+reunidos na Seção~\ref{sec:integracao}.
+
+\subsection{Fontes e rastreabilidade}
+As páginas citadas são as páginas dos arquivos PDF, e não necessariamente as folhas
+originais dos desenhos.
+\begin{table}[htbp]\centering\small
+\caption{Documentos analisados e aplicação no recorte.}
+\begin{tabularx}{\linewidth}{@{}L{3.1cm}L{2.1cm}Y@{}}\toprule
+Documento & Páginas & Conteúdo aplicado \\\midrule
+Enunciado~\cite{enunciado} & 1--4 & Escopo, sete colunas da lista De--Para, cabos, PPC~2, caixas, reservas e serviços auxiliares.\\
+Funcionais~\cite{funcionais} & 12 & TC Brasformer BCS14E, desenho C126-0013: bornes, relações e núcleos.\\
+Funcionais~\cite{funcionais} & 13 & TP: placa, derivações secundárias e divergência entre placa e carimbo.\\
+Funcionais~\cite{funcionais} & 4--8 & Funcional Siemens 3AP1 FG3: comando, alimentação e contatos. Aplicado a 11T1/11T2 por premissa acadêmica adotada em 16/10/2026.\\
+Unifilar~\cite{unifilar} & 1 & TAGs, barramento, associação dos equipamentos, dois conjuntos de TCs e TP~01U1.\\\bottomrule
+\end{tabularx}\end{table}
+
+\subsection{Convenções de leitura}
+\textbf{Dado de fonte} é informação diretamente identificada nos anexos.
+\textbf{Proposta} é definição deste estudo: codificação de cabos, caixas, réguas,
+disjuntores secundários e distribuição de vias.
+\textbf{Premissa de aplicação dos disjuntores:} utiliza-se o esquema Siemens
+3HE 2132.0236/15, páginas 4--8 dos funcionais, também para 11T1 e 11T2.
+Essa definição permite adotar a bornagem e as tensões auxiliares do esquema
+no exercício; não altera as características nominais do vão no inventário.
+\textbf{ND} significa \emph{não disponível nos documentos fornecidos}; não é
+identificação de borne de fabricante. A indicação \res{} identifica uma via
+sem função ativa, identificada nos dois extremos pelo código do cabo e da via.
+\textbf{SEM CONEXÃO} indica uma ponta sem ligação física a equipamento ou borne,
+que deve permanecer isolada e etiquetada. Um terminal seguido de
+\textbf{(RESERVA)} indica a ponta estacionada no borne dedicado identificado,
+sem ligação a circuito funcional. Essa distinção vale separadamente para cada
+extremidade; não se altera a identificação da via nem se usa a reserva como PE.
+
+\section{Equipamentos e características identificadas}\label{sec:inventario}
+\begin{table}[htbp]\centering\small
+\caption{Inventário do vão de média tensão.}
+\begin{tabularx}{\linewidth}{@{}L{2.7cm}L{1.3cm}L{3.7cm}Y@{}}\toprule
+Referência & Quant. & Identificação adotada & Observação de origem \\\midrule
+Disjuntor 1 & 1 & \tagg{11T1} & TAG do unifilar; classe 15~kV pelo enunciado.\\
+Disjuntor 2 & 1 & \tagg{11T2} & TAG do unifilar; implantação futura.\\
+TCs do conjunto 1 & 3 & \tagg{TC-11T1-A/B/C} & Identificadores propostos: o desenho não fornece TAG individual dos TCs.\\
+TCs do conjunto 2 & 3 & \tagg{TC-11T2-A/B/C} & Identificadores propostos associados a 11T2.\\
+TPs do barramento & 3 & \tagg{01U1-A/B/C} & TAG base 01U1 da fonte; sufixos de fase propostos.\\
+Caixas de TC & 2 & \tagg{CJ-T1}, \tagg{CJ-T2} & Junção, ensaio e aterramento: uma caixa por conjunto.\\
+Caixa de TP & 1 & \tagg{CD-U1} & Proteção e seccionamento dos dois secundários.\\\bottomrule
+\end{tabularx}
+\fonte{enunciado, item 2.3; unifilar, barramento 01B1; identificadores complementares propostos}
+\end{table}
+
+O unifilar registra seis TCs de 15~kV na utilização ``DISJUNTOR'', embora a tabela
+cite somente 11T1. A distribuição adotada é de três unidades por disjuntor,
+coerente com os dois conjuntos trifásicos desenhados e com o enunciado.
+Não se confundem estes TCs externos com os TCs de bucha dos transformadores.
+
+\subsection{Transformadores de corrente}
+A folha~12 dos funcionais apresenta dois núcleos secundários de 5~A por TC.
+O primeiro é de medição e o segundo de proteção. A relação depende da ligação
+primária e da derivação secundária selecionadas.
+\begin{table}[htbp]\centering\small
+\caption{Relações e bornes do TC BCS14E, classe 15 kV.}
+\begin{tabularx}{\linewidth}{@{}L{2.7cm}L{2.6cm}L{2.5cm}Y@{}}\toprule
+Derivação & Relação em série & Relação em paralelo & Classes: núcleo 1 / núcleo 2 \\\midrule
+1S1--1S2; 2S1--2S2 & 100/5~A & 200/5~A & 0,3C12,5 / 10B50\\
+1S1--1S3; 2S1--2S3 & 200/5~A & 400/5~A & 0,3C25 / 10B100\\
+1S1--1S4; 2S1--2S4 & 400/5~A & 800/5~A & 0,3C50 / 10B200\\\bottomrule
+\end{tabularx}
+\fonte{funcionais, p. 12, desenho C126-0013}
+\end{table}
+
+Na ligação primária em série, a ponte é P2--P3; em paralelo, as pontes são P1--P3
+e P2--P4. \textbf{Adota-se S4 como premissa para a lista de fiação}, preservando os
+dois núcleos e as classes indicadas no unifilar. Com S4, a relação será
+\textbf{400/5~A em série ou 800/5~A em paralelo}; a escolha da derivação não
+comprova a ligação primária instalada. A configuração primária e os ajustes dos
+IEDs permanecem pendentes.
+As derivações S2 e S3 não usadas permanecem livres; elas não são núcleos ociosos
+nem vias reservas do cabo. A verificação de carga dos secundários, saturação e
+suportabilidade ao curto-circuito depende do estudo de proteção.
+
+\subsection{Transformadores de potencial}
+A placa da folha~13 indica primário de $13800/\sqrt{3}$~V e dois secundários.
+\begin{table}[htbp]\centering\small
+\caption{Derivações secundárias do TP conforme a placa.}
+\begin{tabularx}{\linewidth}{@{}L{2.1cm}L{3.1cm}L{2.3cm}Y@{}}\toprule
+Secundário & Bornes & Tensão & Relação nominal da placa \\\midrule
+1 & 1X1--1X2 & $115/\sqrt{3}$~V & 120:1; adotado na proposta.\\
+1 & 1X1--1X3 & 115~V & 70:1; derivação não utilizada.\\
+2 & 2X1--2X2 & $115/\sqrt{3}$~V & 120:1; adotado na proposta.\\
+2 & 2X1--2X3 & 115~V & 70:1; derivação não utilizada.\\\bottomrule
+\end{tabularx}
+\fonte{funcionais, p. 13, placa de identificação}
+\end{table}
+
+Para os pares X1--X2, a tensão de fase secundária é aproximadamente
+$66{,}40$~V. \textbf{São premissas de projeto} as derivações X1--X2 e os dois
+circuitos em estrela, com neutros separados: secundário~1 para medição e
+secundário~2 para proteção. A configuração não está comprovada como instalação
+existente. É necessário confirmar o modelo de TP, a placa aplicável, as classes
+de exatidão, as ligações primárias/secundárias e sua compatibilidade com os IEDs,
+em razão das divergências registradas em P5/P6. Não se presume conexão em triângulo aberto.
+Os bornes 1X3 e 2X3 ficam livres e isolados.
+
+\section{Critérios de interligação e codificação}
+\begin{itemize}
+\item Sinais de TC e TP: cabos blindados \cabana, conforme o enunciado.
+Cada TC e cada TP físico, inclusive de fases diferentes, tem cabo próprio nos
+dois trechos; a passagem por uma caixa não autoriza compartilhar o cabo.
+\item Sinais digitais: \cabdig{} por disjuntor; um cabo blindado
+$6\times1{,}5\,\mathrm{mm^2}$ para os contatos dos disjuntores secundários da CD-U1.
+Estes contatos pertencem à própria caixa; os sinais analógicos dos TPs não são misturados.
+\item Corrente, tensão e sinais digitais utilizam réguas segregadas no PPC~2.
+Reservas de cabo são estacionadas em bornes dedicados onde indicados; pontas
+marcadas SEM CONEXÃO ficam isoladas e etiquetadas. Posições livres de régua
+são contabilizadas separadamente.
+\item CC e CA são derivados diretamente de QDCC e QDCA. O PPC~2 realiza a
+interface de sinais e dos contatos de comando, sem servir de distribuição da
+alimentação auxiliar dos equipamentos de pátio.
+\end{itemize}
+
+Na codificação \tagg{C-T1-A-F}, \tagg{T1} designa os TCs associados a 11T1,
+\tagg{A} a fase e \tagg{F} o trecho equipamento--caixa. O sufixo \tagg{P} indica
+caixa--PPC~2. \tagg{T2} refere-se ao segundo conjunto e \tagg{U1} ao TP~01U1.
+\tagg{C-D1-D} e \tagg{C-D2-D} são os cabos digitais dos disjuntores 11T1 e 11T2;
+\tagg{C-U1-D} atende os contatos da CD-U1.
+Todos estes códigos são propostas deste documento.
+
+\subsection{Quantificação dos cabos de sinais}
+\begin{table}[htbp]\centering\small
+\caption{Cabos previstos e ocupação das vias.}
+\begin{tabularx}{\linewidth}{@{}YL{3.0cm}rrrr@{}}\toprule
+Grupo & Formação & Cabos & Vias & Uso & Reserva \\\midrule
+TCs: 6 unidades, 2 trechos & \cabana & 12 & 72 & 48 & 24\\
+TPs: 3 unidades, 2 trechos & \cabana & 6 & 36 & 24 & 12\\
+11T1 e 11T2 & \cabdig & 2 & 24 & 16 & 8\\
+Contatos da CD-U1 & $6\times1{,}5\,\mathrm{mm^2}$ & 1 & 6 & 4 & 2\\\midrule
+\textbf{Total proposto} & & \textbf{21} & \textbf{138} & \textbf{92} & \textbf{46}\\\bottomrule
+\end{tabularx}\end{table}
+``Uso'' significa via destinada a uma função na proposta, não comprovação de
+disponibilidade de contato de fabricante. Dos 20 condutores digitais em uso, 16 têm bornagem definida pelo funcional
+Siemens adotado; os quatro contatos da CD-U1 dependem do modelo selecionado. Os 72 condutores analógicos incluem os dois
+trechos: representam 12 circuitos de corrente e 6 de tensão, cada um com ida e
+retorno. A taxa de ocupação dos cabos de sinais é $92/138=66{,}7\%$.
+Comprimentos e cabos de alimentação não estão incluídos, pois não há planta de
+roteamento nem dados das cargas auxiliares.
+
+\section{Caixas de pátio e réguas do PPC 2}\label{sec:caixas}
+\subsection{Caixas de junção dos TCs}
+Cada caixa CJ-T1/CJ-T2 possui uma régua \tagg{XT} proposta com 18 posições:
+1--6 para fase A, 7--12 para B e 13--18 para C. Em cada grupo, as quatro primeiras
+posições atendem aos núcleos de medição e proteção; as duas últimas são reservas.
+As faces \tagg{c} e \tagg{p} identificam, respectivamente, campo e painel do mesmo
+borne de passagem/ensaio.
+
+Como premissa, os retornos são reunidos na própria caixa, formando um comum
+por núcleo (N1/N2). A compatibilidade desses comuns com as entradas de corrente
+e eventuais ligações internas dos IEDs ainda precisa ser validada.
+Propõe-se um único vínculo de cada neutro à barra PE da caixa, sem outro vínculo
+intencional desse circuito no PPC~2. Núcleos distintos não compartilham condutor
+de retorno. As pontes de ensaio ficam abertas em serviço e permitem curto no lado
+do TC antes de seccionar o lado do painel. Essa função evita a abertura do
+secundário sob corrente~\cite{ctseguro}. Não se inserem fusíveis ou disjuntores
+nos circuitos de corrente desta proposta.
+
+\begin{table}[htbp]\centering\small
+\caption{Pontes internas propostas em cada caixa de TC.}
+\begin{tabularx}{\linewidth}{@{}L{3.5cm}L{4.0cm}Y@{}}\toprule
+Identificação & Terminais & Função \\\midrule
+J-N1-A/B/C & XT:2c, XT:8c, XT:14c $\to$ N1 & Comum dos retornos do núcleo 1.\\
+J-N2-A/B/C & XT:4c, XT:10c, XT:16c $\to$ N2 & Comum dos retornos do núcleo 2.\\
+E-N1; E-N2 & N1 $\to$ PE; N2 $\to$ PE & Um vínculo de terra por circuito.\\
+K1-A/B/C & 1c--2c; 7c--8c; 13c--14c & Curto de ensaio, núcleo 1, aberto em operação.\\
+K2-A/B/C & 3c--4c; 9c--10c; 15c--16c & Curto de ensaio, núcleo 2, aberto em operação.\\\bottomrule
+\end{tabularx}\end{table}
+Os condutores internos de corrente são previstos em $2{,}5\,\mathrm{mm^2}$,
+com bornes e pontes compatíveis. São fiação interna, não novos cabos multivias.
+A seção dos vínculos PE depende do projeto de aterramento. Os retornos por fase
+são preservados no trecho até o PPC~2; eventuais comuns nos IEDs devem ser
+conferidos no detalhamento interno do painel. Permanecem pendentes a validação
+do ponto único de aterramento, dos bornes/pontes de ensaio e da sequência de
+curto antes do seccionamento, conforme os equipamentos efetivamente selecionados.
+
+\subsection{Caixa de disjuntores dos TPs}
+A CD-U1 possui réguas \tagg{XE} (entrada) e \tagg{XS} (saída), cada uma com
+18 posições. O grupo 1--6 pertence à fase A, 7--12 à B e 13--18 à C.
+Propõem-se \tagg{DJ1} e \tagg{DJ2} tripolares, um por secundário.
+Somente os condutores X1 atravessam os polos de proteção; os retornos X2 são
+contínuos, agrupados por secundário e aterrados na caixa.
+
+\begin{table}[htbp]\centering\small
+\caption{Fiação interna proposta da CD-U1 (condutores de $2{,}5\,\mathrm{mm^2}$).}
+\begin{tabularx}{\linewidth}{@{}L{2.8cm}L{3.3cm}L{3.5cm}Y@{}}\toprule
+Circuito/fase & Entrada & Proteção & Saída \\\midrule
+Secundário 1 / A & XE:1 & DJ1:1 $\to$ DJ1:2 & XS:1\\
+Secundário 1 / B & XE:7 & DJ1:3 $\to$ DJ1:4 & XS:7\\
+Secundário 1 / C & XE:13 & DJ1:5 $\to$ DJ1:6 & XS:13\\
+Secundário 2 / A & XE:3 & DJ2:1 $\to$ DJ2:2 & XS:3\\
+Secundário 2 / B & XE:9 & DJ2:3 $\to$ DJ2:4 & XS:9\\
+Secundário 2 / C & XE:15 & DJ2:5 $\to$ DJ2:6 & XS:15\\
+Retornos sec. 1 & XE:2, 8, 14 & Ligações diretas individuais & XS:2, 8, 14\\
+Retornos sec. 2 & XE:4, 10, 16 & Ligações diretas individuais & XS:4, 10, 16\\
+Neutro N1 & XE:2, 8, 14 & Pontes $\to$ N1 $\to$ PE & Um aterramento\\
+Neutro N2 & XE:4, 10, 16 & Pontes $\to$ N2 $\to$ PE & Um aterramento\\\bottomrule
+\end{tabularx}\end{table}
+Entradas 1/3/5, saídas 2/4/6 e contatos auxiliares 13/14 são convenções
+propostas para os dispositivos a selecionar, \textbf{não terminais confirmados
+de fabricante}. Os calibres, as curvas e a capacidade de interrupção permanecem
+pendentes de dimensionamento. Deve-se definir se DJ1/DJ2 substituirão os fusíveis
+F1/F2 de 6~A representados no unifilar ou se haverá coexistência com coordenação
+entre as proteções. O valor de 6~A dos fusíveis não é transferido automaticamente
+aos DJs; a solução depende das cargas, dos cabos e das características dos TPs.
+As posições reservas de XE e XS ficam isoladas, sem pontes entre si.
+Os bornes de ensaio de tensão não recebem pontes de curto-circuito~\cite{tpseguro}.
+
+\subsection{Aterramento e blindagens}
+O PE das carcaças, das caixas e do painel é independente dos condutores de sinal.
+As blindagens são identificadas como \tagg{BL} e não fazem parte das seis ou doze
+vias numeradas. Como premissa documental, os trechos F têm a blindagem terminada
+na barra BL da caixa e isolada no instrumento; os trechos P e digitais têm
+terminação na barra BL do PPC~2 e isolamento na extremidade oposta. Essa escolha
+deve ser confrontada com o projeto de compatibilidade eletromagnética e
+equipotencialização da SE. Nenhuma via marcada \res{} foi usada como PE ou blindagem.
+
+\subsection{Distribuição dos bornes no PPC 2}
+\begin{table}[htbp]\centering\small
+\caption{Ocupação proposta das réguas, todas com 40 posições.}
+\begin{tabularx}{\linewidth}{@{}L{1.5cm}YL{2.0cm}rrr@{}}\toprule
+Régua & Destinação & Posições & Uso & Reserva & Livres \\\midrule
+X201 & Digital: 11T1; 11T2; CD-U1 & 1--12; 13--24; 25--30 & 20 & 10 & 10\\
+X202 & Correntes do conjunto 11T1 & 1--18 & 12 & 6 & 22\\
+X203 & Correntes do conjunto 11T2 & 1--18 & 12 & 6 & 22\\
+X204 & Tensões de 01U1 & 1--18 & 12 & 6 & 22\\\midrule
+\multicolumn{3}{@{}l}{\textbf{Total: 160 posições}} & \textbf{56} & \textbf{28} & \textbf{76}\\\bottomrule
+\end{tabularx}\end{table}
+X202 e X203 usam bornes de ensaio com recurso de curto no lado fonte antes do
+seccionamento; X204 usa bornes de ensaio/seccionamento próprios para tensão.
+As posições livres são X201:31--40 e X202/X203/X204:19--40.
+A numeração deve ser coordenada com a parte dos alimentadores para evitar
+duplicação de réguas no PPC~2. \textbf{Compatibilização PENDENTE em 14/10/2026:}
+o responsável pelos alimentadores ainda não confirmou a ausência de conflitos
+das réguas X201--X204, dos bornes alocados e das caixas CJ-T1, CJ-T2 e CD-U1.
+Esta distribuição não equivale a uma aprovação do grupo. O registro deve receber
+responsável, data, revisão e resultado da conferência quando ela ocorrer.
+
+\clearpage\begin{landscape}
+\section{Lista De--Para dos cabos de sinais}\label{sec:depara}
+As tabelas seguem as sete colunas do enunciado, uma linha por via. DE--PARA
+indica a rota física; não define o sentido do sinal. Nos cabos analógicos,
+as vias 1/2 atendem ao secundário~1 e as vias 3/4 ao secundário~2; as vias 5/6 são
+reservas. Os bornes das caixas e do PPC são propostos; os dos instrumentos
+seguem as folhas~12/13 e as premissas já registradas.
+As mesmas tabelas são fornecidas na planilha
+\nolinkurl{outputs/bornes_13_8kv/DE_PARA_MEU_PROJETO.xlsx},
+preservando os 21 códigos de cabo, as 138 vias e as 46 reservas.
+\subsection{TCs associados a 11T1: campo--caixa}
+Todos os cabos desta tabela: blindados \cabana. 
+\begingroup\footnotesize
+\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.16}
+\begin{longtable}{@{}L{2.5cm}L{2.8cm}L{2.8cm}L{0.85cm}L{2.4cm}L{3.4cm}L{8.3cm}@{}}
+\caption{TCs associados a 11T1: campo--caixa.}\\
+\toprule Equipamento DE & Terminal do equipamento DE & Codificação do cabo & Via do cabo & Equipamento PARA & Terminal do equipamento PARA & Evento de ligação \\\midrule
+\endfirsthead
+\multicolumn{7}{l}{\textit{Continuação da lista De--Para.}}\\\toprule
+Equipamento DE & Terminal do equipamento DE & Codificação do cabo & Via do cabo & Equipamento PARA & Terminal do equipamento PARA & Evento de ligação \\\midrule
+\endhead
+\midrule\multicolumn{7}{r}{\textit{Continua na próxima página.}}\\\endfoot
+\bottomrule\endlastfoot
+TC-11T1-A & 1S1 & C-T1-A-F & 1 & CJ-T1 & XT:1c & Corrente fase A - Medição\\
+TC-11T1-A & 1S4 & C-T1-A-F & 2 & CJ-T1 & XT:2c & Retorno de corrente fase A - Medição\\
+TC-11T1-A & 2S1 & C-T1-A-F & 3 & CJ-T1 & XT:3c & Corrente fase A - Proteção\\
+TC-11T1-A & 2S4 & C-T1-A-F & 4 & CJ-T1 & XT:4c & Retorno de corrente fase A - Proteção\\
+TC-11T1-A & SEM CONEXÃO & C-T1-A-F & 5 & CJ-T1 & XT:5c (RESERVA) & \res{}\\
+TC-11T1-A & SEM CONEXÃO & C-T1-A-F & 6 & CJ-T1 & XT:6c (RESERVA) & \res{}\\
+\midrule
+TC-11T1-B & 1S1 & C-T1-B-F & 1 & CJ-T1 & XT:7c & Corrente fase B - Medição\\
+TC-11T1-B & 1S4 & C-T1-B-F & 2 & CJ-T1 & XT:8c & Retorno de corrente fase B - Medição\\
+TC-11T1-B & 2S1 & C-T1-B-F & 3 & CJ-T1 & XT:9c & Corrente fase B - Proteção\\
+TC-11T1-B & 2S4 & C-T1-B-F & 4 & CJ-T1 & XT:10c & Retorno de corrente fase B - Proteção\\
+TC-11T1-B & SEM CONEXÃO & C-T1-B-F & 5 & CJ-T1 & XT:11c (RESERVA) & \res{}\\
+TC-11T1-B & SEM CONEXÃO & C-T1-B-F & 6 & CJ-T1 & XT:12c (RESERVA) & \res{}\\
+\midrule
+TC-11T1-C & 1S1 & C-T1-C-F & 1 & CJ-T1 & XT:13c & Corrente fase C - Medição\\
+TC-11T1-C & 1S4 & C-T1-C-F & 2 & CJ-T1 & XT:14c & Retorno de corrente fase C - Medição\\
+TC-11T1-C & 2S1 & C-T1-C-F & 3 & CJ-T1 & XT:15c & Corrente fase C - Proteção\\
+TC-11T1-C & 2S4 & C-T1-C-F & 4 & CJ-T1 & XT:16c & Retorno de corrente fase C - Proteção\\
+TC-11T1-C & SEM CONEXÃO & C-T1-C-F & 5 & CJ-T1 & XT:17c (RESERVA) & \res{}\\
+TC-11T1-C & SEM CONEXÃO & C-T1-C-F & 6 & CJ-T1 & XT:18c (RESERVA) & \res{}\\
+\end{longtable}\endgroup\end{landscape}
+\clearpage\begin{landscape}
+\subsection{TCs associados a 11T1: caixa--PPC 2}
+Todos os cabos desta tabela: blindados \cabana. 
+\begingroup\footnotesize
+\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.16}
+\begin{longtable}{@{}L{2.5cm}L{2.4cm}L{2.8cm}L{0.85cm}L{2.4cm}L{2.6cm}L{9.5cm}@{}}
+\caption{TCs associados a 11T1: caixa--PPC 2.}\\
+\toprule Equipamento DE & Terminal do equipamento DE & Codificação do cabo & Via do cabo & Equipamento PARA & Terminal do equipamento PARA & Evento de ligação \\\midrule
+\endfirsthead
+\multicolumn{7}{l}{\textit{Continuação da lista De--Para.}}\\\toprule
+Equipamento DE & Terminal do equipamento DE & Codificação do cabo & Via do cabo & Equipamento PARA & Terminal do equipamento PARA & Evento de ligação \\\midrule
+\endhead
+\midrule\multicolumn{7}{r}{\textit{Continua na próxima página.}}\\\endfoot
+\bottomrule\endlastfoot
+CJ-T1 & XT:1p & C-T1-A-P & 1 & PPC 2 & X202:1 & Corrente fase A - Medição\\
+CJ-T1 & XT:2p & C-T1-A-P & 2 & PPC 2 & X202:2 & Retorno de corrente fase A - Medição\\
+CJ-T1 & XT:3p & C-T1-A-P & 3 & PPC 2 & X202:3 & Corrente fase A - Proteção\\
+CJ-T1 & XT:4p & C-T1-A-P & 4 & PPC 2 & X202:4 & Retorno de corrente fase A - Proteção\\
+CJ-T1 & XT:5p (RESERVA) & C-T1-A-P & 5 & PPC 2 & X202:5 (RESERVA) & \res{}\\
+CJ-T1 & XT:6p (RESERVA) & C-T1-A-P & 6 & PPC 2 & X202:6 (RESERVA) & \res{}\\
+\midrule
+CJ-T1 & XT:7p & C-T1-B-P & 1 & PPC 2 & X202:7 & Corrente fase B - Medição\\
+CJ-T1 & XT:8p & C-T1-B-P & 2 & PPC 2 & X202:8 & Retorno de corrente fase B - Medição\\
+CJ-T1 & XT:9p & C-T1-B-P & 3 & PPC 2 & X202:9 & Corrente fase B - Proteção\\
+CJ-T1 & XT:10p & C-T1-B-P & 4 & PPC 2 & X202:10 & Retorno de corrente fase B - Proteção\\
+CJ-T1 & XT:11p (RESERVA) & C-T1-B-P & 5 & PPC 2 & X202:11 (RESERVA) & \res{}\\
+CJ-T1 & XT:12p (RESERVA) & C-T1-B-P & 6 & PPC 2 & X202:12 (RESERVA) & \res{}\\
+\midrule
+CJ-T1 & XT:13p & C-T1-C-P & 1 & PPC 2 & X202:13 & Corrente fase C - Medição\\
+CJ-T1 & XT:14p & C-T1-C-P & 2 & PPC 2 & X202:14 & Retorno de corrente fase C - Medição\\
+CJ-T1 & XT:15p & C-T1-C-P & 3 & PPC 2 & X202:15 & Corrente fase C - Proteção\\
+CJ-T1 & XT:16p & C-T1-C-P & 4 & PPC 2 & X202:16 & Retorno de corrente fase C - Proteção\\
+CJ-T1 & XT:17p (RESERVA) & C-T1-C-P & 5 & PPC 2 & X202:17 (RESERVA) & \res{}\\
+CJ-T1 & XT:18p (RESERVA) & C-T1-C-P & 6 & PPC 2 & X202:18 (RESERVA) & \res{}\\
+\end{longtable}\endgroup\end{landscape}
+\clearpage\begin{landscape}
+\subsection{TCs associados a 11T2: campo--caixa}
+Todos os cabos desta tabela: blindados \cabana. Conjunto de implantação futura no unifilar.
+\begingroup\footnotesize
+\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.16}
+\begin{longtable}{@{}L{2.5cm}L{2.4cm}L{2.8cm}L{0.85cm}L{2.4cm}L{2.6cm}L{9.5cm}@{}}
+\caption{TCs associados a 11T2: campo--caixa.}\\
+\toprule Equipamento DE & Terminal do equipamento DE & Codificação do cabo & Via do cabo & Equipamento PARA & Terminal do equipamento PARA & Evento de ligação \\\midrule
+\endfirsthead
+\multicolumn{7}{l}{\textit{Continuação da lista De--Para.}}\\\toprule
+Equipamento DE & Terminal do equipamento DE & Codificação do cabo & Via do cabo & Equipamento PARA & Terminal do equipamento PARA & Evento de ligação \\\midrule
+\endhead
+\midrule\multicolumn{7}{r}{\textit{Continua na próxima página.}}\\\endfoot
+\bottomrule\endlastfoot
+TC-11T2-A & 1S1 & C-T2-A-F & 1 & CJ-T2 & XT:1c & Corrente fase A - Medição\\
+TC-11T2-A & 1S4 & C-T2-A-F & 2 & CJ-T2 & XT:2c & Retorno de corrente fase A - Medição\\
+TC-11T2-A & 2S1 & C-T2-A-F & 3 & CJ-T2 & XT:3c & Corrente fase A - Proteção\\
+TC-11T2-A & 2S4 & C-T2-A-F & 4 & CJ-T2 & XT:4c & Retorno de corrente fase A - Proteção\\
+TC-11T2-A & SEM CONEXÃO & C-T2-A-F & 5 & CJ-T2 & XT:5c (RESERVA) & \res{}\\
+TC-11T2-A & SEM CONEXÃO & C-T2-A-F & 6 & CJ-T2 & XT:6c (RESERVA) & \res{}\\
+\midrule
+TC-11T2-B & 1S1 & C-T2-B-F & 1 & CJ-T2 & XT:7c & Corrente fase B - Medição\\
+TC-11T2-B & 1S4 & C-T2-B-F & 2 & CJ-T2 & XT:8c & Retorno de corrente fase B - Medição\\
+TC-11T2-B & 2S1 & C-T2-B-F & 3 & CJ-T2 & XT:9c & Corrente fase B - Proteção\\
+TC-11T2-B & 2S4 & C-T2-B-F & 4 & CJ-T2 & XT:10c & Retorno de corrente fase B - Proteção\\
+TC-11T2-B & SEM CONEXÃO & C-T2-B-F & 5 & CJ-T2 & XT:11c (RESERVA) & \res{}\\
+TC-11T2-B & SEM CONEXÃO & C-T2-B-F & 6 & CJ-T2 & XT:12c (RESERVA) & \res{}\\
+\midrule
+TC-11T2-C & 1S1 & C-T2-C-F & 1 & CJ-T2 & XT:13c & Corrente fase C - Medição\\
+TC-11T2-C & 1S4 & C-T2-C-F & 2 & CJ-T2 & XT:14c & Retorno de corrente fase C - Medição\\
+TC-11T2-C & 2S1 & C-T2-C-F & 3 & CJ-T2 & XT:15c & Corrente fase C - Proteção\\
+TC-11T2-C & 2S4 & C-T2-C-F & 4 & CJ-T2 & XT:16c & Retorno de corrente fase C - Proteção\\
+TC-11T2-C & SEM CONEXÃO & C-T2-C-F & 5 & CJ-T2 & XT:17c (RESERVA) & \res{}\\
+TC-11T2-C & SEM CONEXÃO & C-T2-C-F & 6 & CJ-T2 & XT:18c (RESERVA) & \res{}\\
+\end{longtable}\endgroup\end{landscape}
+\clearpage\begin{landscape}
+\subsection{TCs associados a 11T2: caixa--PPC 2}
+Todos os cabos desta tabela: blindados \cabana. Conjunto de implantação futura no unifilar.
+\begingroup\footnotesize
+\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.16}
+\begin{longtable}{@{}L{2.5cm}L{2.4cm}L{2.8cm}L{0.85cm}L{2.4cm}L{2.6cm}L{9.5cm}@{}}
+\caption{TCs associados a 11T2: caixa--PPC 2.}\\
+\toprule Equipamento DE & Terminal do equipamento DE & Codificação do cabo & Via do cabo & Equipamento PARA & Terminal do equipamento PARA & Evento de ligação \\\midrule
+\endfirsthead
+\multicolumn{7}{l}{\textit{Continuação da lista De--Para.}}\\\toprule
+Equipamento DE & Terminal do equipamento DE & Codificação do cabo & Via do cabo & Equipamento PARA & Terminal do equipamento PARA & Evento de ligação \\\midrule
+\endhead
+\midrule\multicolumn{7}{r}{\textit{Continua na próxima página.}}\\\endfoot
+\bottomrule\endlastfoot
+CJ-T2 & XT:1p & C-T2-A-P & 1 & PPC 2 & X203:1 & Corrente fase A - Medição\\
+CJ-T2 & XT:2p & C-T2-A-P & 2 & PPC 2 & X203:2 & Retorno de corrente fase A - Medição\\
+CJ-T2 & XT:3p & C-T2-A-P & 3 & PPC 2 & X203:3 & Corrente fase A - Proteção\\
+CJ-T2 & XT:4p & C-T2-A-P & 4 & PPC 2 & X203:4 & Retorno de corrente fase A - Proteção\\
+CJ-T2 & XT:5p (RESERVA) & C-T2-A-P & 5 & PPC 2 & X203:5 (RESERVA) & \res{}\\
+CJ-T2 & XT:6p (RESERVA) & C-T2-A-P & 6 & PPC 2 & X203:6 (RESERVA) & \res{}\\
+\midrule
+CJ-T2 & XT:7p & C-T2-B-P & 1 & PPC 2 & X203:7 & Corrente fase B - Medição\\
+CJ-T2 & XT:8p & C-T2-B-P & 2 & PPC 2 & X203:8 & Retorno de corrente fase B - Medição\\
+CJ-T2 & XT:9p & C-T2-B-P & 3 & PPC 2 & X203:9 & Corrente fase B - Proteção\\
+CJ-T2 & XT:10p & C-T2-B-P & 4 & PPC 2 & X203:10 & Retorno de corrente fase B - Proteção\\
+CJ-T2 & XT:11p (RESERVA) & C-T2-B-P & 5 & PPC 2 & X203:11 (RESERVA) & \res{}\\
+CJ-T2 & XT:12p (RESERVA) & C-T2-B-P & 6 & PPC 2 & X203:12 (RESERVA) & \res{}\\
+\midrule
+CJ-T2 & XT:13p & C-T2-C-P & 1 & PPC 2 & X203:13 & Corrente fase C - Medição\\
+CJ-T2 & XT:14p & C-T2-C-P & 2 & PPC 2 & X203:14 & Retorno de corrente fase C - Medição\\
+CJ-T2 & XT:15p & C-T2-C-P & 3 & PPC 2 & X203:15 & Corrente fase C - Proteção\\
+CJ-T2 & XT:16p & C-T2-C-P & 4 & PPC 2 & X203:16 & Retorno de corrente fase C - Proteção\\
+CJ-T2 & XT:17p (RESERVA) & C-T2-C-P & 5 & PPC 2 & X203:17 (RESERVA) & \res{}\\
+CJ-T2 & XT:18p (RESERVA) & C-T2-C-P & 6 & PPC 2 & X203:18 (RESERVA) & \res{}\\
+\end{longtable}\endgroup\end{landscape}
+\clearpage\begin{landscape}
+\subsection{TP 01U1: campo--caixa}
+Todos os cabos desta tabela: blindados \cabana. Derivações X1--X2; $115/\sqrt{3}$~V por secundário.
+\begingroup\footnotesize
+\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.16}
+\begin{longtable}{@{}L{2.5cm}L{2.4cm}L{2.8cm}L{0.85cm}L{2.4cm}L{2.6cm}L{9.5cm}@{}}
+\caption{TP 01U1: campo--caixa.}\\
+\toprule Equipamento DE & Terminal do equipamento DE & Codificação do cabo & Via do cabo & Equipamento PARA & Terminal do equipamento PARA & Evento de ligação \\\midrule
+\endfirsthead
+\multicolumn{7}{l}{\textit{Continuação da lista De--Para.}}\\\toprule
+Equipamento DE & Terminal do equipamento DE & Codificação do cabo & Via do cabo & Equipamento PARA & Terminal do equipamento PARA & Evento de ligação \\\midrule
+\endhead
+\midrule\multicolumn{7}{r}{\textit{Continua na próxima página.}}\\\endfoot
+\bottomrule\endlastfoot
+01U1-A & 1X1 & C-U1-A-F & 1 & CD-U1 & XE:1 & Tensão fase A - Secundário 1\\
+01U1-A & 1X2 & C-U1-A-F & 2 & CD-U1 & XE:2 & Retorno de tensão fase A - Secundário 1\\
+01U1-A & 2X1 & C-U1-A-F & 3 & CD-U1 & XE:3 & Tensão fase A - Secundário 2\\
+01U1-A & 2X2 & C-U1-A-F & 4 & CD-U1 & XE:4 & Retorno de tensão fase A - Secundário 2\\
+01U1-A & SEM CONEXÃO & C-U1-A-F & 5 & CD-U1 & XE:5 (RESERVA) & \res{}\\
+01U1-A & SEM CONEXÃO & C-U1-A-F & 6 & CD-U1 & XE:6 (RESERVA) & \res{}\\
+\midrule
+01U1-B & 1X1 & C-U1-B-F & 1 & CD-U1 & XE:7 & Tensão fase B - Secundário 1\\
+01U1-B & 1X2 & C-U1-B-F & 2 & CD-U1 & XE:8 & Retorno de tensão fase B - Secundário 1\\
+01U1-B & 2X1 & C-U1-B-F & 3 & CD-U1 & XE:9 & Tensão fase B - Secundário 2\\
+01U1-B & 2X2 & C-U1-B-F & 4 & CD-U1 & XE:10 & Retorno de tensão fase B - Secundário 2\\
+01U1-B & SEM CONEXÃO & C-U1-B-F & 5 & CD-U1 & XE:11 (RESERVA) & \res{}\\
+01U1-B & SEM CONEXÃO & C-U1-B-F & 6 & CD-U1 & XE:12 (RESERVA) & \res{}\\
+\midrule
+01U1-C & 1X1 & C-U1-C-F & 1 & CD-U1 & XE:13 & Tensão fase C - Secundário 1\\
+01U1-C & 1X2 & C-U1-C-F & 2 & CD-U1 & XE:14 & Retorno de tensão fase C - Secundário 1\\
+01U1-C & 2X1 & C-U1-C-F & 3 & CD-U1 & XE:15 & Tensão fase C - Secundário 2\\
+01U1-C & 2X2 & C-U1-C-F & 4 & CD-U1 & XE:16 & Retorno de tensão fase C - Secundário 2\\
+01U1-C & SEM CONEXÃO & C-U1-C-F & 5 & CD-U1 & XE:17 (RESERVA) & \res{}\\
+01U1-C & SEM CONEXÃO & C-U1-C-F & 6 & CD-U1 & XE:18 (RESERVA) & \res{}\\
+\end{longtable}\endgroup\end{landscape}
+\clearpage\begin{landscape}
+\subsection{TP 01U1: caixa--PPC 2}
+Todos os cabos desta tabela: blindados \cabana. Derivações X1--X2; $115/\sqrt{3}$~V por secundário.
+\begingroup\footnotesize
+\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.16}
+\begin{longtable}{@{}L{2.5cm}L{2.4cm}L{2.8cm}L{0.85cm}L{2.4cm}L{2.6cm}L{9.5cm}@{}}
+\caption{TP 01U1: caixa--PPC 2.}\\
+\toprule Equipamento DE & Terminal do equipamento DE & Codificação do cabo & Via do cabo & Equipamento PARA & Terminal do equipamento PARA & Evento de ligação \\\midrule
+\endfirsthead
+\multicolumn{7}{l}{\textit{Continuação da lista De--Para.}}\\\toprule
+Equipamento DE & Terminal do equipamento DE & Codificação do cabo & Via do cabo & Equipamento PARA & Terminal do equipamento PARA & Evento de ligação \\\midrule
+\endhead
+\midrule\multicolumn{7}{r}{\textit{Continua na próxima página.}}\\\endfoot
+\bottomrule\endlastfoot
+CD-U1 & XS:1 & C-U1-A-P & 1 & PPC 2 & X204:1 & Tensão fase A - Secundário 1\\
+CD-U1 & XS:2 & C-U1-A-P & 2 & PPC 2 & X204:2 & Retorno de tensão fase A - Secundário 1\\
+CD-U1 & XS:3 & C-U1-A-P & 3 & PPC 2 & X204:3 & Tensão fase A - Secundário 2\\
+CD-U1 & XS:4 & C-U1-A-P & 4 & PPC 2 & X204:4 & Retorno de tensão fase A - Secundário 2\\
+CD-U1 & XS:5 (RESERVA) & C-U1-A-P & 5 & PPC 2 & X204:5 (RESERVA) & \res{}\\
+CD-U1 & XS:6 (RESERVA) & C-U1-A-P & 6 & PPC 2 & X204:6 (RESERVA) & \res{}\\
+\midrule
+CD-U1 & XS:7 & C-U1-B-P & 1 & PPC 2 & X204:7 & Tensão fase B - Secundário 1\\
+CD-U1 & XS:8 & C-U1-B-P & 2 & PPC 2 & X204:8 & Retorno de tensão fase B - Secundário 1\\
+CD-U1 & XS:9 & C-U1-B-P & 3 & PPC 2 & X204:9 & Tensão fase B - Secundário 2\\
+CD-U1 & XS:10 & C-U1-B-P & 4 & PPC 2 & X204:10 & Retorno de tensão fase B - Secundário 2\\
+CD-U1 & XS:11 (RESERVA) & C-U1-B-P & 5 & PPC 2 & X204:11 (RESERVA) & \res{}\\
+CD-U1 & XS:12 (RESERVA) & C-U1-B-P & 6 & PPC 2 & X204:12 (RESERVA) & \res{}\\
+\midrule
+CD-U1 & XS:13 & C-U1-C-P & 1 & PPC 2 & X204:13 & Tensão fase C - Secundário 1\\
+CD-U1 & XS:14 & C-U1-C-P & 2 & PPC 2 & X204:14 & Retorno de tensão fase C - Secundário 1\\
+CD-U1 & XS:15 & C-U1-C-P & 3 & PPC 2 & X204:15 & Tensão fase C - Secundário 2\\
+CD-U1 & XS:16 & C-U1-C-P & 4 & PPC 2 & X204:16 & Retorno de tensão fase C - Secundário 2\\
+CD-U1 & XS:17 (RESERVA) & C-U1-C-P & 5 & PPC 2 & X204:17 (RESERVA) & \res{}\\
+CD-U1 & XS:18 (RESERVA) & C-U1-C-P & 6 & PPC 2 & X204:18 (RESERVA) & \res{}\\
+\end{longtable}\endgroup\end{landscape}
+\clearpage\begin{landscape}
+\subsection{Disjuntores 11T1 e 11T2: funcional adotado para 13,8 kV}
+Cabos blindados \cabdig. Aplica-se o funcional Siemens a 11T1/11T2:
+fechamento na p. 4, abertura 1 na p. 5 e contatos selecionados na p. 8.
+O PPC interliga cada par de comando por contato seco; a energia de 125~Vcc
+vem do QDCC. As réguas X1 dos dois equipamentos são independentes.
+Preenchidos os 16 terminais previstos; vias 9--12 mantidas como reservas.
+Os demais sinais, incluindo abertura 2 e alarmes, permanecem a integrar
+conforme a Seção~\ref{sec:auxiliares}.
+
+\begingroup\footnotesize
+\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.16}
+\begin{longtable}{@{}L{2.5cm}L{2.4cm}L{2.8cm}L{0.85cm}L{2.4cm}L{2.6cm}L{9.5cm}@{}}
+\caption{Bornagem de 11T1 e 11T2 pelo funcional adotado.}\\
+\toprule Equipamento DE & Terminal do equipamento DE & Codificação do cabo & Via do cabo & Equipamento PARA & Terminal do equipamento PARA & Evento de ligação \\\midrule
+\endfirsthead
+\multicolumn{7}{l}{\textit{Continuação da lista De--Para.}}\\\toprule
+Equipamento DE & Terminal do equipamento DE & Codificação do cabo & Via do cabo & Equipamento PARA & Terminal do equipamento PARA & Evento de ligação \\\midrule
+\endhead
+\midrule\multicolumn{7}{r}{\textit{Continua na próxima página.}}\\\endfoot
+\bottomrule\endlastfoot
+11T1 & X1:616 & C-D1-D & 1 & PPC 2 & X201:1 & Comando de abertura\\
+11T1 & X1:617 & C-D1-D & 2 & PPC 2 & X201:2 & Comando de abertura\\
+11T1 & X1:603 & C-D1-D & 3 & PPC 2 & X201:3 & Comando de fechamento\\
+11T1 & X1:604 & C-D1-D & 4 & PPC 2 & X201:4 & Comando de fechamento\\
+11T1 & X1:15 & C-D1-D & 5 & PPC 2 & X201:5 & Indicação de disjuntor fechado\\
+11T1 & X1:16 & C-D1-D & 6 & PPC 2 & X201:6 & Indicação de disjuntor fechado\\
+11T1 & X1:13 & C-D1-D & 7 & PPC 2 & X201:7 & Indicação de disjuntor aberto\\
+11T1 & X1:14 & C-D1-D & 8 & PPC 2 & X201:8 & Indicação de disjuntor aberto\\
+11T1 & SEM CONEXÃO & C-D1-D & 9 & PPC 2 & X201:9 (RESERVA) & \res{}\\
+11T1 & SEM CONEXÃO & C-D1-D & 10 & PPC 2 & X201:10 (RESERVA) & \res{}\\
+11T1 & SEM CONEXÃO & C-D1-D & 11 & PPC 2 & X201:11 (RESERVA) & \res{}\\
+11T1 & SEM CONEXÃO & C-D1-D & 12 & PPC 2 & X201:12 (RESERVA) & \res{}\\
+\pagebreak
+11T2 & X1:616 & C-D2-D & 1 & PPC 2 & X201:13 & Comando de abertura\\
+11T2 & X1:617 & C-D2-D & 2 & PPC 2 & X201:14 & Comando de abertura\\
+11T2 & X1:603 & C-D2-D & 3 & PPC 2 & X201:15 & Comando de fechamento\\
+11T2 & X1:604 & C-D2-D & 4 & PPC 2 & X201:16 & Comando de fechamento\\
+11T2 & X1:15 & C-D2-D & 5 & PPC 2 & X201:17 & Indicação de disjuntor fechado\\
+11T2 & X1:16 & C-D2-D & 6 & PPC 2 & X201:18 & Indicação de disjuntor fechado\\
+11T2 & X1:13 & C-D2-D & 7 & PPC 2 & X201:19 & Indicação de disjuntor aberto\\
+11T2 & X1:14 & C-D2-D & 8 & PPC 2 & X201:20 & Indicação de disjuntor aberto\\
+11T2 & SEM CONEXÃO & C-D2-D & 9 & PPC 2 & X201:21 (RESERVA) & \res{}\\
+11T2 & SEM CONEXÃO & C-D2-D & 10 & PPC 2 & X201:22 (RESERVA) & \res{}\\
+11T2 & SEM CONEXÃO & C-D2-D & 11 & PPC 2 & X201:23 (RESERVA) & \res{}\\
+11T2 & SEM CONEXÃO & C-D2-D & 12 & PPC 2 & X201:24 (RESERVA) & \res{}\\
+\end{longtable}\endgroup\end{landscape}
+\clearpage\begin{landscape}
+\subsection{Supervisão proposta da caixa CD-U1}
+Cabo blindado $6\times1{,}5\,\mathrm{mm^2}$. Selecionar DJs com contatos auxiliares adequados;
+13/14 é convenção proposta. DJ fechado não comprova presença de tensão: eventual supervisão de perda de potencial deve ser definida no IED.
+\begingroup\footnotesize
+\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.16}
+\begin{longtable}{@{}L{2.5cm}L{2.4cm}L{2.8cm}L{0.85cm}L{2.4cm}L{2.6cm}L{9.5cm}@{}}
+\caption{Supervisão proposta da caixa CD-U1.}\\
+\toprule Equipamento DE & Terminal do equipamento DE & Codificação do cabo & Via do cabo & Equipamento PARA & Terminal do equipamento PARA & Evento de ligação \\\midrule
+\endfirsthead
+\multicolumn{7}{l}{\textit{Continuação da lista De--Para.}}\\\toprule
+Equipamento DE & Terminal do equipamento DE & Codificação do cabo & Via do cabo & Equipamento PARA & Terminal do equipamento PARA & Evento de ligação \\\midrule
+\endhead
+\midrule\multicolumn{7}{r}{\textit{Continua na próxima página.}}\\\endfoot
+\bottomrule\endlastfoot
+CD-U1 & DJ1:13 & C-U1-D & 1 & PPC 2 & X201:25 & Indicação de DJ1 fechado\\
+CD-U1 & DJ1:14 & C-U1-D & 2 & PPC 2 & X201:26 & Indicação de DJ1 fechado\\
+CD-U1 & DJ2:13 & C-U1-D & 3 & PPC 2 & X201:27 & Indicação de DJ2 fechado\\
+CD-U1 & DJ2:14 & C-U1-D & 4 & PPC 2 & X201:28 & Indicação de DJ2 fechado\\
+CD-U1 & SEM CONEXÃO & C-U1-D & 5 & PPC 2 & X201:29 (RESERVA) & \res{}\\
+CD-U1 & SEM CONEXÃO & C-U1-D & 6 & PPC 2 & X201:30 (RESERVA) & \res{}\\
+\end{longtable}\endgroup\end{landscape}
+
+\section{Alimentações auxiliares e interfaces a detalhar}\label{sec:auxiliares}
+Pela premissa de aplicação do funcional Siemens a 11T1/11T2, adotam-se
+125~Vcc para fechamento, aberturas e comando, e 220~Vca para motor,
+aquecimento, iluminação e tomada. Os circuitos vêm diretamente do QDCC/QDCA,
+conforme o enunciado, e não são distribuídos pelo PPC~2.
+
+\begin{table}[htbp]\centering\small
+\caption{Interfaces auxiliares identificadas no funcional adotado (pp. 4--6).}
+\begin{tabularx}{\linewidth}{@{}L{2.2cm}L{2.8cm}L{2.5cm}Y@{}}\toprule
+Origem & Proteção proposta & Destino & Detalhamento restante \\\midrule
+QDCC & DJ1:2 / DJ1:4 & 11T1: régua X1 & 125~Vcc. Segregar os circuitos e definir proteções, cabos e distribuição.\\
+QDCC & DJ2:2 / DJ2:4 & 11T2: régua X1 & Mesmos circuitos, independentes dos de 11T1.\\
+QDCA & DJ1:2 / DJ1:4 & 11T1: régua X1 & 220~Vca. Dimensionar circuitos do motor e dos serviços auxiliares.\\
+QDCA & DJ2:2 / DJ2:4 & 11T2: régua X1 & Mesmos circuitos, independentes dos de 11T1.\\\bottomrule
+\end{tabularx}\end{table}
+As referências DJ1/DJ2 são locais a cada quadro e propostas; a matriz não
+representa um único circuito compartilhado entre todos os consumidores.
+No funcional, o fechamento recebe alimentação em X1:602 (+) e X1:600 (-);
+a abertura 1, em X1:615 (+) e X1:613 (-); e o comando, em X1:622 (+) e
+X1:620 (-). A abertura 2 utiliza retorno X1:700 e entradas X1:702 (remoto)
+e X1:703/704 (proteção), a integrar aos circuitos correspondentes.
+O motor recebe 220~Vca em X1:400/402; aquecimento, iluminação e tomada,
+em X1:500/502. As pontes indicadas no fabricante devem ser preservadas.
+
+Permanecem pendentes a divisão e a coordenação dos circuitos auxiliares,
+os calibres das proteções de quadro, comprimentos, seções de cabos,
+queda de tensão e interfaces dos IEDs. As cargas devem ser levantadas
+no funcional adotado; não se aplica automaticamente a seção dos cabos
+digitais a motores ou bobinas. Essas alimentações não integram as 138 vias
+de sinais desta planilha.
+
+O contato seco de saída do PPC~2 fecha o circuito de comando alimentado
+pelo QDCC no campo. O funcional também apresenta abertura 2, entradas de
+proteção, alarmes e bloqueios; sua integração completa pode exigir cabos
+e vias adicionais. A alimentação dos IEDs e a polarização das entradas
+digitais dependem dos dispositivos selecionados.
+
+% Snippet de integração. Requer \usepackage{tikz} no preâmbulo.
+\clearpage
+\section{Esquemas multifilares de referência opcional}
+\label{sec:multifilar-mt}
+
+Os três esquemas já existentes são mantidos como apoio opcional à integração.
+O multifilar completo e os desenhos finais pertencem ao responsável por essa
+parte do trabalho e estão fora do escopo individual aqui avaliado.
+Os esquemas a seguir individualizam os condutores dos circuitos adotados
+nas tabelas. As identificações de caixas, cabos, réguas e disjuntores
+auxiliares são propostas de projeto. As conexões internas dos IEDs e os
+terminais de fabricante ainda não documentados permanecem pendentes.
+Os símbolos retangulares identificam funções; não reproduzem a construção
+interna dos equipamentos.
+
+\subsection{Circuito de corrente: fase A do conjunto associado a 11T1}
+
+Exemplo do núcleo 1 do TC identificado neste projeto como
+\texttt{TC-11T1-A}. A tomada \texttt{1S4} representa a derivação adotada
+para este detalhamento, sujeita à confirmação dos ajustes de proteção.
+
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm,font=\fontsize{8}{10}\selectfont,
+  line width=0.55pt]
+  \path[use as bounding box] (0,-0.65) rectangle (14.4,4.65);
+  \draw[rounded corners] (0.1,0.55) rectangle (1.9,3.7);
+  \node[align=center] at (1,2) {TC-11T1-A\\núcleo 1};
+  \node[anchor=south] at (1,3.9) {CAMPO};
+  \draw[dashed] (5.25,0.5) rectangle (7.45,3.7);
+  \node at (6.35,4.1) {CJ-T1};
+  \draw[dashed] (10,0.5) rectangle (12.1,3.7);
+  \node at (11.05,4.1) {PPC 2};
+  \draw[rounded corners] (12.6,0.55) rectangle (14.3,3.7);
+  \node[align=center] at (13.45,2) {IED\\entrada de\\corrente};
+  \draw (1.9,3) -- (12.6,3);
+  \draw (1.9,1) -- (12.6,1);
+  \foreach \x in {1.9,5.7,10.5,12.6} {
+    \fill (\x,3) circle (1.4pt);
+    \fill (\x,1) circle (1.4pt);
+  }
+  \node[anchor=south east] at (1.85,3.07) {1S1};
+  \node[anchor=north east] at (1.85,0.93) {1S4};
+  \node[anchor=south] at (5.7,3.1) {XT:1};
+  \node[anchor=north] at (5.7,0.9) {XT:2};
+  \node[anchor=south] at (10.8,3.1) {X202:1};
+  \node[anchor=north] at (10.8,0.9) {X202:2};
+  \node[anchor=west] at (12.72,3) {$I^{+}$};
+  \node[anchor=west] at (12.72,1) {$I^{-}$};
+  \node[align=center] at (3.55,3.7) {C-T1-A-F\\via 1};
+  \node at (3.55,0.7) {via 2};
+  \node[align=center] at (8.75,3.7) {C-T1-A-P\\via 1};
+  \node at (8.75,0.7) {via 2};
+  % Chave de curto-circuito: posição normal aberta.
+  \draw (6.7,3) -- (6.7,2.35);
+  \draw (6.7,1) -- (6.7,1.7) -- (7.05,2.25);
+  \draw[fill=white] (6.7,2.35) circle (1.5pt);
+  \draw[fill=white] (6.7,1.7) circle (1.5pt);
+  \node[align=center,anchor=east] at (6.6,2.03) {chave de\\curto\\aberta};
+  % Ponto único de referência do núcleo na caixa.
+  \fill (6.2,1) circle (1.4pt);
+  \draw (6.2,1) -- (6.2,-0.05);
+  \node[anchor=west] at (6.32,0.23) {$N_1$};
+  \draw (5.96,-0.05) -- (6.44,-0.05);
+  \draw (6.03,-0.15) -- (6.37,-0.15);
+  \draw (6.1,-0.25) -- (6.3,-0.25);
+  \node at (6.2,-0.52) {PE: um ponto por circuito secundário};
+\end{tikzpicture}
+\end{center}
+
+Cada condutor percorre o cabo de campo, a caixa e o cabo de painel.
+No desenho, \texttt{XT:1} representa as faces \texttt{XT:1c} e
+\texttt{XT:1p} do mesmo borne; a convenção se estende aos demais bornes.
+O retorno não utiliza a blindagem. Na CJ-T1, os retornos das fases A, B e C
+do núcleo 1 formam o comum $N_1$, com um único vínculo ao aterramento.
+O núcleo 2 tem comum independente $N_2$ e seu próprio ponto de aterramento.
+Não se interligam os comuns por pontes funcionais nem se compartilham
+condutores de retorno entre núcleos diferentes.
+
+\textbf{Replicação do núcleo 2:}
+\texttt{2S1} $\rightarrow$ via 3 de \texttt{C-T1-A-F}
+$\rightarrow$ \texttt{CJ-T1/XT:3} $\rightarrow$ via 3 de
+\texttt{C-T1-A-P} $\rightarrow$ \texttt{PPC2/X202:3} $\rightarrow I^{+}$;
+retorno por $I^{-}$, \texttt{X202:4}, via 4, \texttt{XT:4}, via 4 e
+\texttt{2S4}. O símbolo de aterramento é aplicado ao comum $N_2$ na caixa.
+As demais fases e o conjunto de 11T2 repetem esta topologia com os códigos
+e bornes das respectivas tabelas.
+
+\textbf{Operação dos bornes de ensaio:} o circuito de corrente deve ser
+curto-circuitado antes de seccionar a ligação ao IED. A chave está aberta
+na condição normal ilustrada. Os circuitos devem permanecer fechados
+através das entradas de corrente; não se admite abrir secundário de TC
+energizado. Vias 5 e 6 dos cabos deste exemplo são reservas, conforme a lista.
+
+\clearpage
+\subsection{Circuito de tensão: fase A do conjunto 01U1}
+
+Exemplo do secundário 1 do TP identificado por fase como
+\texttt{01U1-A}. O disjuntor \texttt{DJ1} na CD-U1 protege e secciona
+o condutor ativo; o retorno de referência segue diretamente pela caixa.
+
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm,font=\fontsize{8}{10}\selectfont,
+  line width=0.55pt]
+  \path[use as bounding box] (0,-0.65) rectangle (14.4,4.65);
+  \draw[rounded corners] (0.1,0.55) rectangle (1.9,3.7);
+  \node[align=center] at (1,2) {01U1-A\\secundário 1};
+  \node[anchor=south] at (1,3.9) {CAMPO};
+  \draw[dashed] (5.2,0.5) rectangle (8.2,3.7);
+  \node at (6.7,4.1) {CD-U1};
+  \draw[dashed] (10,0.5) rectangle (12.1,3.7);
+  \node at (11.05,4.1) {PPC 2};
+  \draw[rounded corners] (12.6,0.55) rectangle (14.3,3.7);
+  \node[align=center] at (13.45,2) {IED\\entrada de\\tensão};
+  \draw (1.9,3) -- (6.1,3);
+  \draw (7.15,3) -- (12.6,3);
+  \draw (1.9,1) -- (12.6,1);
+  \draw (6.1,2.75) rectangle (7.15,3.25);
+  \node at (6.625,3) {DJ1};
+  \node[anchor=north] at (6.07,2.66) {1};
+  \node[anchor=north] at (7.18,2.66) {2};
+  \foreach \x in {1.9,5.45,7.9,10.5,12.6} {
+    \fill (\x,3) circle (1.4pt);
+    \fill (\x,1) circle (1.4pt);
+  }
+  \node[anchor=south east] at (1.85,3.07) {1X1};
+  \node[anchor=north east] at (1.85,0.93) {1X2};
+  \node[anchor=south] at (5.5,3.1) {XE:1};
+  \node[anchor=north] at (5.5,0.9) {XE:2};
+  \node[anchor=south] at (7.83,3.1) {XS:1};
+  \node[anchor=north] at (7.83,0.9) {XS:2};
+  \node[anchor=south] at (10.8,3.1) {X204:1};
+  \node[anchor=north] at (10.8,0.9) {X204:2};
+  \node[anchor=west] at (12.72,3) {$U^{+}$};
+  \node[anchor=west] at (12.72,1) {$U^{-}$};
+  \node[align=center] at (3.55,3.7) {C-U1-A-F\\via 1};
+  \node at (3.55,0.7) {via 2};
+  \node[align=center] at (9.1,3.8) {C-U1-A-P\\via 1};
+  \node at (9.1,0.7) {via 2};
+  \fill (6.65,1) circle (1.4pt);
+  \draw (6.65,1) -- (6.65,-0.05);
+  \node[anchor=west] at (6.77,0.23) {$N_1$};
+  \draw (6.41,-0.05) -- (6.89,-0.05);
+  \draw (6.48,-0.15) -- (6.82,-0.15);
+  \draw (6.55,-0.25) -- (6.75,-0.25);
+  \node at (6.65,-0.52) {PE: referência única do secundário na caixa};
+\end{tikzpicture}
+\end{center}
+
+Os bornes de entrada \texttt{XE} e saída \texttt{XS} distinguem os dois
+lados da caixa. A ligação interna do condutor ativo é
+\texttt{XE:1--DJ1:1}, polo protegido \texttt{DJ1:1--DJ1:2} e
+\texttt{DJ1:2--XS:1}; o retorno é \texttt{XE:2--XS:2}.
+Os retornos das três fases do mesmo secundário formam o comum $N_1$,
+aterrado uma única vez na CD-U1. Não se repete esse vínculo no PPC 2.
+
+\textbf{Replicação do secundário 2:}
+\texttt{2X1} $\rightarrow$ via 3 de \texttt{C-U1-A-F}
+$\rightarrow$ \texttt{XE:3} $\rightarrow$ \texttt{DJ2:1/2}
+$\rightarrow$ \texttt{XS:3} $\rightarrow$ via 3 de
+\texttt{C-U1-A-P} $\rightarrow$ \texttt{PPC2/X204:3} $\rightarrow U^{+}$;
+retorno por $U^{-}$, \texttt{X204:4}, via 4, \texttt{XS:4},
+\texttt{XE:4}, via 4 e \texttt{2X2}. O secundário 2 possui comum próprio
+$N_2$, com vínculo único ao PE na caixa. Os demais polos de DJ1/DJ2
+e os bornes de fase B/C seguem as tabelas.
+
+\textbf{Critério de seccionamento:} não se aplica chave de curto aos
+circuitos de TP. A representação mostra somente o polo da fase A;
+o conjunto dos polos de cada disjuntor deve manter o acionamento comum
+previsto para o circuito trifásico. Calibre, curva e capacidade de
+interrupção dos disjuntores dependem do dimensionamento e não são
+inferidos do desenho. $U^{+}$ e $U^{-}$ designam terminais de medição CA,
+sem indicar alimentação contínua. Vias 5 e 6 são reservas.
+
+\clearpage
+\subsection{Comando de abertura por contato seco: proposta funcional}
+
+O exemplo mostra a origem da energia no QDCC e o contato de saída
+localizado no PPC 2. Aplica-se a abertura 1 do funcional Siemens (p. 5),
+adotado para 11T1/11T2. A alimentação é 125~Vcc; a ponte X1:615--616
+leva o positivo ao contato de comando, cujo retorno é X1:617.
+O bloco abaixo resume a cadeia interna S8/S1, bobina Y3 e contatos K10/K59;
+esses elementos e seus intertravamentos permanecem conforme o funcional.
+
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm,font=\fontsize{8}{10}\selectfont,
+  line width=0.55pt]
+  \path[use as bounding box] (0,-0.2) rectangle (14.4,4.85);
+  \draw[rounded corners] (0.1,0.35) rectangle (2.35,3.8);
+  \node at (1.225,4.2) {QDCC};
+  \node[align=center] at (1.225,2.05) {alimentação\\125 Vcc\\proteção DJ1};
+  \draw[dashed] (4.05,0.35) rectangle (6.75,3.8);
+  \node at (5.4,4.2) {11T1: interface de campo};
+  \draw[dashed] (9.35,0.35) rectangle (14.15,3.8);
+  \node at (11.75,4.2) {PPC 2};
+  \draw (2.35,3) -- (11.15,3);
+  \draw (11.85,3) -- (13.55,3) -- (13.55,1) -- (6.35,1);
+  \draw (4.4,1) -- (2.35,1);
+  \draw (4.4,0.65) rectangle (6.35,1.35);
+  \node[align=center] at (5.375,1) {circuito interno\\abertura 1};
+  % Contato seco da saída de comando, representado aberto.
+  \draw (11.15,3) -- (11.7,3.35);
+  \draw[fill=white] (11.15,3) circle (1.6pt);
+  \draw[fill=white] (11.85,3) circle (1.6pt);
+  \node[anchor=south] at (11.65,3.45) {saída ABRIR};
+  \foreach \x in {2.35,4.4,9.75} {\fill (\x,3) circle (1.4pt);}
+  \foreach \x in {2.35,6.35,9.75} {\fill (\x,1) circle (1.4pt);}
+  \node[anchor=east] at (2.22,3.18) {DJ1:2};
+  \node[anchor=east] at (2.22,0.8) {DJ1:4};
+  \node[anchor=south] at (3.05,3.08) {$+\mathrm{CC}$};
+  \node[anchor=north] at (3.05,0.9) {$-\mathrm{CC}$};
+  \node[anchor=south] at (4.8,3.1) {X1:615/616};
+  \node[anchor=south] at (6.35,1.4) {X1:617};
+  \node[anchor=south] at (4.4,1.4) {X1:613};
+  \node[anchor=south] at (9.9,3.1) {X201:1};
+  \node[anchor=north] at (10,0.9) {X201:2};
+  \node[align=center] at (7.75,3.7) {C-D1-D\\via 1};
+  \node[align=center] at (7.75,0.58) {C-D1-D\\via 2};
+  \node[align=center] at (11.75,1.95) {contato seco:\\energia proveniente\\do QDCC};
+\end{tikzpicture}
+\end{center}
+
+Ao fechar a saída ABRIR, o contato completa o circuito entre as vias 1
+e 2 do cabo \texttt{C-D1-D}. O retorno da bobina ou entrada segue ao
+QDCC. Os bornes do PPC 2 são interfaces do contato de comando; não
+substituem a origem da alimentação no quadro de serviços auxiliares.
+
+\textbf{Limites desta representação:} trata-se de uma simplificação do
+circuito remoto de abertura 1. Não substitui a cadeia interna de permissivas,
+bloqueios e contatos do fabricante, nem representa a abertura 2, os disparos
+de proteção ou a supervisão do circuito. A capacidade da saída do IED e a
+eventual necessidade de relé auxiliar devem ser verificadas para a bobina Y3.
+A mesma seleção de bornes é aplicada a 11T2, com cabo e bornes do PPC próprios.
+
+Os cabos QDCC--equipamento e suas proteções ainda dependem de dimensionamento,
+distâncias e coordenação dos circuitos auxiliares.
+
+Permanecem como pendências de detalhamento. Fechamento, estados e
+eventuais alarmes seguem a alocação preliminar das tabelas, sem
+constituírem circuitos executivos liberados.
+
+\textbf{Situação do entregável:} estes três esquemas são referências opcionais
+das topologias propostas de corrente, tensão e comando; não constituem desenhos
+finais liberados. O multifilar executivo completo é responsabilidade de outro
+integrante e depende da integração dos dados e das pendências deste relatório.
+
+\clearpage
+\section{Conferência dos resultados e pendências}\label{sec:pendencias}
+\subsection{Verificação de consistência da proposta}
+\begin{itemize}
+\item Lista com sete colunas, uma linha por via, códigos de cabo únicos e vias
+consecutivas de 1 a 6 ou de 1 a 12.
+\item Dezoito cabos analógicos independentes: 12 para TCs e 6 para TPs;
+nenhum cabo reúne instrumentos primários distintos.
+\item Três cabos digitais propostos; reservas explícitas em todas as extremidades.
+Total de 138 vias: 92 destinadas a funções e 46 reservas.
+\item Quatro réguas de 40 posições: 56 posições funcionais, 28 posições de
+reservas de cabo e 76 posições livres: 84 terminais alocados a cabos.
+Não há sobreposição de terminais dentro deste recorte; a ausência de conflito
+com a parte dos alimentadores ainda não foi confirmada.
+\item Cabos dos instrumentos terminam nas caixas e continuam até o PPC~2;
+fiação interna e pontes das caixas estão identificadas separadamente.
+\item CC/CA de campo não são distribuídos pelo PPC~2. A matriz auxiliar usa
+referências de disjuntores nos quadros, conforme o item~3.5 do enunciado.
+\end{itemize}
+
+\subsection{Divergências das fontes e dados para fechamento}
+\begingroup\footnotesize
+\setlength{\parskip}{0pt}\setlength{\LTpre}{6pt}\setlength{\LTpost}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{longtable}{@{}L{1.0cm}L{6.2cm}L{8.1cm}@{}}
+\caption{Pendências documentais e técnicas identificadas.}\\
+\toprule Item & Evidência / lacuna & Tratamento e ação necessária \\\midrule\endfirsthead
+\toprule Item & Evidência / lacuna & Tratamento e ação necessária \\\midrule\endhead
+\bottomrule\endfoot
+P1 & Unifilar: 11T1/11T2 inscritos como 72,5~kV; enunciado: disjuntores de 15~kV. & Preservadas as TAGs; escopo de 15~kV adotado pelo enunciado. Confirmar placa e corrigir a documentação de origem.\\
+P2 & Funcional Siemens das pp. 4--8: 72,5~kV, 2500~A e 31,5~kA; unifilar MT: 1250~A e 16~kA. & Por definição de 16/10/2026, o esquema é adotado para 11T1/11T2 no exercício. Preenchidos os 16 terminais de comando e indicação. A aplicação é premissa acadêmica, não equivalência de placas. Integrar abertura 2, proteção e demais sinais no pacote completo.\\
+P3 & TCs de MT sem TAG própria; tabela de seis unidades cita apenas 11T1. & Identificadores TC-11T1/11T2-A/B/C propostos. Confirmar correspondência física e identificação de campo.\\
+P4 & TC possui múltiplas relações; ligação primária operativa não marcada. Comuns N1/N2 propostos. & S4: 400/5~A em série ou 800/5~A em paralelo. Confirmar ligação primária, carga, ajustes, polaridade e suportabilidade; validar comuns com IEDs, ponto de aterramento e circuitos de ensaio antes do fechamento.\\
+P5 & Folha 13: placa BPS31T, 15~kV; carimbo BPS32T, 36,2~kV. & Bornes tratados como hipótese baseada na placa. Confirmar fabricante/modelo real e emitir desenho coerente.\\
+P6 & TP: unifilar 0,3P200/0,6P200 e 2000~VA; placa com dois 0,3P400 e 2$\times$600~VA térmicos. & Valores não consolidados como equivalentes. Confirmar placa, classes, cargas e ligações. Dois secundários X1--X2 em estrela, destinados à medição/proteção, permanecem premissas, sem comprovação da instalação.\\
+P7 & Unifilar com F1/F2 de 6~A; enunciado exige caixas de disjuntores. & DJ1/DJ2 tripolares propostos. Definir substituição dos fusíveis ou coexistência com coordenação. Dimensionar calibres, curvas e capacidade de interrupção; confirmar terminais no modelo selecionado.\\
+P8 & Segundo conjunto em verde (futuro) e referência UPD-BT1 repetida. & Incluído 11T2 por exigência do enunciado; destino genérico PPC~2. Confirmar identificação dos IEDs e etapa de implantação.\\*
+P9 & Não há modelos/borneiras dos IEDs, quadros auxiliares ou rota física. & Completar lado interno do PPC, proteções dos quadros, levantamento de cargas, dimensionamento auxiliar, queda de tensão, comprimentos, PE e blindagens.\\*
+P10 & Caixas e réguas são propostas; ainda não houve confirmação do responsável pelos alimentadores. & \textbf{PENDENTE em 14/10/2026}: conferir CJ-T1/CJ-T2/CD-U1, X201--X204 e seus bornes com as demais partes. Registrar responsável, data, revisão e resultado; não declarar ausência de conflitos antes da conferência.\\
+\end{longtable}\endgroup
+
+\subsection{Pacote para integração com o responsável pelo multifilar}\label{sec:integracao}
+O relatório e a planilha eletrônica reúnem os dados abaixo para o colega elaborar
+os desenhos finais. A integração não transforma as premissas em dados
+confirmados nem libera as interligações de 11T1/11T2 para execução.
+\begin{table}[htbp]\centering\small
+\caption{Conteúdo disponibilizado para integração das partes do trabalho.}
+\begin{tabularx}{\linewidth}{@{}L{4.5cm}Y@{}}\toprule
+Informação & Referência e condição \\\midrule
+Inventário e TAGs & Seção~\ref{sec:inventario}: 11T1/11T2 e 01U1 preservados; sufixos de fase, TCs, caixas e réguas identificados como propostas.\\
+Pontos e sinais & Coluna Evento de ligação da Seção~\ref{sec:depara}: correntes, tensões, comandos, estados e reservas; 16 terminais digitais definidos pelo funcional Siemens adotado.\\
+Cabos e vias & Lista De--Para de sete colunas, também em XLSX: 21 cabos, 138 vias e 46 reservas com a condição de cada extremidade.\\
+Caixas e bornes do PPC~2 & Seção~\ref{sec:caixas}: CJ-T1/CJ-T2/CD-U1 e X201--X204; 84 terminais alocados. Compatibilização com alimentadores pendente.\\
+Pontes e conexões internas & Seção~\ref{sec:caixas}: XT, XE/XS, N1/N2, ensaio e DJ1/DJ2; todas as ligações internas permanecem propostas a validar.\\
+Aterramento e blindagem & Seção~\ref{sec:caixas}: PE independente, referência única por secundário, tratamento de BL e validação com IEDs/equipotencialização.\\
+Interfaces e pendências & Seções~\ref{sec:auxiliares} e \ref{sec:pendencias}: premissa Siemens, QDCC/QDCA, placas, relações, IEDs, proteções e coordenação de identificadores.\\\bottomrule
+\end{tabularx}\end{table}
+
+\textbf{Registro de compatibilização: PENDENTE.} Até 14/10/2026 não há confirmação
+do responsável pelos alimentadores quanto às réguas X201--X204, à numeração
+dos bornes e às caixas CJ-T1/CJ-T2/CD-U1. O resultado da conferência e eventuais
+renumerações devem ser registrados antes da consolidação do projeto do grupo.
+O pacote está preparado para integração; o aceite pelos responsáveis permanece
+pendente.
+
+\clearpage
+\section{Conclusão}
+O levantamento organiza o vão de média tensão e suas caixas em 21 cabos de sinais,
+com distribuição individualizada de 138 vias e quatro réguas segregadas no PPC~2.
+O detalhamento dos instrumentos utiliza os bornes apresentados nos funcionais,
+com premissas explícitas para as derivações, o aterramento e os dispositivos das
+caixas. Os códigos de projeto preservam as TAGs disponíveis no unifilar.
+
+As tabelas foram apresentadas em \LaTeX{} e acompanham a planilha
+\nolinkurl{outputs/bornes_13_8kv/DE_PARA_MEU_PROJETO.xlsx}.
+As 46 reservas distinguem SEM CONEXÃO de borne reservado em cada extremidade.
+Os 16 terminais de comando e indicação dos disjuntores foram preenchidos
+conforme o funcional Siemens aplicado ao barramento de 13,8~kV por premissa
+do exercício. As reservas mantêm-se sem função ativa atribuída.
+
+O fechamento executivo depende da validação física da premissa Siemens,
+das premissas de TCs/TPs e das definições dos IEDs, proteções e serviços auxiliares.
+O levantamento complementar de abertura 2, proteção e demais sinais do
+funcional permanece necessário para o pacote completo.
+A compatibilização de réguas, bornes e caixas com o responsável pelos
+alimentadores permanece \textbf{PENDENTE}. O multifilar completo está fora do
+escopo individual; o pacote de integração oferece ao colega os dados e as
+pendências necessários, mantendo os três esquemas existentes apenas como apoio
+opcional.
+
+\begin{thebibliography}{9}
+\addcontentsline{toc}{section}{Referências}
+\bibitem{enunciado} SILVEIRA, Lucas. \textit{Trabalho Complementar 1 -- Supervisão e Controle de SEP}. 03 set. 2026. Arquivo fornecido: \nolinkurl{Material/1-descricao-do-trabalho.pdf}, 4 p.
+\bibitem{funcionais} \textit{Esquemas funcionais dos equipamentos de campo de 69/13,8 kV}. Conjunto de desenhos de fabricantes. Arquivo fornecido: \nolinkurl{Material/2-funcionais-eq-campo-69-13_8.pdf}, 13 p. Especialmente pp. 4--8 e 12--13.
+\bibitem{unifilar} \textit{Subestação Campus do Pici -- Diagrama unifilar de proteção e medição}. Arquivo fornecido: \nolinkurl{Material/3-Diagrama-UNIFILAR-SE-UFC.pdf}, 1 p.
+\bibitem{ctseguro} SCHNEIDER ELECTRIC. \textit{What are Current Transformer (CT) shorting blocks used for?} FAQ FA125574. Atualização: 07 out. 2024. Disponível em: \url{https://www.se.com/us/en/faqs/FA125574/}. Acesso em: 13 out. 2026. Apoio ao critério de curto antes do seccionamento.
+\bibitem{tpseguro} ABB. \textit{TJR-25 -- Instructions for installation, use and maintenance}. Documento 1VLM000678, p. 4. \href{https://library.e.abb.com/public/e6e0d227ad6c4a3494ee5ea1457fda40/Instruction\%20TJR-25\%201VLM000678\%20Rev.-\%2C\%20en.pdf}{Biblioteca técnica ABB}. Acesso em: 13 out. 2026. Referência complementar ao princípio de não curto-circuitar secundários de TP; não usada para atribuir características ao TP do projeto.
+\end{thebibliography}
+\end{document}

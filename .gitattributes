@@ -1,0 +1,2 @@
+# Preserva os bytes dos PDFs e evita diffs de conteúdo binário.
+*.pdf binary

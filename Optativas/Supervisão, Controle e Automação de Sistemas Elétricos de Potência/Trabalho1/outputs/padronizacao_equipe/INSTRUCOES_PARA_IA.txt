@@ -1,0 +1,106 @@
+PADRONIZAÇÃO DA TABELA DE-PARA DA EQUIPE
+
+COMO USAR
+Anexe à IA o arquivo DEPARAT1.xlsx, a planilha da sua parte e os documentos técnicos correspondentes. Copie o texto abaixo e preencha os dois campos iniciais.
+
+----- INÍCIO DO TEXTO PARA ENVIAR À IA -----
+
+Minha parte do trabalho: [INFORMAR O VÃO OU SUBSISTEMA].
+Arquivo que deve ser padronizado: [NOME DO ARQUIVO DA MINHA PARTE].
+
+Padronize minha tabela DE-PARA usando o arquivo DEPARAT1.xlsx como referência de apresentação, organização e grafia dos equipamentos compartilhados. Entregue uma nova planilha .xlsx, com células legíveis, simples e pronta para ser reunida às demais partes da equipe. Preserve o arquivo original.
+
+1. ESTRUTURA DA TABELA
+
+Siga a disposição da planilha de referência: título simples do vão em B1, títulos das colunas na linha 6 e registros a partir da linha 7. Use as seguintes colunas, nesta ordem e com estes nomes:
+
+B — Equipamento DE
+C — Terminal do Equipamento DE
+D — Codificação do Cabo
+E — Via do Cabo
+F — Equipamento PARA
+G — Terminal do Equipamento PARA
+H — Evento de Ligação
+
+Cada linha representa uma via de um cabo. Agrupe as vias do mesmo cabo em sequência e mantenha a numeração própria de cada cabo. Adapte a quantidade de linhas à minha parte; não copie a quantidade de linhas, cabos ou vias do modelo.
+
+Na coluna B, mescle verticalmente somente os blocos consecutivos pertencentes ao mesmo equipamento de origem, como no modelo. Na coluna D, mescle somente as linhas de um mesmo cabo. Use texto girado em 90 graus nessas células, conforme a referência. Preserve os dados antes de mesclar. Nas demais colunas, mantenha cada via individualizada; repita o equipamento PARA em cada linha, como no modelo.
+
+2. APARÊNCIA
+
+Use fundo branco, textos pretos, alinhamento centralizado e quebra de texto. Reproduza as bordas finas e a separação dos blocos da referência, sem acrescentar cores, faixas alternadas, filtros decorativos, gráficos, capas ou painéis de resumo.
+
+Copie os estilos das células equivalentes do modelo: título Arial 14; títulos das colunas Aptos Narrow 11 em negrito; corpo em Arial, mantendo o tamanho do modelo. Ajuste somente as larguras e alturas necessárias para que nenhum texto fique cortado ou sobreposto. Não reduza a fonte para esconder problemas de espaço. Preserve a orientação vertical das colunas B e D nos blocos de dados.
+
+Mantenha uma tabela DE-PARA contínua para minha parte. Não crie uma aba por equipamento. Caso inclua a legenda de TAGs, siga o modelo lateral em K:L, com os títulos “TAG” e “Nome / identificação”; explique somente as identificações pertinentes à minha parte e às suas interfaces.
+
+3. EQUIPAMENTOS E TAGS
+
+O mesmo equipamento físico deve ter a mesma grafia em todas as linhas e nas tabelas de todos os integrantes. Nas colunas de equipamento, use a TAG; deixe o nome completo para a legenda.
+
+A grafia do painel na referência é “PPC 2”, com espaço. Quando representarem esse mesmo painel, normalize “PPC2”, “PPC-2” e “ppc 2” para “PPC 2”. Não transforme PPC 1 ou qualquer outro painel em PPC 2. Para outros equipamentos, normalize variantes apenas quando os documentos confirmarem que se trata do mesmo equipamento.
+
+Referência de nomes compartilhados:
+
+PPC 2 — Painel de proteção e controle do barramento de 13,8 kV e das interfaces dos alimentadores.
+11T1 — Disjuntor de média tensão do ramo do transformador T1.
+11T2 — Disjuntor de média tensão do ramo do transformador T2.
+TC-11T1-A / TC-11T1-B / TC-11T1-C — TCs das fases A, B e C associados a 11T1.
+TC-11T2-A / TC-11T2-B / TC-11T2-C — TCs das fases A, B e C associados a 11T2.
+01U1 — Conjunto de TPs do barramento de 13,8 kV.
+01U1-A / 01U1-B / 01U1-C — TPs das fases A, B e C desse conjunto.
+CJ-T1 — Caixa de junção dos TCs associados a 11T1.
+CJ-T2 — Caixa de junção dos TCs associados a 11T2.
+CD-U1 — Caixa de disjuntores dos circuitos secundários dos TPs 01U1.
+QDCC — Quadro de distribuição de corrente contínua dos serviços auxiliares.
+QDCA — Quadro de distribuição de corrente alternada dos serviços auxiliares.
+
+Preserve zeros iniciais, números, hífens e identificação de fase. Não confunda CJ-T2 com uma caixa dos TPs. DJ1 e DJ2 da referência pertencem à CD-U1; não são identificações universais para todos os disjuntores do projeto. Equipamentos de outros vãos devem manter as TAGs próprias dos documentos desses vãos.
+
+4. TERMINAIS E CABOS
+
+Preserve a identificação técnica de cada terminal. Exemplos de escrita da referência: X1:616, X201:1, XT:1c, XT:1p, XE:1, XS:1, DJ1:13, 1S1 e 2S4. Não retire os sufixos “c” e “p” nem altere os números. Eles fazem parte da identificação dos terminais no modelo.
+
+Separe o equipamento do seu terminal: por exemplo, “PPC 2” em Equipamento PARA e “X201:1” em Terminal do Equipamento PARA.
+
+Na referência, as réguas do PPC 2 estão identificadas assim:
+X201 — Sinais digitais de comando e indicação.
+X202 — Sinais de corrente dos TCs associados a 11T1.
+X203 — Sinais de corrente dos TCs associados a 11T2.
+X204 — Sinais de tensão dos TPs 01U1.
+
+Essas associações descrevem a parte de referência. Não significam que seus bornes estejam disponíveis para outros vãos. Preserve as alocações existentes e sinalize possíveis conflitos de interfaces para compatibilização pela equipe. Não atribua novos números por suposição.
+
+Na coluna D, mantenha o código do cabo e sua especificação na mesma célula, conforme o exemplo “C-D1-D  Cabo blindado 12×1,5 mm²”. Use o código, a blindagem, o número de vias e a seção efetivamente previstos para o meu circuito. Os códigos do modelo pertencem aos circuitos do modelo; não os reutilize para cabos diferentes.
+
+5. EVENTO DE LIGAÇÃO
+
+Use linguagem curta e simples, mantendo a função elétrica correta. Adote, quando aplicáveis:
+
+Comando de abertura
+Comando de fechamento
+Indicação de disjuntor fechado
+Indicação de disjuntor aberto
+Corrente fase A - Medição
+Retorno de corrente fase A - Medição
+Corrente fase A - Proteção
+Retorno de corrente fase A - Proteção
+Tensão fase A - Secundário 1
+Retorno de tensão fase A - Secundário 1
+Indicação de DJ1 fechado
+
+Adapte a fase, o secundário e o equipamento ao circuito real. Preserve distinções entre medição e proteção, corrente e retorno, tensão e retorno, comando e indicação. Nos pares de vias de um mesmo contato ou comando, repita a descrição simples quando isso corresponder ao padrão do modelo. Para funções não presentes na referência, escreva uma descrição igualmente objetiva, sem substituir uma função diferente por um dos exemplos.
+
+6. RESERVAS E DADOS PENDENTES
+
+Siga a escrita das reservas da referência: “5 (reserva)” na coluna Via do Cabo e “-” no Evento de Ligação. Use “-” nos terminais apenas quando não houver conexão prevista. Se já existir um borne destinado à reserva, preserve sua identificação, como “XT:5p (RESERVA)”. Não apague um borne existente para uniformizar a aparência.
+
+Uma informação desconhecida não é uma reserva. Não transforme campos técnicos pendentes em “-” ou em números inventados. Preserve a indicação da pendência e descreva o que falta na resposta que acompanha a entrega.
+
+7. CONFERÊNCIA E ENTREGA
+
+Confira se todos os registros da minha parte foram preservados, se cada via continua associada ao cabo correto, se nenhuma mesclagem ocultou informações e se os textos estão legíveis. Verifique a consistência das TAGs compartilhadas, especialmente “PPC 2”. Informe eventuais conflitos de TAGs, cabos ou terminais sem renumerá-los automaticamente.
+
+Entregue o arquivo [NOME_DA_MINHA_PARTE]_PADRONIZADO.xlsx e uma explicação breve das alterações e pendências encontradas. A tarefa é padronizar a apresentação e as identificações equivalentes; os documentos técnicos da minha parte continuam sendo a referência para as conexões.
+
+----- FIM DO TEXTO PARA ENVIAR À IA -----
