@@ -7,100 +7,60 @@ Os critérios do roteiro \cite{sampaio2026roteiro} foram relacionados às orient
 
 Foram especificados relés SEL-751, com entradas de 5~A, para as funções de sobrecorrente. Na conferência dos limites, da opção de patamar de múltiplo e dos aditivos de tempo foi utilizada a edição de 29/03/2024 do manual \cite{sel2024sel751}. Os ajustes foram apresentados como proposta de estudo, sem atribuição de implantação ou ensaio. As novas relações de alta tensão atenderam aos três critérios calculados, tendo sido mantida a necessidade de confirmar as características dos novos equipamentos.
 
-\subsection{Cálculo dos ajuste das proteções de sobrecorrente}
+\subsection{Cálculo dos ajustes das proteções de sobrecorrente}
 
-\textbf{a) Bases de cálculo, curvas e margens}
+\textbf{a) Roteiro de cálculo}
 
-O procedimento de ajuste foi organizado em etapas: determinação da relação do TC, cálculo do TAP secundário, reconversão para a corrente primária de partida, determinação do múltiplo de falta, seleção da curva e cálculo do dial. A denominação TAP foi utilizada para a corrente secundária de partida ajustada no relé, em ampères; não foi empregada para designar a relação do TC. Os valores calculados foram distinguidos dos ajustes efetivamente adotados, cujos passos disponíveis e condições de coordenação foram considerados na escolha.
+Os ajustes foram calculados pelo roteiro de \cite{cysne2026protecao}, aplicado aos dados do Pici. Cada função temporizada foi ajustada em seis passos, da proteção mais próxima da carga para a mais próxima da fonte:
 
-As relações utilizadas na conversão foram explicitadas na Equação~\eqref{eq:oc_rtcs_memoria}, a partir das correntes nominais primária e secundária dos TCs.
+\begin{enumerate}
+    \item \textbf{Corrente de partida} ($I_{\mathrm{pickup}}$): definida pelo critério de carga de cada vão.
+    \item \textbf{Curva}: IEC muito inversa (C2), com $k=13{,}5$ e $\alpha=1$, conforme a Equação~\eqref{eq:oc_tempo}.
+    \item \textbf{Múltiplo}: relação entre a corrente de falta e a de partida, limitada a 30 no SEL-751, conforme a Equação~\eqref{eq:oc_multiplo}.
+    \item \textbf{Dial}: obtido do tempo desejado pela Equação~\eqref{eq:oc_dial} e arredondado para cima no passo de 0,01.
+    \item \textbf{Conferência}: o tempo foi recalculado pela Equação~\eqref{eq:oc_tempo} com o dial adotado.
+    \item \textbf{Próximo nível}: o tempo desejado a montante foi o tempo a jusante somado ao intervalo de coordenação de 0,40~s do roteiro \cite{sampaio2026roteiro}, conforme a Equação~\eqref{eq:oc_margem}.
+\end{enumerate}
 
 \begin{equation}
-    \begin{aligned}
-        RTC_{\mathrm{entrada}}&=\frac{1.200}{5}=240,&
-        RTC_{\mathrm{AT}}&=\frac{800}{5}=160,\\
-        RTC_{\mathrm{geral}}&=\frac{400}{5}=80,&
-        RTC_{\mathrm{alim/neutro}}&=\frac{200}{5}=40.
-    \end{aligned}
-    \label{eq:oc_rtcs_memoria}
+    t=\mathrm{TMS}\cdot\frac{13{,}5}{M-1}+t_a
+    \label{eq:oc_tempo}
 \end{equation}
 
-As correntes nominais foram referidas à potência ONAF de 6,25~MVA, conforme a Equação~\eqref{eq:oc_nominais}. A utilização dessa potência não foi tomada como comprovação da disponibilidade permanente da ventilação forçada ou da capacidade de sobrecarga do equipamento.
+\begin{equation}
+    M=\frac{I_{\mathrm{cc}}}{I_{\mathrm{pickup}}},\qquad M\leq30
+    \label{eq:oc_multiplo}
+\end{equation}
+
+\begin{equation}
+    \mathrm{TMS}=\frac{(t_{\mathrm{desejado}}-t_a)\,(M-1)}{13{,}5}
+    \label{eq:oc_dial}
+\end{equation}
+
+\begin{equation}
+    t_{\mathrm{desejado,montante}}=t_{\mathrm{jusante}}+0{,}40~\mathrm{s}
+    \label{eq:oc_margem}
+\end{equation}
+
+O termo $t_a$ é um tempo fixo opcional do relé (aditivo), na faixa de 0 a 1~s \cite{sel2024sel751}. Ele foi usado apenas quando duas curvas caíram no mesmo patamar de múltiplo máximo, situação em que somente o dial não as separaria. Para $M\leq1$, não há partida da função.
+
+Os ajustes do relé foram inseridos em ampères secundários. A conversão foi feita no final de cada cálculo, dividindo a corrente primária pela relação do TC, e o valor primário efetivo foi recalculado a partir do ajuste secundário arredondado no passo de 0,01~A. As relações dos TCs e as correntes nominais na potência ONAF de 6,25~MVA estão na Equação~\eqref{eq:oc_nominais}. O uso dessa potência não foi tomado como comprovação da capacidade de sobrecarga do equipamento.
 
 \begin{equation}
     \begin{aligned}
-        I_{\mathrm{n,AT}}&=\frac{6{,}25\cdot10^6}{\sqrt{3}\cdot69\cdot10^3}
-        \approx52{,}3~\mathrm{A},\\
-        I_{\mathrm{n,MT}}&=\frac{6{,}25\cdot10^6}{\sqrt{3}\cdot13{,}8\cdot10^3}
-        \approx261{,}5~\mathrm{A},\qquad RTT=\frac{69}{13{,}8}=5.
+        RTC_{\mathrm{12L1}}&=240,\quad RTC_{\mathrm{12T}}=160,\quad RTC_{\mathrm{11T}}=80,\quad RTC_{\mathrm{21L}}=RTC_{\mathrm{neutro}}=40,\\
+        I_{\mathrm{n,AT}}&=\frac{6{,}25\cdot10^6}{\sqrt{3}\cdot69\cdot10^3}=52{,}3~\mathrm{A},\qquad
+        I_{\mathrm{n,MT}}=\frac{6{,}25\cdot10^6}{\sqrt{3}\cdot13{,}8\cdot10^3}=261{,}5~\mathrm{A},\qquad
+        RTT=\frac{69}{13{,}8}=5.
     \end{aligned}
     \label{eq:oc_nominais}
 \end{equation}
 
-Foram diferenciadas a corrente secundária ajustada no relé e a corrente primária de partida, conforme a Equação~\eqref{eq:oc_pickup}. O fator de carga foi representado por $k_c$, sem confusão com o fator de sobrecorrente dos TCs.
-
-\begin{equation}
-    I_{\mathrm{aj},51}=\frac{k_cI_{\mathrm{carga}}}{RTC},
-    \qquad
-    I_{\mathrm{p},51}=RTC\,I_{\mathrm{aj},51}^{\mathrm{adotado}}.
-    \label{eq:oc_pickup}
-\end{equation}
-
-Na notação de TAP, a Equação~\eqref{eq:oc_pickup} foi escrita como $\mathrm{TAP}_{51,\mathrm{calc}}=k_cI_{\mathrm{carga}}/RTC$, $\mathrm{TAP}_{51,\mathrm{adot}}=I_{\mathrm{aj},51}^{\mathrm{adotado}}$ e $I_{\mathrm{p},51}=RTC\,\mathrm{TAP}_{51,\mathrm{adot}}$. O fator $k_c$ foi aplicado à carga, enquanto o fator de sobrecorrente $FS=20$ permaneceu restrito ao dimensionamento do TC. Para as funções residuais, o TAP foi obtido da corrente residual de referência, sem aplicação automática do fator de carga da função de fase.
-
-Foi selecionada a curva C2, IEC muito inversa, com $\alpha=1$ e $\beta=13{,}5$, em conformidade com a prioridade dos slides \cite[pp.~15--19]{cysne2026protecao}. Para os SEL-751 locais, foi considerada a opção de limitação da característica em $M_{\max}=30$. O múltiplo efetivo foi definido pela Equação~\eqref{eq:oc_multiplo}.
-
-\begin{equation}
-    M=\frac{I_{\mathrm{falta}}}{I_{\mathrm{p}}},
-    \qquad M_{\mathrm{ef}}=\min(M,30),\qquad M>1.
-    \label{eq:oc_multiplo}
-\end{equation}
-
-Foi conferida a equivalência entre o cálculo do múltiplo com grandezas primárias e secundárias, conforme a Equação~\eqref{eq:oc_multiplo_secundario}. Dessa forma, não foi dividida uma corrente primária diretamente pelo TAP secundário.
-
-\begin{equation}
-    i_{\mathrm{cc}}=\frac{I_{\mathrm{cc}}}{RTC},
-    \qquad
-    M=\frac{i_{\mathrm{cc}}}{\mathrm{TAP}_{\mathrm{adot}}}
-     =\frac{I_{\mathrm{cc}}}{RTC\,\mathrm{TAP}_{\mathrm{adot}}}
-     =\frac{I_{\mathrm{cc}}}{I_{\mathrm{p}}}.
-    \label{eq:oc_multiplo_secundario}
-\end{equation}
-
-A expressão da curva foi acrescida do aditivo constante $t_a$, disponível na parametrização do relé, conforme a Equação~\eqref{eq:oc_tempo}. Esse recurso foi utilizado para manter a gradação também no patamar de múltiplo máximo. Todos os aditivos permaneceram na faixa de 0 a 1~s do equipamento \cite{sel2024sel751}.
-
-\begin{equation}
-    t_{51}=\frac{13{,}5\,DT}{M_{\mathrm{ef}}-1}+t_a,
-    \qquad
-    DT=\frac{(t_{51}-t_a)(M_{\mathrm{ef}}-1)}{13{,}5}.
-    \label{eq:oc_tempo}
-\end{equation}
-
-Para explicitar a determinação do dial, foi utilizada também a forma geral da característica inversa, dada pela Equação~\eqref{eq:oc_dial_geral}. O tempo $T_{\mathrm{req}}$ representou o alvo ou o limite mínimo requerido no ponto de referência, já considerado o aditivo $t_a$.
-
-\begin{equation}
-    t_{51}=\frac{\beta\,DT}{M_{\mathrm{ef}}^{\alpha}-1}+t_a,
-    \qquad
-    DT_{\min}=\frac{(T_{\mathrm{req}}-t_a)
-        (M_{\mathrm{ef}}^{\alpha}-1)}{\beta}.
-    \label{eq:oc_dial_geral}
-\end{equation}
-
-Para a curva C2, foram substituídos $\alpha=1$ e $\beta=13{,}5$, tanto em 51 quanto em 51N. A determinação do dial foi limitada a $M>1$ e a $T_{\mathrm{req}}>t_a$. Para $M\leq1$, foi registrada ausência de partida, sem utilização de dial negativo ou de tempo inverso fora do domínio da função. Após a escolha do dial, o tempo foi recalculado e a margem foi conferida no intervalo comum de partida das proteções, além do ponto de curto máximo.
-
-Para correntes inferiores ou iguais ao \textit{pick-up}, não foi atribuída atuação à função. O patamar da curva não foi confundido com saturação magnética do TC. Os alvos iniciais de aproximadamente 0,20~s para fase e 0,30~s para neutro dos alimentadores foram retirados dos slides. Entre as proteções temporizadas locais foi mantida a margem de 0,40~s do roteiro, mais conservadora que os degraus indicados na apresentação. A condição de coordenação foi dada pela Equação~\eqref{eq:oc_margem}.
-
-\begin{equation}
-    \Delta t(I)=t_{\mathrm{montante}}(I)-t_{\mathrm{jusante}}(I)
-    \geq0{,}40~\mathrm{s}.
-    \label{eq:oc_margem}
-\end{equation}
-
-Foi mantida a referência de 0,20~s para esquemas de seletividade lógica quando habilitados, sem somá-la automaticamente ao atraso de falha de disjuntor. Os tempos de abertura e de processamento foram considerados separadamente dos atrasos intencionais.
+Os alvos iniciais de 0,20~s para fase e 0,30~s para neutro dos alimentadores foram retirados dos slides. A margem de 0,40~s do roteiro é mais conservadora que os degraus de 0,20 a 0,35~s indicados na apresentação. Os tempos de abertura e de processamento foram tratados separadamente dos atrasos intencionais, na Subseção de diagrama de tempo.
 
 \textbf{b) Proteção de referência da concessionária}
 
-Foi utilizada a OAP nº 046/2018 do SEL-411L associado ao 12L9 da SED Pici II, de 23/03/2018 \cite{enel2018oap}. A menção a Maguary no roteiro não foi utilizada para atribuir os ajustes ao terminal oposto. Os valores foram reunidos na Tabela~\ref{tab:oc_oap_pci}.
+Foi utilizada a OAP nº 046/2018 do SEL-411L associado ao 12L9 da SED Pici II, de 23/03/2018 \cite{enel2018oap}. Os valores foram reunidos na Tabela~\ref{tab:oc_oap_pci}.
 
 \begin{table}[htbp]
     \centering
@@ -119,137 +79,119 @@ Foi utilizada a OAP nº 046/2018 do SEL-411L associado ao 12L9 da SED Pici II, d
     {\small Fonte: adaptado de \cite{enel2018oap}.}
 \end{table}
 
-Para a falta trifásica na barra de 69~kV, foi utilizada a contribuição de Pici de 15.179,3~A no relé 12L9 e a corrente total de 15.683,2~A nos relés locais. Pela característica C2 da OAP, foi obtido:
+Para a falta trifásica na barra de 69~kV, com contribuição de Pici de 15.179,3~A:
 
 \begin{equation}
-    t_{\mathrm{PCI},51}
-    =\frac{13{,}5\cdot0{,}12}{15.179{,}3/1.161{,}6-1}
-    =0{,}134~\mathrm{s}.
+    M=\frac{15.179{,}3}{1.161{,}6}=13{,}07
+    \quad\Rightarrow\quad
+    t_{\mathrm{PCI},51}=0{,}12\cdot\frac{13{,}5}{13{,}07-1}=0{,}134~\mathrm{s}.
     \label{eq:oc_tempo_pci}
 \end{equation}
 
-Para a falta trifásica em 13,8~kV, a contribuição de Pici de 558~A permaneceu abaixo de 1.161,6~A; não houve partida de 51 nesse evento. A proteção de distância existente na OAP, com primeira zona sem atraso intencional e segunda zona de 34 ciclos, foi registrada como restrição adicional, sem substituição de seu comportamento por uma curva de sobrecorrente.
+Para a falta trifásica em 13,8~kV, a contribuição de Pici de 558~A ficou abaixo de 1.161,6~A, e o 12L9 não parte. A proteção de distância da OAP, com primeira zona instantânea e segunda zona de 34 ciclos, foi registrada como restrição adicional.
 
-\textbf{c) Ajustes temporizados de fase}
+\textbf{c) Função 51 — fase}
 
-Foi mantido o critério de carga permitido no roteiro para os três alimentadores, tomando-se a maior corrente registrada, de 100~A, e $k_c=1{,}25$. O cálculo e o arredondamento foram efetuados pela Equação~\eqref{eq:oc_51_alim}.
+\textit{Alimentadores 21L1 a 21L3.} O pickup foi definido pela maior carga registrada (100~A) com fator de 1,25, e o tempo desejado foi de 0,20~s para a falta trifásica junto à saída (2.882,7~A):
 
 \begin{equation}
-    I_{\mathrm{aj},51,\mathrm{alim}}=\frac{1{,}25\cdot100}{40}=3{,}125~\mathrm{A}
-    \ \Rightarrow\ 3{,}13~\mathrm{A},
-    \qquad I_{\mathrm{p},51,\mathrm{alim}}=125{,}2~\mathrm{A}.
+    \begin{aligned}
+        I_{\mathrm{pickup}}&=1{,}25\times100=125~\mathrm{A}
+            \ \Rightarrow\ \tfrac{125}{40}=3{,}13~\mathrm{A~sec.}
+            \ \Rightarrow\ 125{,}2~\mathrm{A},\\
+        M&=\frac{2.882{,}7}{125{,}2}=23{,}02,\\
+        \mathrm{TMS}&=\frac{0{,}20\,(23{,}02-1)}{13{,}5}=0{,}326
+            \ \Rightarrow\ \mathbf{0{,}33},\\
+        t&=0{,}33\cdot\frac{13{,}5}{23{,}02-1}=\mathbf{0{,}202~s}.
+    \end{aligned}
     \label{eq:oc_51_alim}
 \end{equation}
 
-A ampacidade de 266~A foi verificada como limite do condutor. Não foi adotada diretamente como \textit{pick-up}, pois o TC de derivação 200-5 apresentou limite permanente $1{,}2\cdot200=240$~A. O uso de ajuste próximo de 266~A teria requerido a revisão da derivação do TC e de todos os ajustes secundários. A transferência de 195,6~A para uma única saída permaneceu termicamente possível para o TC, mas exigiu grupo de ajustes distinto do grupo normal de 125,2~A.
+A ampacidade de 266~A do condutor não foi adotada como pickup, pois o limite permanente do TC 200-5 é de $1{,}2\cdot200=240$~A. A transferência de 195,6~A para uma única saída exigiria um grupo de ajustes distinto do grupo normal de 125,2~A.
 
-Nos gerais, foi mantido $k_c=1{,}25$ sobre a corrente ONAF, com ajuste calculado de 4,086~A e adoção de 4,10~A secundários. Não foi aplicado o percentual de sobrecarga do transformador do exemplo dos slides como dado de placa do Pici, cujo ano de fabricação não foi fornecido. Os ajustes de fase foram definidos por:
-
-\begin{equation}
-    \begin{aligned}
-        \mathrm{TAP}_{51,\mathrm{geral,calc}}
-            &=\frac{1{,}25\cdot261{,}5}{80}
-            =4{,}08594~\mathrm{A}
-            \ \Rightarrow\ \mathrm{TAP}_{51,\mathrm{geral,adot}}=4{,}10~\mathrm{A},\\
-        I_{\mathrm{p},51,\mathrm{geral}}&=4{,}10\cdot80=328~\mathrm{A},\\
-        \mathrm{TAP}_{51,\mathrm{AT,calc}}
-            &=\frac{1{,}25\cdot52{,}3}{160}
-            =0{,}40859~\mathrm{A}
-            \ \Rightarrow\ \mathrm{TAP}_{51,\mathrm{AT,adot}}=0{,}41~\mathrm{A},\\
-        I_{\mathrm{p},51,\mathrm{AT}}&=0{,}41\cdot160=65{,}6~\mathrm{A},\\
-        \mathrm{TAP}_{51,\mathrm{entrada,calc}}
-            &=\frac{1{,}50\cdot52{,}3}{240}
-            =0{,}32688~\mathrm{A}
-            \ \Rightarrow\ \mathrm{TAP}_{51,\mathrm{entrada,adot}}=0{,}32~\mathrm{A},\\
-        I_{\mathrm{p},51,\mathrm{entrada}}&=0{,}32\cdot240=76{,}8~\mathrm{A}.
-    \end{aligned}
-    \label{eq:oc_51_outros}
-\end{equation}
-
-Após a alteração das relações, foram adotados passos secundários de 0,01~A: 0,41~A no primário, equivalente a 65,6~A, e 0,32~A na entrada, equivalente a 76,8~A. Esses valores corresponderam a aproximadamente 1,25 e 1,47 vezes a corrente ONAF. Na entrada, o arredondamento para baixo evitou ultrapassar o limite de referência de $1{,}5I_{\mathrm{n,AT}}$. Sua adoção não substituiu a verificação da curva térmica do transformador. Foram selecionados os dials 0,33, 0,38, 0,64 e 0,64 para alimentadores, geral, primário e entrada, com aditivo de 0,45~s somente na entrada.
-
-O TAP de 4,10~A do geral foi mantido como escolha de ajuste acima do valor calculado, sem ter sido apresentado como o menor arredondamento possível no passo de 0,01~A. Nos alimentadores foi utilizado o mesmo grupo normal de 125,2~A para as três saídas, conforme o critério de maior carga adotado, e nos dois transformadores foram previstos ajustes iguais, aplicados à unidade em serviço.
-
-Para uma falta imediatamente após o TC de saída, foi utilizada como limite a corrente trifásica de barra de 2.882,7~A. Não foi atribuída corrente passante ao alimentador para uma falta na própria barra, a montante de seu TC. O exemplo de cálculo foi apresentado na Equação~\eqref{eq:oc_tempo_alim}.
+\textit{Gerais de média tensão 11T1 e 11T2.} O pickup foi definido por 1,25 vez a corrente ONAF em 13,8~kV:
 
 \begin{equation}
     \begin{aligned}
-        i_{\mathrm{cc,alim}}&=\frac{2.882{,}7}{40}=72{,}0675~\mathrm{A},\\
-        M_{\mathrm{alim}}&=\frac{72{,}0675}{3{,}13}
-            =\frac{2.882{,}7}{125{,}2}=23{,}02476<30,\\
-        t_{51,\mathrm{alim}}&=\frac{13{,}5\cdot0{,}33}{23{,}02476-1}
-            =0{,}202272~\mathrm{s}\approx0{,}202~\mathrm{s}.
+        I_{\mathrm{pickup}}&=1{,}25\times261{,}5=326{,}9~\mathrm{A}
+            \ \Rightarrow\ 4{,}10~\mathrm{A~sec.}
+            \ \Rightarrow\ 328~\mathrm{A},\\
+        M&=\frac{2.882{,}7}{328}=8{,}79,\\
+        t_{\mathrm{desejado}}&=0{,}202+0{,}40=0{,}602~\mathrm{s},\\
+        \mathrm{TMS}&=\frac{0{,}602\,(8{,}79-1)}{13{,}5}=0{,}347
+            \ \Rightarrow\ \mathbf{0{,}38},\\
+        t&=0{,}38\cdot\frac{13{,}5}{8{,}79-1}=\mathbf{0{,}659~s}.
     \end{aligned}
-    \label{eq:oc_tempo_alim}
+    \label{eq:oc_51_geral}
 \end{equation}
 
-O dial do alimentador foi obtido inicialmente pelo alvo de 0,20~s, conforme a Equação~\eqref{eq:oc_dial_alim_memoria}. A adoção de 0,33 resultou no tempo recalculado da Equação~\eqref{eq:oc_tempo_alim}.
+Foi adotado 0,38, acima do mínimo de 0,35, para dar folga adicional ao degrau.
+
+\textit{Primários dos transformadores 12T1 e 12T2.} O pickup foi definido por 1,25 vez a corrente ONAF em 69~kV:
 
 \begin{equation}
-    DT_{\mathrm{alim,calc}}
-    =\frac{(0{,}20-0)(23{,}02476-1)}{13{,}5}
-    =0{,}32629
-    \quad\Rightarrow\quad DT_{\mathrm{alim,adot}}=0{,}33.
-    \label{eq:oc_dial_alim_memoria}
+    I_{\mathrm{pickup}}=1{,}25\times52{,}3=65{,}4~\mathrm{A}
+    \ \Rightarrow\ \tfrac{65{,}4}{160}=0{,}41~\mathrm{A~sec.}
+    \ \Rightarrow\ 65{,}6~\mathrm{A}.
+    \label{eq:oc_51_at_pickup}
 \end{equation}
 
-Para os níveis a montante, foram calculadas as correntes secundárias e os múltiplos da Equação~\eqref{eq:oc_multiplos_fase_memoria}. Nas entradas de alta tensão foi utilizada a corrente trifásica refletida fornecida de 576,5~A, com o arredondamento já adotado na Tabela~\ref{tab:oc_tempos_fase}.
+O dial desse nível foi verificado para dois tipos de falta na média tensão, pois a ligação Dyn1 altera a corrente vista no primário conforme o tipo de falta.
 
-\begin{equation}
-    \begin{aligned}
-        i_{\mathrm{cc,geral}}&=\frac{2.882{,}7}{80}=36{,}03375~\mathrm{A},
-        &M_{\mathrm{geral}}&=\frac{36{,}03375}{4{,}10}=8{,}78872,\\
-        i_{\mathrm{cc,AT}}&=\frac{576{,}5}{160}=3{,}603125~\mathrm{A},
-        &M_{\mathrm{AT}}&=\frac{3{,}603125}{0{,}41}=8{,}78811,\\
-        i_{\mathrm{cc,entrada}}&=\frac{576{,}5}{240}=2{,}402083~\mathrm{A},
-        &M_{\mathrm{entrada}}&=\frac{2{,}402083}{0{,}32}=7{,}50651.
-    \end{aligned}
-    \label{eq:oc_multiplos_fase_memoria}
-\end{equation}
+Na \emph{falta trifásica na MT}, a corrente refletida em 69~kV é $2.882{,}7/5=576{,}5$~A. Assim, $M=576{,}5/65{,}6=8{,}79$ e $t_{\mathrm{desejado}}=0{,}659+0{,}40=1{,}059$~s, o que resultaria em $\mathrm{TMS}=0{,}611$.
 
-Todos esses múltiplos ficaram abaixo de 30. Para o geral, o tempo mínimo requerido no ponto de referência foi obtido somando-se 0,40~s ao tempo recalculado do alimentador. A escolha do dial e a verificação do tempo foram explicitadas na Equação~\eqref{eq:oc_dial_geral_memoria}.
+Na \emph{falta bifásica na MT}, a corrente no secundário vale $0{,}866\times2.882{,}7=2.496$~A, e o geral atua mais lentamente que na trifásica. No primário em triângulo, uma das fases conduz $2/\sqrt{3}$ vezes a corrente refletida, de modo que o 12T1 vê o mesmo múltiplo da falta trifásica:
 
 \begin{equation}
     \begin{aligned}
-        T_{\mathrm{req,geral}}&=0{,}202272+0{,}40=0{,}602272~\mathrm{s},\\
-        DT_{\mathrm{geral,min}}&=\frac{0{,}602272(8{,}78872-1)}{13{,}5}
-            =0{,}34748
-            \ \Rightarrow\ DT_{\mathrm{geral,adot}}=0{,}38,\\
-        t_{51,\mathrm{geral}}&=\frac{13{,}5\cdot0{,}38}{8{,}78872-1}
-            =0{,}658645~\mathrm{s}\approx0{,}659~\mathrm{s}.
+        M_{\mathrm{11T}}&=\frac{2.496}{328}=7{,}61
+            \ \Rightarrow\ t_{\mathrm{11T}}=0{,}38\cdot\frac{13{,}5}{7{,}61-1}=0{,}776~\mathrm{s},\\
+        I_{\mathrm{12T}}&=\frac{2}{\sqrt{3}}\cdot\frac{2.496}{5}=576{,}5~\mathrm{A}
+            \ \Rightarrow\ M_{\mathrm{12T}}=8{,}79.
     \end{aligned}
-    \label{eq:oc_dial_geral_memoria}
+    \label{eq:oc_bifasica_dyn}
 \end{equation}
 
-Para o primário do transformador, foi repetida a gradação a partir do tempo efetivo do geral, conforme a Equação~\eqref{eq:oc_dial_at_memoria}.
+A falta bifásica, portanto, reduz a separação entre os dois níveis e foi o caso que definiu o dial:
 
 \begin{equation}
     \begin{aligned}
-        T_{\mathrm{req,AT}}&=0{,}658645+0{,}40=1{,}058645~\mathrm{s},\\
-        DT_{\mathrm{AT,min}}&=\frac{1{,}058645(8{,}78811-1)}{13{,}5}
-            =0{,}61073
-            \ \Rightarrow\ DT_{\mathrm{AT,adot}}=0{,}64,\\
-        t_{51,\mathrm{AT}}&=\frac{13{,}5\cdot0{,}64}{8{,}78811-1}
-            =1{,}109383~\mathrm{s}\approx1{,}109~\mathrm{s}.
+        t_{\mathrm{desejado}}&=0{,}776+0{,}40=1{,}176~\mathrm{s},\\
+        \mathrm{TMS}&=\frac{1{,}176\,(8{,}79-1)}{13{,}5}=0{,}678
+            \ \Rightarrow\ \mathbf{0{,}68},\\
+        t&=0{,}68\cdot\frac{13{,}5}{8{,}79-1}=\mathbf{1{,}179~s}.
     \end{aligned}
-    \label{eq:oc_dial_at_memoria}
+    \label{eq:oc_51_at}
 \end{equation}
 
-Na entrada, o aditivo de 0,45~s foi descontado do tempo requerido antes da determinação do dial mínimo. Foi mantido o mesmo dial do primário, acima do mínimo calculado nesse ponto, para preservar a escolha conjunta de dial e aditivo ao longo da característica e no setor de alta tensão.
+As margens em relação ao geral foram de 0,40~s na falta bifásica e de 0,52~s na trifásica.
+
+\textit{Entrada de linha 12L1.} O pickup foi limitado a 1,5 vez a corrente ONAF em 69~kV, com arredondamento para baixo para não ultrapassar esse limite. Foi usado aditivo de 0,45~s para manter a separação também no patamar de múltiplo máximo:
 
 \begin{equation}
     \begin{aligned}
-        T_{\mathrm{req,entrada}}&=1{,}109383+0{,}40=1{,}509383~\mathrm{s},\\
-        DT_{\mathrm{entrada,min}}&=\frac{(1{,}509383-0{,}45)(7{,}50651-1)}{13{,}5}
-            =0{,}51058
-            \ \Rightarrow\ DT_{\mathrm{entrada,adot}}=0{,}64,\\
-        t_{51,\mathrm{entrada}}&=\frac{13{,}5\cdot0{,}64}{7{,}50651-1}+0{,}45
-            =1{,}777901~\mathrm{s}\approx1{,}778~\mathrm{s}.
+        I_{\mathrm{pickup}}&=1{,}5\times52{,}3=78{,}5~\mathrm{A}
+            \ \Rightarrow\ 0{,}32~\mathrm{A~sec.}
+            \ \Rightarrow\ 76{,}8~\mathrm{A},\\
+        M&=\frac{576{,}5}{76{,}8}=7{,}51,\\
+        t_{\mathrm{desejado}}&=1{,}179+0{,}40=1{,}579~\mathrm{s},\\
+        \mathrm{TMS}&=\frac{(1{,}579-0{,}45)(7{,}51-1)}{13{,}5}=0{,}544
+            \ \Rightarrow\ \mathbf{0{,}64},\\
+        t&=0{,}64\cdot\frac{13{,}5}{7{,}51-1}+0{,}45=\mathbf{1{,}778~s}.
     \end{aligned}
-    \label{eq:oc_dial_entrada_memoria}
+    \label{eq:oc_51_entrada}
 \end{equation}
 
-Os valores mínimos de dial das Equações~\eqref{eq:oc_dial_geral_memoria} a~\eqref{eq:oc_dial_entrada_memoria} corresponderam somente ao ponto de referência. Os dials adotados não foram apresentados como os menores valores possíveis nem como simples arredondamentos desses limites. A escolha final foi conferida pela Equação~\eqref{eq:oc_margem} na faixa comum de atuação, mantendo-se os tempos e ajustes da Tabela~\ref{tab:oc_tempos_fase}.
+O dial de 0,64 foi mantido acima do mínimo para preservar a margem em correntes elevadas. Na falta trifásica na barra de 69~kV (15.683,2~A), os dois relés de alta ficam no patamar $M=30$:
+
+\begin{equation}
+    t_{\mathrm{12T}}=0{,}68\cdot\frac{13{,}5}{29}=0{,}317~\mathrm{s},
+    \qquad
+    t_{\mathrm{12L1}}=0{,}64\cdot\frac{13{,}5}{29}+0{,}45=0{,}748~\mathrm{s},
+    \label{eq:oc_51_patamar_at}
+\end{equation}
+
+com margem de 0,43~s. Os ajustes de fase foram reunidos na Tabela~\ref{tab:oc_tempos_fase}.
 
 \begin{table}[htbp]
     \centering
@@ -262,15 +204,13 @@ Os valores mínimos de dial das Equações~\eqref{eq:oc_dial_geral_memoria} a~\e
         \hline
         21L1, 21L2 e 21L3 & 125,2 & 3,13 & 0,33 & 0,00 & 2.882,7 & 0,202\\
         11T1 e 11T2 & 328,0 & 4,10 & 0,38 & 0,00 & 2.882,7 & 0,659\\
-        12T1 e 12T2 & 65,6 & 0,41 & 0,64 & 0,00 & 576,5 & 1,109\\
+        12T1 e 12T2 & 65,6 & 0,41 & 0,68 & 0,00 & 576,5 & 1,179\\
         12L1 & 76,8 & 0,32 & 0,64 & 0,45 & 576,5 & 1,778\\
         \hline
     \end{tabular}}
     \par\vspace{2pt}
     {\small Fonte: elaborado pelos autores.}
 \end{table}
-
-Na base de 13,8~kV, os \textit{pick-ups} dos dois últimos níveis foram de 328 e 384~A. No ponto de referência da Tabela~\ref{tab:oc_tempos_fase}, as diferenças entre tempos não arredondados foram de aproximadamente 0,456, 0,451 e 0,669~s entre níveis sucessivos. A verificação das expressões na faixa comum até o curto máximo preservou o requisito de 0,40~s. Para o último par, a utilização de mesmo dial, maior \textit{pick-up} a montante e aditivo de 0,45~s preservou margem mínima de 0,45~s no patamar de múltiplo máximo, inclusive em faltas do setor de 69~kV.
 
 A verificação de sensibilidade ao menor curto bifásico no final do alimentador foi expressa por:
 
@@ -280,234 +220,128 @@ A verificação de sensibilidade ao menor curto bifásico no final do alimentado
     \label{eq:oc_sensibilidade}
 \end{equation}
 
-Como os curtos mínimos nos trechos finais não foram disponibilizados, foi estabelecido o requisito, sem ter sido declarado seu atendimento.
+Como os curtos mínimos nos trechos finais não foram disponibilizados, o requisito foi estabelecido sem ter sido declarado seu atendimento.
 
-\textbf{d) Neutro dos alimentadores, dos transformadores e da entrada}
+\textbf{d) Função 51N — neutro}
 
-Foi adotado 24~A para 51N dos alimentadores, conforme os slides e o roteiro. Para o geral de média tensão e para o neutro do transformador, foi utilizada a referência de 60~A indicada para transformadores. Na entrada de linha foi adotado 120~A, dentro da faixa de 100 a 240~A dos slides. No primário, a referência de 60~A resultou em $60/160=0{,}375$~A secundário; foi adotado 0,38~A, equivalente a 60,8~A, destinado às faltas residuais do próprio setor de alta tensão.
-
-\begin{equation}
-    \begin{aligned}
-        I_{\mathrm{aj},51N,\mathrm{alim}}&=24/40=0{,}60~\mathrm{A},\\
-        I_{\mathrm{aj},51N,\mathrm{geral}}&=60/80=0{,}75~\mathrm{A},\\
-        I_{\mathrm{aj},51G}&=60/40=1{,}50~\mathrm{A},\\
-        I_{\mathrm{aj},51N,\mathrm{AT}}&=0{,}38~\mathrm{A},\quad I_{\mathrm{p},51N,\mathrm{AT}}=60{,}8~\mathrm{A},\\
-        I_{\mathrm{aj},51N,\mathrm{entrada}}&=120/240=0{,}50~\mathrm{A}.
-    \end{aligned}
-    \label{eq:oc_neutro_pickup}
-\end{equation}
-
-Os ajustes secundários da Equação~\eqref{eq:oc_neutro_pickup} corresponderam aos TAPs adotados. A reconversão para o primário e a conferência do arredondamento em alta tensão foram detalhadas na Equação~\eqref{eq:oc_neutro_reconversao}.
+Foram adotadas as correntes de partida de referência de \cite{cysne2026protecao}: 24~A nos alimentadores e 60~A nos gerais e no neutro do transformador (51G). A referência de 60~A substituiu a opção anterior de aproximadamente 30~A nos gerais, com redução de sensibilidade reconhecida. Para a falta fase-terra de 2.918,4~A, todos os múltiplos superaram 30:
 
 \begin{equation}
-    \begin{aligned}
-        I_{\mathrm{p},51N,\mathrm{alim}}&=0{,}60\cdot40=24~\mathrm{A},\\
-        I_{\mathrm{p},51N,\mathrm{geral}}&=0{,}75\cdot80=60~\mathrm{A},\\
-        I_{\mathrm{p},51G}&=1{,}50\cdot40=60~\mathrm{A},\\
-        \mathrm{TAP}_{51N,\mathrm{AT,calc}}&=\frac{60}{160}
-            =0{,}375~\mathrm{A}
-            \ \Rightarrow\ \mathrm{TAP}_{51N,\mathrm{AT,adot}}=0{,}38~\mathrm{A},\\
-        I_{\mathrm{p},51N,\mathrm{AT}}&=0{,}38\cdot160=60{,}8~\mathrm{A},\\
-        I_{\mathrm{p},51N,\mathrm{entrada}}&=0{,}50\cdot240=120~\mathrm{A}.
-    \end{aligned}
-    \label{eq:oc_neutro_reconversao}
-\end{equation}
-
-Para a falta fase-terra de referência em média tensão, os múltiplos foram calculados pela corrente residual, conforme a Equação~\eqref{eq:oc_multiplos_neutro_memoria}. No TC dedicado de neutro foi utilizada a corrente de retorno da mesma falta.
-
-\begin{equation}
-    \begin{aligned}
-        i_{\mathrm{cc},51N,\mathrm{alim}}&=\frac{2.918{,}4}{40}=72{,}96~\mathrm{A},
-        &M_{51N,\mathrm{alim}}&=\frac{72{,}96}{0{,}60}=121{,}60,\\
-        i_{\mathrm{cc},51N,\mathrm{geral}}&=\frac{2.918{,}4}{80}=36{,}48~\mathrm{A},
-        &M_{51N,\mathrm{geral}}&=\frac{36{,}48}{0{,}75}=48{,}64,\\
-        i_{\mathrm{cc},51G}&=\frac{2.918{,}4}{40}=72{,}96~\mathrm{A},
-        &M_{51G}&=\frac{72{,}96}{1{,}50}=48{,}64.
-    \end{aligned}
+    M_{51N,\mathrm{alim}}=\frac{2.918{,}4}{24}=121{,}6,
+    \qquad
+    M_{51N,\mathrm{geral}}=M_{51G}=\frac{2.918{,}4}{60}=48{,}6
+    \quad\Rightarrow\quad M=30.
     \label{eq:oc_multiplos_neutro_memoria}
 \end{equation}
 
-Os três múltiplos ficaram acima de 30, tendo sido utilizado $M_{\mathrm{ef}}=30$ no cálculo de tempo. Para o alimentador, o alvo de 0,30~s resultou no dial da Equação~\eqref{eq:oc_dial_neutro_memoria}.
+Com tempo desejado de 0,30~s no alimentador:
 
 \begin{equation}
-    DT_{51N,\mathrm{alim,calc}}
-    =\frac{(0{,}30-0)(30-1)}{13{,}5}
-    =0{,}64444
-    \quad\Rightarrow\quad DT_{51N,\mathrm{alim,adot}}=0{,}65.
+    \mathrm{TMS}=\frac{0{,}30\,(30-1)}{13{,}5}=0{,}644
+    \ \Rightarrow\ \mathbf{0{,}65},
+    \qquad
+    t=0{,}65\cdot\frac{13{,}5}{29}=0{,}303~\mathrm{s}.
     \label{eq:oc_dial_neutro_memoria}
 \end{equation}
 
-O mesmo dial foi adotado no geral e em 51G, com gradação pelos aditivos. Para explicitar a verificação dessa escolha, foram calculados os limites de dial no patamar pela Equação~\eqref{eq:oc_dials_neutro_montante}, considerando a margem mínima de 0,40~s e os tempos resultantes da Equação~\eqref{eq:oc_neutro_patamar}.
+Como os três elementos operam no mesmo patamar, foi usado o mesmo dial, e a separação foi obtida pelos aditivos de 0,45 e 0,90~s:
 
 \begin{equation}
-    \begin{aligned}
-        T_{\mathrm{req},51N,\mathrm{geral}}&=0{,}302586+0{,}40
-            =0{,}702586~\mathrm{s},\\
-        DT_{51N,\mathrm{geral,min}}&=
-            \frac{(0{,}702586-0{,}45)(30-1)}{13{,}5}
-            =0{,}54259<0{,}65,\\
-        T_{\mathrm{req},51G}&=0{,}752586+0{,}40
-            =1{,}152586~\mathrm{s},\\
-        DT_{51G,\min}&=
-            \frac{(1{,}152586-0{,}90)(30-1)}{13{,}5}
-            =0{,}54259<0{,}65.
-    \end{aligned}
-    \label{eq:oc_dials_neutro_montante}
-\end{equation}
-
-Para 51N dos alimentadores, gerais e 51G, foi adotado o mesmo dial de 0,65, com aditivos de 0,00, 0,45 e 0,90~s. Para a falta fase-terra de 2.918,4~A, todos os múltiplos ultrapassaram 30. Os tempos foram obtidos por:
-
-\begin{equation}
-    \begin{aligned}
-        t_{\mathrm{base},N}&=\frac{13{,}5\cdot0{,}65}{30-1}=0{,}302586~\mathrm{s},\\
-        t_{51N,\mathrm{alim}}&=0{,}303~\mathrm{s},\\
-        t_{51N,\mathrm{geral}}&=0{,}302586+0{,}45=0{,}753~\mathrm{s},\\
-        t_{51G}&=0{,}302586+0{,}90=1{,}203~\mathrm{s}.
-    \end{aligned}
+    t_{51N,\mathrm{alim}}=0{,}303~\mathrm{s},
+    \qquad
+    t_{51N,\mathrm{geral}}=0{,}303+0{,}45=0{,}753~\mathrm{s},
+    \qquad
+    t_{51G}=0{,}303+0{,}90=1{,}203~\mathrm{s}.
     \label{eq:oc_neutro_patamar}
 \end{equation}
 
-As margens foram de 0,45~s. A maior corrente de partida dos gerais não reduziu essa separação na região inversa; entre geral e 51G, a diferença de aditivos manteve a mesma margem em toda a faixa comum de partida.
+As margens foram de 0,45~s em toda a faixa comum de partida. As funções 51N/51NS foram associadas à corrente residual $|I_A+I_B+I_C|$, e 51G ao TC dedicado do neutro. Para 51NS, foi mantido o critério do roteiro de 15~A e 60~s, com ajuste de $15/40=0{,}375\Rightarrow0{,}38$~A secundário (15,2~A primários), condicionado ao histórico de desequilíbrio, não disponibilizado.
 
-A referência de 60~A substituiu a opção anterior de aproximadamente 30~A nos gerais. Foi reconhecida a redução de sensibilidade decorrente dessa escolha; seu atendimento aos curtos mínimos à terra e ao desequilíbrio residual permaneceu dependente de dados da rede. Os valores não foram apresentados como equivalentes aos 24~A dos alimentadores.
-
-Para 51NS, foi mantido o critério do roteiro de 15~A e 60~s, com ajuste secundário arredondado de 0,38~A, correspondente a 15,2~A primários. Sua liberação ficou condicionada ao histórico de desequilíbrio, não disponibilizado. As funções 51N/51NS foram associadas à corrente residual $|I_A+I_B+I_C|$, enquanto 51G foi associada ao TC dedicado do neutro. A correspondência entre essas designações e os elementos internos do SEL-751 foi reservada à parametrização dos canais.
-
-No lado de alta tensão, a corrente de fase refletida da falta externa fase-terra e a corrente residual foram diferenciadas pela Equação~\eqref{eq:oc_terra_delta}.
+No primário em triângulo, a falta fase-terra na MT não produz corrente residual, e a fase mais carregada conduz 337~A:
 
 \begin{equation}
     \begin{aligned}
-        I_{\mathrm{fase,AT}}&=\frac{2.918{,}4}{5\sqrt{3}}\approx337~\mathrm{A},\\
-        (3I_0)_{\mathrm{AT}}&=I_A+I_B+I_C=0
-        \quad\text{na falta externa ideal}.
+        I_{\mathrm{fase,AT}}&=\frac{2.918{,}4}{5\sqrt{3}}=337~\mathrm{A},
+        \qquad (3I_0)_{\mathrm{AT}}=0~\text{(falta externa ideal)},\\
+        M&=\frac{337}{65{,}6}=5{,}14
+        \ \Rightarrow\ t_{51,\mathrm{AT}}=0{,}68\cdot\frac{13{,}5}{5{,}14-1}=2{,}219~\mathrm{s}.
     \end{aligned}
     \label{eq:oc_terra_delta}
 \end{equation}
 
-Os 337~A não foram utilizados como entrada de 51N de alta tensão. A função 51 de fase do primário apresentou tempo de 2,088~s nessa condição, superior ao de 51G em aproximadamente 0,886~s. Foi admitida a partida como retaguarda, com interrupção da temporização após eliminação normal da falta.
+A função 51 de fase do primário atuou, portanto, como retaguarda, cerca de 1,0~s após o 51G.
 
-Para 51N do primário e da entrada foram utilizados dials de 0,33 e aditivos de 0 e 0,45~s. No patamar de múltiplo 30, foram obtidos 0,154 e 0,604~s. Não foi imposta coordenação residual através do triângulo do transformador.
-
-Nesse setor, o dial de 0,33 foi tratado como parâmetro adotado na proposta, cuja adequação foi verificada pelos tempos calculados. A utilização de mesmo dial, maior corrente de partida na entrada e aditivo de 0,45~s nesse nível preservou separação de pelo menos 0,45~s na faixa comum de partida dos dois elementos residuais locais.
-
-Para detalhar essa verificação, foi utilizada a corrente fase-terra de 10.575,5~A do próprio setor de 69~kV, em lugar dos 337~A de fase refletidos de uma falta externa. As etapas foram explicitadas na Equação~\eqref{eq:oc_neutro_at_memoria}. Os tempos corresponderam a faltas residuais passantes pelo respectivo vão; a circulação por cada disjuntor permaneceu dependente da posição da falta.
+Para as faltas residuais do próprio setor de 69~kV (10.575,5~A), foram adotados 60~A no primário ($60/160=0{,}375\Rightarrow0{,}38$~A sec., ou 60,8~A) e 120~A na entrada ($120/240=0{,}50$~A sec.), dentro da faixa de 100 a 240~A dos slides. Ambos usaram dial de 0,33 e ficaram no patamar $M=30$:
 
 \begin{equation}
-    \begin{aligned}
-        i_{\mathrm{cc},N,\mathrm{AT}}&=\frac{10.575{,}5}{160}
-            =66{,}096875~\mathrm{A},
-        &M_{N,\mathrm{AT}}&=\frac{66{,}096875}{0{,}38}=173{,}93914,\\
-        i_{\mathrm{cc},N,\mathrm{entrada}}&=\frac{10.575{,}5}{240}
-            =44{,}064583~\mathrm{A},
-        &M_{N,\mathrm{entrada}}&=\frac{44{,}064583}{0{,}50}=88{,}12917,\\
-        M_{\mathrm{ef},N,\mathrm{AT}}&=M_{\mathrm{ef},N,\mathrm{entrada}}=30,\\
-        t_{51N,\mathrm{AT}}&=\frac{13{,}5\cdot0{,}33}{30-1}
-            =0{,}153621~\mathrm{s},\\
-        t_{51N,\mathrm{entrada}}&=\frac{13{,}5\cdot0{,}33}{30-1}+0{,}45
-            =0{,}603621~\mathrm{s}.
-    \end{aligned}
+    t_{51N,\mathrm{AT}}=0{,}33\cdot\frac{13{,}5}{29}=0{,}154~\mathrm{s},
+    \qquad
+    t_{51N,\mathrm{entrada}}=0{,}154+0{,}45=0{,}604~\mathrm{s}.
     \label{eq:oc_neutro_at_memoria}
 \end{equation}
 
-\textbf{e) Estágios de alta corrente e critérios de alcance}
+Não foi imposta coordenação residual através do triângulo do transformador.
 
-Para 50 e 50N, foram separados o cálculo da corrente primária requerida, sua conversão para TAP, a reconversão do ajuste adotado e a verificação de partida no ponto de referência. O procedimento foi expresso pela Equação~\eqref{eq:oc_metodo_alta_corrente}. O múltiplo foi utilizado apenas para conferir a partida, pois esses estágios tiveram atraso definido, sem cálculo de dial inverso.
+\textbf{e) Funções 50 e 50N — instantâneas}
 
-\begin{equation}
-    \begin{aligned}
-        \mathrm{TAP}_{50,\mathrm{calc}}&=\frac{I_{50,\mathrm{calc}}}{RTC},
-        &I_{\mathrm{p},50}&=RTC\,\mathrm{TAP}_{50,\mathrm{adot}},\\
-        \mathrm{TAP}_{50N,\mathrm{calc}}&=\frac{I_{50N,\mathrm{calc}}}{RTC},
-        &I_{\mathrm{p},50N}&=RTC\,\mathrm{TAP}_{50N,\mathrm{adot}},\\
-        M_{50}&=\frac{I_{\mathrm{cc},3\phi}}{I_{\mathrm{p},50}},
-        &M_{50N}&=\frac{I_{\mathrm{cc},1\phi}}{I_{\mathrm{p},50N}}.
-    \end{aligned}
-    \label{eq:oc_metodo_alta_corrente}
-\end{equation}
+Conforme os exemplos finais dos slides, as funções 50/50N dos gerais de média tensão e da entrada foram mantidas desabilitadas. A coordenação nesses níveis foi feita pelas funções temporizadas e pela proteção de falha de disjuntor.
 
-Na comparação entre critérios, foram distinguidos os limites inferiores de não atuação para correntes passantes ou de energização dos limites superiores associados à sensibilidade e ao alcance. Por esse motivo, a seleção do menor TAP entre resultados não foi utilizada como regra universal. Os fatores multiplicativos e os percentuais empregados a seguir foram os definidos para o presente estudo \cite{sampaio2026roteiro,cysne2026protecao}, sem adoção de outros multiplicadores sobre os ajustes 51/51N.
-
-Conforme os exemplos finais dos slides, as funções 50/50N dos gerais de média tensão e da entrada foram mantidas desabilitadas. A coordenação nesses níveis foi realizada pelas funções temporizadas e pela proteção de falha de disjuntor. Não foi atribuída seletividade lógica a estágios desabilitados.
-
-Nos alimentadores, foi utilizado como pré-ajuste o fator de 80\% sobre as correntes máximas de referência, em correspondência com o procedimento numérico dos slides. Foram obtidos:
+\textit{Alimentadores.} Foi usado como pré-ajuste 80\% da corrente máxima de referência, com atraso de 0,10~s:
 
 \begin{equation}
     \begin{aligned}
-        I_{\mathrm{aj},50,\mathrm{alim}}&=\frac{0{,}80\cdot2.882{,}7}{40}
-        =57{,}654~\mathrm{A}\ \Rightarrow\ 57{,}66~\mathrm{A},\\
-        I_{\mathrm{p},50,\mathrm{alim}}&=2.306{,}4~\mathrm{A},\\
-        I_{\mathrm{aj},50N,\mathrm{alim}}&=\frac{0{,}80\cdot2.918{,}4}{40}
-        =58{,}368~\mathrm{A}\ \Rightarrow\ 58{,}37~\mathrm{A},\\
-        I_{\mathrm{p},50N,\mathrm{alim}}&=2.334{,}8~\mathrm{A}.
+        I_{50}&=0{,}80\times2.882{,}7=2.306~\mathrm{A}
+            \ \Rightarrow\ 57{,}66~\mathrm{A~sec.}
+            \ \Rightarrow\ 2.306{,}4~\mathrm{A},\\
+        I_{50N}&=0{,}80\times2.918{,}4=2.335~\mathrm{A}
+            \ \Rightarrow\ 58{,}37~\mathrm{A~sec.}
+            \ \Rightarrow\ 2.334{,}8~\mathrm{A}.
     \end{aligned}
     \label{eq:oc_50_mt}
 \end{equation}
 
-Foi especificado atraso intencional de 0,10~s. A aplicação de 80\% ao valor de corrente de barra não foi tomada como comprovação de alcance de 80\% do comprimento do alimentador. A liberação dos estágios ficou condicionada à verificação das faltas até o primeiro religador e de sua coordenação. Sem esses dados, permaneceram disponíveis os ajustes temporizados, e os valores da Equação~\eqref{eq:oc_50_mt} foram identificados como pré-ajustes.
+Como a referência foi a corrente de barra, e não a do ponto a 80\% do alimentador, esses valores foram classificados como pré-ajustes. Sua liberação ficou condicionada à verificação das faltas até o primeiro religador e da coordenação com ele.
 
-Após a reconversão dos TAPs, foi verificada a partida para as faltas máximas próximas à saída, conforme a Equação~\eqref{eq:oc_50_alim_verificacao}. Os valores adotados também ficaram acima dos \textit{pick-ups} temporizados de 125,2~A e 24~A, respectivamente; essa comparação não substituiu a verificação do alcance na rede.
-
-\begin{equation}
-    \begin{aligned}
-        M_{50,\mathrm{alim}}&=\frac{2.882{,}7}{2.306{,}4}
-            =1{,}24987>1,
-        &t_{50,\mathrm{alim}}&=0{,}10~\mathrm{s},\\
-        M_{50N,\mathrm{alim}}&=\frac{2.918{,}4}{2.334{,}8}
-            =1{,}24996>1,
-        &t_{50N,\mathrm{alim}}&=0{,}10~\mathrm{s}.
-    \end{aligned}
-    \label{eq:oc_50_alim_verificacao}
-\end{equation}
-
-Os tempos da Equação~\eqref{eq:oc_50_alim_verificacao} ficaram condicionados à habilitação dos pré-ajustes. Quando os estágios permaneceram bloqueados, não foi atribuída atuação de 50/50N, mesmo para múltiplo superior à unidade.
-
-Para 50 do primário, foi utilizado o fator de assimetria de 1,73 adotado no exemplo dos slides. Esse valor foi tratado como hipótese conservadora de projeto, próxima ao limite $\sqrt{3}$ do fator eficaz apresentado, e não como resultado de ensaio do sistema. Não foi repetida a divisão por dois do exemplo com dois transformadores. O cálculo foi dado por:
+\textit{Primários 12T1 e 12T2.} A função 50 não deve partir para faltas na MT nem na energização. Foi aplicado o fator de assimetria de 1,73 dos slides sobre a maior corrente refletida, sem a divisão por dois do exemplo com transformadores em paralelo, e conferido o limite de energização de $8\,I_{\mathrm{n}}$:
 
 \begin{equation}
     \begin{aligned}
-        I_{50,\mathrm{calc}}&=1{,}73\cdot576{,}5=997{,}345~\mathrm{A},\\
-        I_{\mathrm{aj},50,\mathrm{AT}}&=\frac{997{,}345}{160}
-        =6{,}2334~\mathrm{A}\ \Rightarrow\ 6{,}24~\mathrm{A},\\
-        I_{\mathrm{p},50,\mathrm{AT}}&=6{,}24\cdot160=998{,}4~\mathrm{A},\\
-        I_{\mathrm{inrush,ref}}&=8\cdot52{,}3=418{,}4~\mathrm{A}<998{,}4~\mathrm{A}.
+        I_{50}&=\max\left(1{,}73\times576{,}5;\;8\times52{,}3\right)
+            =\max(997{,}3;\;418{,}4)=997{,}3~\mathrm{A}\\
+            &\Rightarrow\ \tfrac{997{,}3}{160}=6{,}24~\mathrm{A~sec.}
+            \ \Rightarrow\ 998{,}4~\mathrm{A},
+            \qquad \text{atraso de }0{,}05~\mathrm{s},\\
+        M_{50}&=\frac{15.683{,}2}{998{,}4}=15{,}7>1
+            \quad\text{(atua para a falta na barra de 69~kV)}.
     \end{aligned}
     \label{eq:oc_50_at}
 \end{equation}
 
-Na comparação explícita dos dois critérios de bloqueio, ambos foram tratados como limites inferiores. Assim, foi utilizado o maior requisito, conforme a Equação~\eqref{eq:oc_50_at_criterios}, e foi conferida a partida para a falta trifásica máxima no trecho de alta tensão atravessado pelo vão.
+A folga em relação ao valor calculado foi pequena (1,1~A), mas o fator de 1,73 já é uma hipótese conservadora de projeto. Para 50N do primário foi adotado o limite inferior de 200~A da faixa de 200 a 400~A dos slides ($200/160=1{,}25$~A sec.), com atraso de 0,05~s. Para $10.575{,}5$~A, $M_{50N}=52{,}9$. Na falta fase-terra na MT, a corrente residual no triângulo é nula, e o 50N do primário não parte.
 
-\begin{equation}
-    \begin{aligned}
-        I_{50,\mathrm{inf}}&=\max\left(1{,}73\cdot576{,}5;\;8\cdot52{,}3\right)\\
-            &=\max(997{,}345;\;418{,}4)
-            =997{,}345~\mathrm{A}<I_{\mathrm{p},50,\mathrm{AT}}=998{,}4~\mathrm{A},\\
-        M_{50,\mathrm{AT}}&=\frac{15.683{,}2}{998{,}4}
-            =15{,}70833>1,
-        \qquad t_{50,\mathrm{AT}}=0{,}05~\mathrm{s}.
-    \end{aligned}
-    \label{eq:oc_50_at_criterios}
-\end{equation}
+\textit{Resumo das margens.} As margens entre proteções em série estão na Tabela~\ref{tab:oc_margens}. Todas as margens locais atenderam ao mínimo de 0,40~s. A seletividade com a concessionária para faltas no setor de 69~kV não foi obtida, pois o 12L9 atua em 0,134~s, antes da entrada (0,748~s).
 
-Para a falta externa trifásica em média tensão, os 576,5~A refletidos ficaram abaixo de 998,4~A, sem partida do estágio 50 do primário no modelo utilizado. A comparação com o curto máximo de alta tensão comprovou somente a partida naquele ponto de referência, sem ter comprovado sensibilidade aos curtos mínimos internos não fornecidos.
-
-Para 50N do primário, foi adotado o limite inferior de 200~A da faixa de 200 a 400~A indicada nos slides, correspondente a 1,25~A secundário, equivalente a 200~A primários. Para ambos os estágios de alta tensão foi utilizado atraso de 0,05~s, conforme o exemplo numérico dos slides. As referências de 0,05 e 0,10~s foram expressas como 50 e 100~ms; não foi reproduzida a indicação inconsistente de unidade da página de critérios gerais.
-
-O ajuste residual de alta corrente foi detalhado na Equação~\eqref{eq:oc_50n_at_memoria}, com reconversão do TAP e verificação da falta fase-terra máxima do próprio setor de alta tensão.
-
-\begin{equation}
-    \begin{aligned}
-        \mathrm{TAP}_{50N,\mathrm{AT,calc}}&=\frac{200}{160}
-            =1{,}25~\mathrm{A}
-            =\mathrm{TAP}_{50N,\mathrm{AT,adot}},\\
-        I_{\mathrm{p},50N,\mathrm{AT}}&=1{,}25\cdot160=200~\mathrm{A},\\
-        M_{50N,\mathrm{AT}}&=\frac{10.575{,}5}{200}
-            =52{,}8775>1,
-        \qquad t_{50N,\mathrm{AT}}=0{,}05~\mathrm{s}.
-    \end{aligned}
-    \label{eq:oc_50n_at_memoria}
-\end{equation}
-
-Para a falta externa ideal fase-terra em média tensão, a corrente residual do lado em triângulo foi nula, conforme a Equação~\eqref{eq:oc_terra_delta}, sem partida de 50N do primário por essa grandeza. A escolha de 200~A foi mantida como critério próprio de neutro do projeto, sem dedução por um multiplicador da função 51N. Nos gerais de média tensão e em 12L1, os estágios 50/50N permaneceram desabilitados; os cálculos de funções habilitadas não foram transferidos para esses pontos.
+\begin{table}[htbp]
+    \centering
+    \caption{Margens entre proteções em série para as faltas de referência.}
+    \label{tab:oc_margens}
+    \begin{tabular}{llccc}
+        \hline
+        \textbf{Falta} & \textbf{Jusante $\rightarrow$ montante} & \textbf{$t_{\mathrm{jus}}$ (s)} & \textbf{$t_{\mathrm{mon}}$ (s)} & \textbf{$\Delta t$ (s)}\\
+        \hline
+        Trifásica MT & 21L $\rightarrow$ 11T & 0,202 & 0,659 & 0,456\\
+        Trifásica MT & 11T $\rightarrow$ 12T & 0,659 & 1,179 & 0,520\\
+        Trifásica MT & 12T $\rightarrow$ 12L1 & 1,179 & 1,778 & 0,599\\
+        Bifásica MT & 11T $\rightarrow$ 12T & 0,776 & 1,179 & 0,403\\
+        Trifásica 69~kV & 12T $\rightarrow$ 12L1 & 0,317 & 0,748 & 0,431\\
+        Fase-terra MT & 51N alim. $\rightarrow$ 51N geral & 0,303 & 0,753 & 0,450\\
+        Fase-terra MT & 51N geral $\rightarrow$ 51G & 0,753 & 1,203 & 0,450\\
+        Fase-terra 69~kV & 51N 12T $\rightarrow$ 51N 12L1 & 0,154 & 0,604 & 0,450\\
+        \hline
+    \end{tabular}
+    \par\vspace{2pt}
+    {\small Fonte: elaborado pelos autores.}
+\end{table}
 
 \textbf{f) Desequilíbrio, falha de disjuntor e religamento}
 
@@ -556,7 +390,7 @@ Os coordenogramas foram traçados a partir das expressões de tempo e dos ajuste
         \hline
         Fase & Alimentador & 125,2 & 0,33 & 0,00\\
         Fase & Geral MT & 328,0 & 0,38 & 0,00\\
-        Fase & Primário AT & 328,0 & 0,64 & 0,00\\
+        Fase & Primário AT & 328,0 & 0,68 & 0,00\\
         Fase & Entrada AT & 384,0 & 0,64 & 0,45\\
         Neutro MT & Alimentador & 24,0 & 0,65 & 0,00\\
         Neutro MT & Geral & 60,0 & 0,65 & 0,45\\
@@ -602,7 +436,7 @@ Na Figura~\ref{fig:oc_coordenograma_neutro_mt}, foram reunidas as curvas 51N dos
     {\small Fonte: elaborado pelos autores.}
 \end{figure}
 
-Foi verificada numericamente a ordenação das expressões nos intervalos comuns de partida até os máximos fornecidos. Para fase entre primário e entrada, foram obtidos, em 15.683,2~A, tempos de 0,298 e 0,748~s, preservando 0,45~s mesmo no patamar de múltiplo 30. Essa verificação corrigiu a insuficiência de margem que teria ocorrido com dials escalonados sem aditivo no setor de alta tensão.
+Foi verificada numericamente a ordenação das expressões nos intervalos comuns de partida até os máximos fornecidos. Para fase entre primário e entrada, foram obtidos, em 15.683,2~A, tempos de 0,317 e 0,748~s, preservando 0,43~s mesmo no patamar de múltiplo 30. Essa verificação corrigiu a insuficiência de margem que teria ocorrido com dials escalonados sem aditivo no setor de alta tensão. Entre geral e primário, a menor margem ocorreu na falta bifásica em média tensão (0,40~s), caso que definiu o dial de 0,68 do primário.
 
 As curvas de fase do setor de 69~kV foram apresentadas na Figura~\ref{fig:oc_coordenograma_fase_at}. A referência de Pici foi representada por um ponto correspondente à falta trifásica na barra, utilizando-se sua contribuição própria no cálculo do tempo da Equação~\eqref{eq:oc_tempo_pci}. A presença das curvas dos diferentes vãos no mesmo gráfico não significou corrente passante por todos eles para qualquer localização de falta.
 
@@ -649,10 +483,10 @@ Para evitar duplicidade, os tempos de processamento foram separados dos tempos i
         \hline
         \textbf{Evento} & \textbf{Sequência calculada}\\
         \hline
-        Falta trifásica próxima à saída & Pré-ajuste 50 em 0,100~s, se liberado; 51 do alimentador em 0,202~s; retaguardas 51 do geral em 0,659~s, do primário em 1,109~s e da entrada em 1,778~s.\\
+        Falta trifásica próxima à saída & Pré-ajuste 50 em 0,100~s, se liberado; 51 do alimentador em 0,202~s; retaguardas 51 do geral em 0,659~s, do primário em 1,179~s e da entrada em 1,778~s.\\
         Falta fase-terra próxima à saída & Pré-ajuste 50N em 0,100~s, se liberado; 51N do alimentador em 0,303~s; 51N do geral em 0,753~s e 51G em 1,203~s.\\
-        Falta trifásica na barra de MT & 51 do geral em 0,659~s, sem corrente passante nos alimentadores; retaguarda de fase AT em 1,109~s.\\
-        Falta fase-terra na barra de MT & 51N do geral em 0,753~s; 51G em 1,203~s; retaguarda de fase AT em 2,088~s, caso a falta permanecesse.\\
+        Falta trifásica na barra de MT & 51 do geral em 0,659~s, sem corrente passante nos alimentadores; retaguarda de fase AT em 1,179~s.\\
+        Falta fase-terra na barra de MT & 51N do geral em 0,753~s; 51G em 1,203~s; retaguarda de fase AT em 2,219~s, caso a falta permanecesse.\\
         Falha de disjuntor de saída & Após disparo de alta corrente em 0,100~s, 50BF em 0,350~s; se o disparo inicial fosse por 51, somaram-se 0,25~s ao respectivo tempo de atuação.\\
         Falta no trecho AT do transformador & 50/50N do primário em 0,050~s para correntes acima dos ajustes, com abertura do vão correspondente.\\
         Falta interna ao transformador & Disparo diferencial aos disjuntores dos dois lados, sem retardo intencional e com religamento bloqueado.\\
@@ -721,7 +555,7 @@ Os ajustes foram consolidados nas Tabelas~\ref{tab:oc_oap_temporizadas} e~\ref{t
         11T1 e 11T2 & 51 & 80 & 4,10 & 328,0 & C2 & 0,38 & 0,00\\
         11T1 e 11T2 & 51N & 80 & 0,75 & 60,0 & C2 & 0,65 & 0,45\\
         Neutro 02T1 e 02T2 & 51G & 40 & 1,50 & 60,0 & C2 & 0,65 & 0,90\\
-        12T1 e 12T2 & 51 & 160 & 0,41 & 65,6 & C2 & 0,64 & 0,00\\
+        12T1 e 12T2 & 51 & 160 & 0,41 & 65,6 & C2 & 0,68 & 0,00\\
         12T1 e 12T2 & 51N & 160 & 0,38 & 60,8 & C2 & 0,33 & 0,00\\
         12L1 & 51 & 240 & 0,32 & 76,8 & C2 & 0,64 & 0,45\\
         12L1 & 51N & 240 & 0,50 & 120,0 & C2 & 0,33 & 0,45\\
