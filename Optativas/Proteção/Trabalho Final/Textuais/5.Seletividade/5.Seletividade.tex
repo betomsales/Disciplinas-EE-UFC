@@ -1,4 +1,4 @@
-\newpage
+\clearpage
 \section{\textbf{Estudo de seletividade da proteção diferencial do transformador}}
 
 \subsection{Ligações, dimensionamento e especificação dos transformadores de corrente}
@@ -337,4 +337,15 @@ As verificações representaram o casamento ideal, sem erros dos TCs ou saturaç
     {\small Fonte: elaborado pelos autores.}
 \end{table}
 
-Foram distinguidos os pontos de fronteira dos pontos de operação da Tabela~\ref{tab:87_pontos_curva}. Não foi inserida figura nesta etapa. A seletividade diferencial foi fundamentada na delimitação da zona e no equilíbrio das correntes compensadas, sem escalonamento com os alimentadores. A confirmação dos dados dos TCs, da faixa do comutador, dos fasores de carga e dos bloqueios permaneceu necessária para a implantação, assim como a confirmação da classe e das características dos novos TCs de alta.
+Na Figura~\ref{fig:87_caracteristica_diferencial}, foi traçada a fronteira estática da Equação~\eqref{eq:87_curva_final}, com os pontos da Tabela~\ref{tab:87_pontos_curva}. No painel à esquerda, foram representadas as faltas externas ideais no domínio das correntes passantes fornecidas; no painel à direita, foram detalhados o limiar mínimo, as mudanças de declividade e a falta interna exemplificativa. Foram distinguidos os pontos de fronteira dos pontos de operação.
+
+\begin{figure}[H]
+    \centering
+    \caption{Característica estática da proteção diferencial e pontos de operação na base ONAF.}
+    \includegraphics[width=\textwidth]{Imagens/08_caracteristica_diferencial.pdf}
+    \label{fig:87_caracteristica_diferencial}
+    \par\vspace{2pt}
+    {\small Fonte: elaborado pelos autores.}
+\end{figure}
+
+A região inferior à fronteira foi identificada como restrição estática, enquanto a região superior foi associada à operação potencial, sujeita aos bloqueios harmônicos e à restrição transitória. O ajuste HS1, definido por detecção de pico, não foi transposto como limite de corrente eficaz nessa característica percentual. A seletividade diferencial foi fundamentada na delimitação da zona e no equilíbrio das correntes compensadas, sem escalonamento com os alimentadores. A confirmação dos dados dos TCs, da faixa do comutador, dos fasores de carga e dos bloqueios permaneceu necessária para a implantação, assim como a confirmação da classe e das características dos novos TCs de alta.
