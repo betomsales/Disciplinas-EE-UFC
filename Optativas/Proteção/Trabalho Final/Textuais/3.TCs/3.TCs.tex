@@ -3,19 +3,19 @@
 
 % ===================== DIMENSIONAMENTO E ESPECIFICAÇÃO DOS TCs =====================
 
-Os transformadores de corrente (TCs) reproduzem, em seu secundário, uma imagem reduzida das correntes primárias, para que os relés de proteção possam medi-las. Para que a proteção opere corretamente, o TC deve suportar a corrente de carga em regime permanente e reproduzir as correntes de curto-circuito sem saturar, de modo que o relé receba um sinal fiel à corrente de falta \cite{mamede2013}.
+Os transformadores de corrente (TCs) foram empregados para fornecer aos relés uma imagem reduzida das correntes primárias. No dimensionamento foram verificadas a capacidade de condução em regime permanente e as solicitações secundárias durante os curtos-circuitos, para limitar os erros de medição associados ao circuito de proteção \cite{mamede2013}.
 
-Nesta seção são dimensionados os TCs de proteção de sobrecorrente da SE Campus do Pici, identificados no diagrama unifilar da Figura~\ref{fig:diagrama_unifilar_protecao}: os TCs de fase do vão de entrada de linha (12L1), dos disjuntores de alta tensão dos transformadores (12T1 e 12T2), dos disjuntores gerais de média tensão (11T1 e 11T2) e das saídas dos alimentadores (21L1, 21L2 e 21L3), além do TC de neutro dos transformadores, utilizado pela função 51G. Os TCs associados à proteção diferencial dos transformadores são tratados na seção referente à função 87T.
+Nesta seção foram dimensionados os TCs de sobrecorrente do vão de entrada (12L1), dos disjuntores de alta tensão dos transformadores (12T1 e 12T2), dos gerais de média tensão (11T1 e 11T2), das saídas dos alimentadores (21L1, 21L2 e 21L3) e do neutro dos transformadores, utilizado pela função 51G. Foram utilizadas as posições da Figura~\ref{fig:diagrama_unifilar_protecao}, incluindo os disjuntores 12T1 e 12T2 na configuração proposta. Os TCs da proteção diferencial foram especificados separadamente na seção referente à função 87T.
 
-No dimensionamento, considerou-se a operação da subestação com apenas um transformador energizado, permanecendo o outro como reserva. Os TCs dos dois transformadores recebem a mesma especificação, de modo que qualquer um deles possa entrar em operação sem alteração nos ajustes da proteção.
+No dimensionamento, considerou-se a operação com um transformador energizado e o outro em reserva. Foram conservadas as correntes de curto-circuito fornecidas para o projeto, conforme o esclarecimento sobre a condição de operação, sem divisão das contribuições entre os transformadores. Os TCs dos dois conjuntos receberam a mesma especificação, permitindo a alternância da unidade em serviço com o grupo de ajustes correspondente.
 
 \subsection{Dados de projeto}
 
-Os TCs disponíveis para os setores de alta e média tensão da subestação são apresentados na Tabela~\ref{tab:tc_disponiveis}. Todos são do tipo multirrelação, com fator de sobrecorrente $FS = 20$, fator térmico $FT = 1{,}2$ e classe de exatidão 10B200, isto é, erro máximo de 10\% para uma tensão secundária de até 200~V, desenvolvida com 20 vezes a corrente nominal secundária (100~A) circulando na carga nominal de 2~$\Omega$.
+As relações originalmente fornecidas foram apresentadas na Tabela~\ref{tab:tc_disponiveis}. Na revisão da especificação, foram adotados 1200-5 na entrada 12L1 e 800-5 em 12T1 e 12T2, por orientação de projeto, em substituição às opções de alta tensão da lista original. Foram mantidos $FS=20$, $FT=1{,}2$ e classe 10B200 como requisitos dos novos TCs, sujeitos à confirmação na aquisição; a coincidência da relação de entrada com a OAP não implicou reprodução de sua classe de exatidão. Para a verificação de tensão, foi adotada a carga nominal de $200/(20\cdot5)=2~\Omega$. As relações dos TCs de média tensão e os dados dos circuitos secundários foram preservados \cite{sampaio2026roteiro,cysne2026protecao}.
 
 \begin{table}[htbp]
     \centering
-    \caption{Transformadores de corrente disponíveis para a SE Campus do Pici.}
+    \caption{Relações de TC originalmente fornecidas no roteiro, antes da revisão dos TCs de alta tensão.}
     \label{tab:tc_disponiveis}
     \begin{tabular}{ccccc}
         \hline
@@ -75,7 +75,7 @@ As correntes máximas de carga e de curto-circuito consideradas para cada TC est
     \item[--] \textbf{12L1}: com apenas um transformador energizado, a corrente de carga corresponde à corrente nominal ONAF desse transformador em 69~kV (52,3~A), e a corrente de curto-circuito máxima é a falta trifásica no barramento de 69~kV (15.683,2~A);
     \item[--] \textbf{12T1 e 12T2}: a corrente de carga é a corrente nominal ONAF de cada transformador em 69~kV (52,3~A). A corrente de curto-circuito máxima ocorre para uma falta nos terminais de alta tensão do transformador, alimentada pelo barramento de 69~kV, e é igual à corrente de falta trifásica nessa barra (15.683,2~A);
     \item[--] \textbf{11T1 e 11T2}: a corrente de carga é a corrente nominal ONAF do transformador em 13,8~kV (261,5~A). Como apenas um transformador está em operação, toda a corrente de falta no barramento de 13,8~kV circula pelo seu disjuntor geral, e a corrente de curto-circuito máxima é a falta fase-terra nessa barra (2.918,4~A);
-    \item[--] \textbf{21L1, 21L2 e 21L3}: como os relés dos alimentadores devem ter o mesmo ajuste \cite{sampaio2026roteiro}, adotou-se a maior corrente de carga registrada entre os alimentadores (100~A). A corrente de curto-circuito máxima é a falta fase-terra no barramento de 13,8~kV (2.918,4~A);
+    \item[--] \textbf{21L1, 21L2 e 21L3}: foram adotados ajustes iguais para os alimentadores e a maior carga registrada, de 100~A \cite{sampaio2026roteiro}. A corrente de 2.918,4~A foi utilizada como limite de referência para falta fase-terra imediatamente após o TC da saída. Uma falta na própria barra, a montante desse TC, não foi considerada como corrente passante no alimentador;
     \item[--] \textbf{Neutro dos transformadores}: em regime normal, o TC de neutro conduz apenas a corrente de desequilíbrio. Sua corrente máxima é a corrente residual ($3I_0$) da falta fase-terra no barramento de 13,8~kV, que retorna integralmente pelo neutro do transformador em operação (2.918,4~A).
 \end{itemize}
 
@@ -85,7 +85,7 @@ As correntes máximas de carga e de curto-circuito consideradas para cada TC est
     \label{tab:correntes_tc}
     \begin{tabular}{lccc}
         \hline
-        \textbf{TC} & \textbf{Tensão (kV)} & \textbf{$I_{carga,máx}$ (A)} & \textbf{$I_{cc,máx}$ (A)} \\
+        \textbf{TC} & \textbf{Tensão (kV)} & \textbf{$I_{\mathrm{carga},\max}$ (A)} & \textbf{$I_{\mathrm{cc},\max}$ (A)} \\
         \hline
         12L1                 & 69   & 52,3  & 15.683,2 \\
         12T1 e 12T2          & 69   & 52,3  & 15.683,2 \\
@@ -100,46 +100,30 @@ As correntes máximas de carga e de curto-circuito consideradas para cada TC est
 
 \subsection{Critérios de dimensionamento}
 
-Os TCs foram dimensionados segundo os quatro critérios estabelecidos em \cite{sampaio2026roteiro}, descritos a seguir.
+Foram aplicados os critérios de corrente de carga, curto-circuito e tensão máxima secundária. À lista original foram acrescentadas as especificações de 1200-5 e 800-5 para os pontos de alta tensão indicados. Foram registrados separadamente os resultados de cada verificação, sem utilizar o atendimento a um critério como comprovação automática dos demais.
 
 \textbf{a) Critério da corrente nominal}: a corrente primária nominal do TC ($I_p$) deve ser maior ou igual à corrente máxima de carga. Verifica-se também se a corrente admissível em regime permanente, dada pelo fator térmico, atende à carga máxima:
 
 \begin{equation}
-    I_p \geq I_{carga,máx} \qquad \text{e} \qquad FT \cdot I_p \geq I_{carga,máx}
+    I_p \geq I_{\mathrm{carga},\max} \qquad \text{e} \qquad FT \cdot I_p \geq I_{\mathrm{carga},\max}
     \label{eq:crit_nominal}
 \end{equation}
 
 \textbf{b) Critério do curto-circuito}: a corrente primária nominal do TC multiplicada pelo fator de sobrecorrente deve ser maior ou igual à corrente máxima de curto-circuito:
 
 \begin{equation}
-    FS \cdot I_p \geq I_{cc,máx} \quad \Rightarrow \quad I_p \geq \frac{I_{cc,máx}}{20}
+    FS \cdot I_p \geq I_{\mathrm{cc},\max} \quad \Rightarrow \quad I_p \geq \frac{I_{\mathrm{cc},\max}}{20}
     \label{eq:crit_cc}
 \end{equation}
 
 \textbf{c) Critério da tensão máxima no secundário}: a tensão desenvolvida no secundário do TC durante o curto-circuito máximo deve ser menor que a tensão nominal da classe de exatidão ($V_N = 200$~V):
 
 \begin{equation}
-    V_s = \frac{I_{cc,máx}}{RTC} \cdot |Z_{TC}| \leq V_N
+    V_s = \frac{I_{\mathrm{cc},\max}}{RTC} \cdot |Z_{TC}| \leq V_N
     \label{eq:crit_tensao}
 \end{equation}
 
-\textbf{d) Critério de Stanley E. Zocholl}: verifica se o TC reproduz, sem saturar, a corrente de curto-circuito com a máxima componente contínua (assimetria total). O critério é expresso por:
-
-\begin{equation}
-    20 \geq \left(\frac{X}{R} + 1\right) \cdot I_f \cdot Z_b
-    \label{eq:zocholl}
-\end{equation}
-
-\noindent em que $I_f$ é a corrente máxima de falta no secundário do TC em pu da corrente nominal secundária e $Z_b$ é a carga do TC em pu da carga nominal da classe de exatidão. Detalhando os termos:
-
-\begin{equation}
-    20 \geq \left(\frac{X}{R} + 1\right) \cdot \left(\frac{I_{cc,máx,sec}}{I_{TC,sec}}\right) \cdot \left(\frac{Z_{TC}}{\dfrac{V_{TC,máx}}{20 \cdot I_{TC,sec}}}\right)
-    \label{eq:zocholl_detalhada}
-\end{equation}
-
-Para a classe 10B200, a carga nominal é $V_{TC,máx}/(20 \cdot I_{TC,sec}) = 200/(20 \cdot 5) = 2~\Omega$. Foi adotada a relação $X/R = 12{,}77$ \cite{sampaio2026roteiro}.
-
-Entre as relações que atendem aos critérios a, b e c, foi escolhida a menor. Uma RTC menor resulta em correntes secundárias maiores para um mesmo valor primário, o que permite ajustar as funções de neutro (51N, 51NS e 51G) com valores de \textit{pick-up} reduzidos, dentro das faixas de ajuste do relé \cite{sel2013sel751}.
+As novas relações de alta tensão foram verificadas pelos três critérios, com revisão das correntes secundárias de ajuste. A relação 1200-5 foi fixada para a entrada por orientação de projeto; nos primários, a relação 800-5 foi compatível com o mínimo de 784,16~A exigido pelo curto. As faixas dos relés e a sensibilidade foram verificadas nas seções de coordenação e diferencial.
 
 \subsection{Dimensionamento do TC do disjuntor de entrada 12L1}
 
@@ -157,27 +141,15 @@ Pelo critério da corrente nominal, a menor relação disponível (200-5) já se
     I_p \geq \frac{15.683{,}2}{20} = 784{,}2~\text{A}
 \end{equation*}
 
-A maior relação disponível para 69~kV é 600-5. Como $20 \cdot 600 = 12.000~\text{A} < 15.683{,}2~\text{A}$, o critério do curto-circuito não é atendido por nenhum dos TCs disponíveis para esse nível de tensão. Assim, adotou-se a maior relação, 600-5 ($RTC = 120$), e sua adequação foi verificada pelo critério da tensão máxima no secundário.
+Foi adotada a relação 1200-5 ($RTC=240$) em 12L1. O limite de $20\cdot1200=24.000$~A superou 15.683,2~A, atendendo ao critério de curto-circuito. A relação substituiu a especificação anterior de 600-5, cujo limite de 12.000~A havia sido insuficiente.
 
 \textbf{c) Critério da tensão máxima no secundário}
 
 \begin{equation*}
-    V_s = \frac{15.683{,}2}{120} \cdot 1{,}1123 = 130{,}69 \cdot 1{,}1123 = 145{,}4~\text{V} \leq 200~\text{V}
+    V_s = \frac{15.683{,}2}{240} \cdot 1{,}1123 = 65{,}347 \cdot 1{,}1123 = 72{,}7~\text{V} \leq 200~\text{V}
 \end{equation*}
 
-O critério é atendido. Embora a corrente de falta corresponda a 26,1 vezes a corrente nominal do TC, a carga real conectada ao secundário (1,11~$\Omega$) é praticamente a metade da carga nominal da classe (2~$\Omega$). Por isso, o TC pode conduzir até $200/(5 \cdot 1{,}1123) = 35{,}96$ vezes sua corrente nominal sem ultrapassar a tensão de 200~V, ou seja, ele reproduz a corrente de falta simétrica sem saturar.
-
-\textbf{d) Critério de Stanley E. Zocholl}
-
-\begin{equation*}
-    I_f = \frac{130{,}69}{5} = 26{,}14~\text{pu} \qquad Z_b = \frac{1{,}1123}{2} = 0{,}5562~\text{pu}
-\end{equation*}
-
-\begin{equation*}
-    \left(12{,}77 + 1\right) \cdot 26{,}14 \cdot 0{,}5562 = 200{,}2 > 20
-\end{equation*}
-
-O critério de Zocholl não é atendido, o que indica que o TC pode saturar durante os primeiros ciclos de um curto-circuito com assimetria máxima.
+Foram atendidos os três critérios calculados. A corrente secundária de 65,347~A correspondeu a 13,069 vezes a corrente nominal. O limite permanente de $1{,}2\cdot1200=1.440$~A também superou a carga de 52,3~A. Esses resultados foram limitados às hipóteses do dimensionamento, sem comprovação de ausência de saturação transitória, pois as curvas de excitação e a resistência interna dos novos TCs não foram fornecidas.
 
 \subsection{Dimensionamento dos demais TCs}
 
@@ -188,43 +160,31 @@ Os demais TCs foram dimensionados com o mesmo procedimento, e os resultados est�
     \caption{Resultados dos critérios de dimensionamento dos TCs.}
     \label{tab:resultados_tc}
     \resizebox{\textwidth}{!}{%
-    \begin{tabular}{lccccccccc}
+    \begin{tabular}{lccccccc}
         \hline
-        \multirow{2}{*}{\textbf{TC}} & \multirow{2}{*}{\textbf{RTC}} & \multicolumn{2}{c}{\textbf{a) Corrente nominal}} & \multicolumn{2}{c}{\textbf{b) Curto-circuito}} & \multicolumn{2}{c}{\textbf{c) Tensão no secundário}} & \multicolumn{2}{c}{\textbf{d) Zocholl}} \\
-         & & $I_p \geq I_{carga}$ & Atende? & $I_{cc}/20$ (A) & Atende? & $V_s$ (V) & Atende? & Resultado & Atende? \\
+        \multirow{2}{*}{\textbf{TC}} & \multirow{2}{*}{\textbf{RTC}} & \multicolumn{2}{c}{\textbf{a) Corrente nominal}} & \multicolumn{2}{c}{\textbf{b) Curto-circuito}} & \multicolumn{2}{c}{\textbf{c) Tensão no secundário}} \\
+         & & $I_p \geq I_{carga}$ & Atende? & $I_{cc}/20$ (A) & Atende? & $V_s$ (V) & Atende? \\
         \hline
-        12L1               & 600-5 (120) & $600 \geq 52{,}3$  & Sim & 784,2 & Não & 145,4 & Sim & 200,2 & Não \\
-        12T1 e 12T2        & 600-5 (120) & $600 \geq 52{,}3$  & Sim & 784,2 & Não & 145,4 & Sim & 200,2 & Não \\
-        11T1 e 11T2        & 400-5 (80)  & $400 \geq 261{,}5$ & Sim & 145,9 & Sim & 32,5  & Sim & 44,8  & Não \\
-        21L1, 21L2 e 21L3  & 200-5 (40)  & $200 \geq 100{,}0$ & Sim & 145,9 & Sim & 65,0  & Sim & 89,6  & Não \\
-        Neutro 02T1 e 02T2 & 200-5 (40)  & --                 & --  & 145,9 & Sim & 65,0  & Sim & 89,6  & Não \\
+        12L1               & 1200-5 (240) & $1200 \geq 52{,}3$ & Sim & 784,2 & Sim & 72,7 & Sim \\
+        12T1 e 12T2        & 800-5 (160) & $800 \geq 52{,}3$  & Sim & 784,2 & Sim & 109,0 & Sim \\
+        11T1 e 11T2        & 400-5 (80)  & $400 \geq 261{,}5$ & Sim & 145,9 & Sim & 32,5  & Sim \\
+        21L1, 21L2 e 21L3  & 200-5 (40)  & $200 \geq 100{,}0$ & Sim & 145,9 & Sim & 65,0  & Sim \\
+        Neutro 02T1 e 02T2 & 200-5 (40)  & --                 & --  & 145,9 & Sim & 65,0  & Sim \\
         \hline
     \end{tabular}}
     \par\vspace{2pt}
     {\small Fonte: elaborado pelos autores.}
 \end{table}
 
-Para os TCs 12T1 e 12T2, assim como para o TC 12L1, a corrente de carga de 52,3~A seria atendida pela relação 200-5. No entanto, como esses TCs estão sujeitos à mesma corrente de falta do TC 12L1, foi adotada a relação 600-5, que é a única que atende ao critério da tensão máxima no secundário. Com essa relação, uma corrente de \textit{pick-up} da função 51 de $1{,}25 \times 52{,}3 = 65{,}4$~A corresponde a 0,545~A no secundário, ainda acima do valor mínimo de ajuste do relé SEL-751 para TCs de 5~A (0,50~A) \cite{sel2013sel751}.
+Para 12T1 e 12T2 foi adotada a relação 800-5, com $RTC=160$. Foram obtidos $20\cdot800=16.000$~A, superiores ao curto máximo de 15.683,2~A, limite permanente de $1{,}2\cdot800=960$~A e tensão secundária de $(15.683{,}2/160)\cdot1{,}1123=109{,}0$~V, inferior a 200~V. Assim, foram atendidos os três critérios calculados, sem necessidade de igualar a relação desses vãos à relação 1200-5 da entrada.
 
-Para os TCs 11T1 e 11T2, a relação 400-5 é a menor que atende à corrente nominal ONAF do transformador. Essa relação também atende à soma das cargas máximas dos três alimentadores ($46 + 49{,}6 + 100 = 195{,}6$~A), suprida integralmente pelo transformador em operação. Seu limite térmico em regime permanente ($1{,}2 \times 400 = 480$~A) comporta ainda a sobrecarga admissível do transformador considerada no ajuste da função 51 (até $1{,}5 \times 261{,}5 = 392{,}2$~A).
+Para os TCs 11T1 e 11T2, a relação 400-5 foi a menor que atendeu à corrente nominal ONAF do transformador. Seu limite permanente de $1{,}2\cdot400=480$~A superou tanto a corrente nominal de 261,5~A quanto a soma de referência das cargas máximas dos três alimentadores, de $46+49{,}6+100=195{,}6$~A. Essa capacidade do TC não foi interpretada como autorização para sobrecarregar o transformador; os fatores de ajuste de fase foram definidos separadamente na coordenação.
 
-Para os TCs dos alimentadores, a relação 200-5 atende à maior corrente de carga registrada (100~A) e ao critério do curto-circuito ($20 \times 200 = 4.000~\text{A} \geq 2.918{,}4~\text{A}$). Seu limite térmico em regime permanente ($1{,}2 \times 200 = 240$~A) é superior à soma das cargas máximas dos três alimentadores ($46 + 49{,}6 + 100 = 195{,}6$~A). Dessa forma, o TC suporta inclusive a transferência de toda a carga do campus para um único alimentador por meio dos pontos de interligação RP1 e RP2. Como os TCs são multirrelação, a derivação pode ser alterada para 400-5 caso a carga dos alimentadores cresça até valores próximos da capacidade dos condutores (266~A).
-
-\subsection{Análise do critério de Zocholl}
-
-Nenhum dos TCs atende ao critério de Zocholl. Isso indica que, para curtos-circuitos próximos à subestação com assimetria máxima, os TCs podem saturar nos primeiros ciclos da falta, enquanto a componente contínua da corrente não se extingue. Para a relação $X/R = 12{,}77$, a constante de tempo dessa componente é:
-
-\begin{equation}
-    \tau = \frac{X/R}{2 \pi f} = \frac{12{,}77}{2 \pi \cdot 60} = 33{,}9~\text{ms}
-\end{equation}
-
-\noindent ou seja, a componente contínua é praticamente extinta após cerca de $5\tau \approx 170$~ms. Assim, a saturação transitória tende a afetar pouco as funções temporizadas (51 e 51N), cujos tempos de operação para as correntes de falta em questão são da ordem de centenas de milissegundos, e afeta principalmente as funções instantâneas (50 e 50N), que podem ter a operação retardada nos primeiros ciclos da falta.
-
-No setor de 13,8~kV, o critério seria atendido com a redução da carga secundária para valores de até 0,40~$\Omega$ (TCs 11T1 e 11T2) e 0,20~$\Omega$ (TCs dos alimentadores e de neutro), o que pode ser obtido com o aumento da seção dos condutores secundários ou a redução da distância entre os TCs e os relés. No setor de 69~kV, mesmo com a relação de 600-5, a carga secundária teria de ser inferior a 0,11~$\Omega$, valor menor que a impedância dos próprios condutores, o que exigiria TCs de classe de exatidão superior. Essas alternativas são discutidas na seção de proposição de melhorias.
+Para os alimentadores, a relação 200-5 atendeu à maior carga registrada, ao limite de curto de $20\cdot200=4.000~\text{A}\geq2.918{,}4~\text{A}$ e à tensão calculada. Seu limite permanente de 240~A também superou a soma de referência de 195,6~A. Entretanto, o ajuste pela carga de 100~A não foi considerado automaticamente válido para transferência de toda essa carga a uma única saída. A transferência ficou condicionada a outro grupo de ajustes e à verificação da topologia. Um ajuste pela capacidade integral do condutor, de 266~A, teria exigido nova seleção da derivação, pois essa corrente superou o limite permanente de 240~A da opção 200-5.
 
 \subsection{Especificação dos TCs}
 
-A especificação final dos TCs de proteção de sobrecorrente da SE Campus do Pici é apresentada na Tabela~\ref{tab:especificacao_tc}.
+A especificação revisada dos TCs de sobrecorrente foi reunida na Tabela~\ref{tab:especificacao_tc}. A liberação dos equipamentos permaneceu condicionada à confirmação das classes, dos dados de excitação e da suportabilidade dos novos TCs. As correntes de falta foram preservadas e a insuficiência anterior do critério de curto-circuito foi resolvida pelas novas relações.
 
 \begin{table}[htbp]
     \centering
@@ -235,8 +195,8 @@ A especificação final dos TCs de proteção de sobrecorrente da SE Campus do P
         \hline
         \textbf{TC} & \textbf{Qtd.} & \textbf{Tensão (kV)} & \textbf{Relação nominal (A)} & \textbf{Derivação (RTC)} & \textbf{FS} & \textbf{FT} & \textbf{Exatidão} \\
         \hline
-        12L1               & 3 & 69   & 200/400/600-5         & 600-5 (120) & 20 & 1,2 & 10B200 \\
-        12T1 e 12T2        & 6 & 69   & 200/400/600-5         & 600-5 (120) & 20 & 1,2 & 10B200 \\
+        12L1               & 3 & 69   & 1200-5                & 1200-5 (240) & 20 & 1,2 & 10B200 \\
+        12T1 e 12T2        & 6 & 69   & 800-5                 & 800-5 (160) & 20 & 1,2 & 10B200 \\
         11T1 e 11T2        & 6 & 13,8 & 200/400-5             & 400-5 (80)  & 20 & 1,2 & 10B200 \\
         21L1, 21L2 e 21L3  & 9 & 13,8 & 100/200/400/600/800-5 & 200-5 (40)  & 20 & 1,2 & 10B200 \\
         Neutro 02T1 e 02T2 & 2 & 13,8 & 100/200/400/600/800-5 & 200-5 (40)  & 20 & 1,2 & 10B200 \\

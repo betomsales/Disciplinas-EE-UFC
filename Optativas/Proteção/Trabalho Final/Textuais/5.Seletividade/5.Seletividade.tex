@@ -3,6 +3,338 @@
 
 \subsection{Ligações, dimensionamento e especificação dos transformadores de corrente}
 
+O estudo diferencial foi desenvolvido individualmente para os transformadores 02T1 e 02T2, de 5,00/6,25~MVA, 69--13,8~kV e grupo Dyn1. Foi considerada uma unidade energizada e outra em reserva, mantendo-se os curtos-circuitos fornecidos para o projeto. Foram utilizados os parâmetros de referência da apresentação de Cysne \cite{cysne2026protecao}: limiar de 0,20~pu, declividades de 30\% e 80\% e transição em 1,00~pu. Não foram transferidas para o projeto as potências do exemplo de subestação dos slides.
+
+Foi especificado um IED MiCOM P642 da GE Vernova, com módulos internos de medição de corrente sensíveis e configuração nominal de 5~A, conforme \cite{gev2025p64x}. A escolha foi fundamentada na disponibilidade de duas declividades e de correção interna de relação, grupo vetorial e sequência zero. A característica linear do ABB TPU2000R anteriormente considerada não foi utilizada para representar uma segunda declividade de 80\%, incompatível com aquela característica.
+
+A zona protegida foi delimitada pelos TCs dos lados de alta e média tensão. Foram previstos núcleos exclusivos para 87T, independentes dos circuitos de sobrecorrente. Foi especificado comando ao relé 86T e à abertura de 12T1/11T1 ou 12T2/11T2, com bloqueio do religamento após atuação diferencial. A barra de 69~kV permaneceu fora dessa zona.
+
+\textbf{a) Ligações dos TCs e compensação vetorial}
+
+Os secundários dos TCs foram ligados em estrela, com aterramento em um único ponto de cada circuito. O conjunto de alta foi associado à entrada CT1 e o de média tensão à entrada CT2. Foram estabelecidos sequência ABC, grupo Dyn1 e polaridades com correntes positivas entrando na zona. A compensação da defasagem de $30^\circ$ e a eliminação da sequência zero do lado em estrela aterrada foram atribuídas ao IED.
+
+Para explicitar a representação utilizada no cálculo, foi adotada a transformação normalizada da Equação~\eqref{eq:87_compensacao}, com ganho unitário para sequência positiva.
+
+\begin{equation}
+    \begin{bmatrix}
+        \underline{i}_{2A}^{\,c}\\
+        \underline{i}_{2B}^{\,c}\\
+        \underline{i}_{2C}^{\,c}
+    \end{bmatrix}
+    =\frac{1}{\sqrt{3}}
+    \begin{bmatrix}
+        1&-1&0\\
+        0&1&-1\\
+        -1&0&1
+    \end{bmatrix}
+    \begin{bmatrix}
+        \underline{i}_{2A}\\
+        \underline{i}_{2B}\\
+        \underline{i}_{2C}
+    \end{bmatrix},
+    \qquad \underline{i}_{1k}^{\,c}=\underline{i}_{1k}.
+    \label{eq:87_compensacao}
+\end{equation}
+
+A diferença entre fases eliminou a sequência zero. O fator $1/\sqrt{3}$ evitou introduzir ganho de magnitude no casamento. A expressão foi utilizada como equivalente fasorial, tendo sido reservada à configuração do grupo vetorial no IED a definição efetiva das permutações e polaridades. Não foi prevista compensação adicional por ligações externas dos TCs em triângulo.
+
+\textbf{b) Correntes de referência e relações dos TCs}
+
+Foi utilizada a potência ONAF de 6,25~MVA como base comum aos dois lados. As correntes de referência foram calculadas pela Equação~\eqref{eq:87_correntes_nominais}.
+
+\begin{equation}
+    \begin{aligned}
+        I_{\mathrm{ref,AT}}&=\frac{6{,}25\cdot10^6}
+        {\sqrt{3}\cdot69\cdot10^3}=52{,}296~\mathrm{A},\\
+        I_{\mathrm{ref,MT}}&=\frac{6{,}25\cdot10^6}
+        {\sqrt{3}\cdot13{,}8\cdot10^3}=261{,}481~\mathrm{A}.
+    \end{aligned}
+    \label{eq:87_correntes_nominais}
+\end{equation}
+
+Foram selecionadas relações 800-5 em alta e 400-5 em média tensão, com $RTC_{\mathrm{AT}}=160$ e $RTC_{\mathrm{MT}}=80$. A utilização dos mesmos valores de relação da sobrecorrente não significou compartilhamento dos núcleos ou circuitos. O casamento foi obtido por fatores internos de amplitude, sem exigir correntes secundárias nominais do transformador próximas de 5~A.
+
+\begin{equation}
+    \begin{aligned}
+        I_{\mathrm{sec,AT},N}&=\frac{52{,}296}{160}=0{,}32685~\mathrm{A},\\
+        I_{\mathrm{sec,MT},N}&=\frac{261{,}481}{80}=3{,}26851~\mathrm{A},\\
+        K_{\mathrm{AT}}&=\frac{800}{52{,}296}=15{,}2975,\qquad
+        K_{\mathrm{MT}}=\frac{400}{261{,}481}=1{,}52975.
+    \end{aligned}
+    \label{eq:87_casamento}
+\end{equation}
+
+Os fatores da Equação~\eqref{eq:87_casamento} corresponderam à razão entre a corrente primária nominal do TC e a corrente de referência do respectivo lado. Para $I_{s1}=0{,}20$~pu, foi conferida a compatibilidade com o fator de casamento de até 15,38 indicado para os módulos sensíveis. Ambos os fatores ficaram abaixo desse valor, com $K_{\mathrm{AT}}=15{,}2975$ próximo do limite de 15,38. A faixa foi conferida para a referência ONAF utilizada, sem atribuição de margem ampla para alterações de base. A adoção de módulos convencionais não foi considerada equivalente, pois o manual indicou limite de casamento de 4,65 para a mesma sensibilidade \cite{gev2025p64x}.
+
+\textbf{c) Critérios de carga, curto-circuito e tensão secundária}
+
+Foram utilizados somente os critérios de carga, curto-circuito e tensão. Foram preservados os comprimentos e a impedância dos cabos da Equação~\eqref{eq:z_total}. Para o novo IED foi utilizado o limite superior de 0,01~VA por fase a 5~A, uma vez que a carga nominal informada pelo fabricante foi inferior a esse valor. Foram obtidas as Equações~\eqref{eq:87_impedancias_tc} e~\eqref{eq:87_tensoes_tc}, sem incluir a resistência interna do TC, não fornecida.
+
+\begin{equation}
+    \begin{aligned}
+        Z_{\mathrm{IED}}&=\frac{0{,}01}{5^2}=0{,}0004~\Omega,\\
+        |Z_{\mathrm{AT}}|&=|2\cdot0{,}100(5{,}52+j0{,}13)+0{,}0004|
+        =1{,}10471~\Omega,\\
+        |Z_{\mathrm{MT}}|&=|2\cdot0{,}080(5{,}52+j0{,}13)+0{,}0004|
+        =0{,}88384~\Omega.
+    \end{aligned}
+    \label{eq:87_impedancias_tc}
+\end{equation}
+
+\begin{equation}
+    \begin{aligned}
+        V_{\mathrm{s,AT}}&=\frac{15.683{,}2}{160}\cdot1{,}10471
+        =108{,}28~\mathrm{V},\\
+        V_{\mathrm{s,MT}}&=\frac{2.918{,}4}{80}\cdot0{,}88384
+        =32{,}24~\mathrm{V}.
+    \end{aligned}
+    \label{eq:87_tensoes_tc}
+\end{equation}
+
+\begin{table}[htbp]
+    \centering
+    \caption{Verificação dos TCs exclusivos da proteção diferencial.}
+    \label{tab:87_verificacao_tc}
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{lcccccc}
+        \hline
+        \textbf{Lado} & \textbf{Relação} & \textbf{$I_p/I_{\mathrm{ref}}$ (A)}
+        & \textbf{$20I_p$ (A)} & \textbf{$I_{\mathrm{cc},\max}$ (A)}
+        & \textbf{$V_s$ (V)} & \textbf{Carga/CC/tensão}\\
+        \hline
+        AT & 800-5 & 800/52,296 & 16.000 & 15.683,2 & 108,28 & Sim/Sim/Sim\\
+        MT & 400-5 & 400/261,481 & 8.000 & 2.918,4 & 32,24 & Sim/Sim/Sim\\
+        \hline
+    \end{tabular}}
+    \par\vspace{2pt}
+    {\small Fonte: elaborado pelos autores.}
+\end{table}
+
+A relação revisada de alta atendeu a $20I_p\geq I_{\mathrm{cc},\max}$, pois $16.000>15.683{,}2$~A. Com o limite permanente de $1{,}2\cdot800=960$~A e a tensão calculada de 108,28~V, foram atendidos os três critérios adotados. O resultado não foi utilizado como comprovação de estabilidade para qualquer transitório, tendo sido mantida a verificação dos dados de excitação e resistência dos novos núcleos.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Especificação proposta dos núcleos exclusivos de 87T.}
+    \label{tab:87_especificacao_tc}
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{lcccccc}
+        \hline
+        \textbf{Aplicação} & \textbf{Qtd.} & \textbf{Tensão (kV)}
+        & \textbf{Relações (A)} & \textbf{Derivação}
+        & \textbf{FS/FT} & \textbf{Exatidão}\\
+        \hline
+        AT de 02T1 e 02T2 & 6 & 69 & 800-5 & 800-5 & 20/1,2 & 10B200\\
+        MT de 02T1 e 02T2 & 6 & 13,8 & 200/400-5 & 400-5 & 20/1,2 & 10B200\\
+        \hline
+    \end{tabular}}
+    \par\vspace{2pt}
+    {\small Fonte: elaborado pelos autores.}
+\end{table}
+
+As quantidades da Tabela~\ref{tab:87_especificacao_tc} abrangeram os dois transformadores. A classe foi requerida na derivação utilizada. Foi registrada a recomendação do fabricante de TCs com características apropriadas à proteção diferencial, incluindo conferência da tensão de joelho e da resistência secundária. Como esses dados não foram fornecidos, a estabilidade transitória não foi considerada comprovada apenas pela classe 10B200 e pela tensão calculada.
+
 \subsection{Cálculo dos ajustes da função diferencial do transformador}
 
+\textbf{a) Normalização e grandezas de operação}
+
+As correntes compensadas foram normalizadas pelas correntes secundárias de referência da Equação~\eqref{eq:87_casamento}. Assim, 1~pu correspondeu ao carregamento ONAF em ambos os lados, após a correção de amplitude e de fase.
+
+\begin{equation}
+    \underline{J}_{1k}=\frac{\underline{i}_{1k}^{\,c}}
+    {I_{\mathrm{sec,AT},N}},
+    \qquad
+    \underline{J}_{2k}=\frac{\underline{i}_{2k}^{\,c}}
+    {I_{\mathrm{sec,MT},N}}.
+    \label{eq:87_normalizacao}
+\end{equation}
+
+Foram utilizadas a soma fasorial para a corrente diferencial e a metade da soma das magnitudes para a restrição. Para a característica comum às três fases foi selecionado o maior valor de restrição, conforme a Equação~\eqref{eq:87_diferencial_restricao}.
+
+\begin{equation}
+    \begin{aligned}
+        I_{d,k}&=|\underline{J}_{1k}+\underline{J}_{2k}|,\\
+        I_{r,k}&=\frac{|\underline{J}_{1k}|+|\underline{J}_{2k}|}{2},
+        \qquad I_r=\max(I_{r,A},I_{r,B},I_{r,C}).
+    \end{aligned}
+    \label{eq:87_diferencial_restricao}
+\end{equation}
+
+Não foi mantida a definição de restrição pela menor corrente utilizada na característica do relé anterior. A alteração foi incorporada aos cálculos e aos pontos de representação, sem reutilizar bases de derivações de outro IED.
+
+\textbf{b) Ajustes de sensibilidade e declividade}
+
+Foram adotados os quatro parâmetros da Tabela~\ref{tab:87_parametros_slides}, provenientes do quadro da página 22 de \cite{cysne2026protecao}, compatíveis com os ajustes recomendados pelo fabricante para transformadores.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Parâmetros de referência adotados para a característica diferencial.}
+    \label{tab:87_parametros_slides}
+    \begin{tabular}{lcc}
+        \hline
+        \textbf{Parâmetro} & \textbf{Valor adotado} & \textbf{Função}\\
+        \hline
+        $I_{s1}$ & 0,20 pu & Limiar diferencial mínimo\\
+        $K_1$ & 30\% & Primeira declividade\\
+        $I_{s2}$ & 1,00 pu & Transição para a segunda declividade\\
+        $K_2$ & 80\% & Segunda declividade\\
+        \hline
+    \end{tabular}
+    \par\vspace{2pt}
+    {\small Fonte: adaptado de \cite{cysne2026protecao}.}
+\end{table}
+
+A conversão de 0,20~pu em 1~A apresentada nos slides foi interpretada na base compensada de 5~A, e não como exigência de 1~A físico no secundário do TC de alta. Os limiares primários e secundários foram calculados pela Equação~\eqref{eq:87_sensibilidade_at}.
+
+\begin{equation}
+    \begin{aligned}
+        I_{\mathrm{87,AT}}&=0{,}20\cdot52{,}296=10{,}459~\mathrm{A},
+        &i_{\mathrm{87,AT}}&=\frac{10{,}459}{160}=0{,}06537~\mathrm{A},\\
+        I_{\mathrm{87,MT}}&=0{,}20\cdot261{,}481=52{,}296~\mathrm{A},
+        &i_{\mathrm{87,MT}}&=\frac{52{,}296}{80}=0{,}65370~\mathrm{A}.
+    \end{aligned}
+    \label{eq:87_sensibilidade_at}
+\end{equation}
+
+Na base virtual de 5~A, a corrente física de alta tensão da Equação~\eqref{eq:87_sensibilidade_at} correspondeu a $15{,}2975\cdot0{,}06537\approx1{,}00$~A compensado, ou $1{,}00/5=0{,}20$~pu. Essa conversão manteve os valores dos slides sem confundir a corrente física de entrada com a corrente após o casamento digital.
+
+Esses valores corresponderam à alimentação unilateral, sem restrição harmônica e sem corrente passante. Os módulos sensíveis foram incluídos na especificação para compatibilizar o fator elevado de casamento da alta tensão com o limiar de 0,20~pu. Não foi atribuída à função diferencial cobertura integral de faltas de pequena corrente próximas ao neutro; foi mantida a proteção de terra complementar.
+
+No modelo estático de erros opostos de $+10\%$ e $-10\%$, a corrente diferencial relativa à restrição pela média foi calculada pela Equação~\eqref{eq:87_erro_tc}.
+
+\begin{equation}
+    \frac{I_d}{I_r}
+    =\frac{1{,}10-0{,}90}{(1{,}10+0{,}90)/2}
+    =0{,}20=20\%<K_1=30\%.
+    \label{eq:87_erro_tc}
+\end{equation}
+
+A declividade inicial apresentou margem nesse modelo, sem comprovar estabilidade para erros angulares ou posições extremas do comutador não informados. A segunda declividade de 80\% foi adotada para aumentar a restrição nas correntes passantes elevadas, acompanhada da restrição transitória e da detecção de saturação disponibilizadas pelo IED.
+
+\textbf{c) Bloqueios harmônicos e estágios de ajuste alto}
+
+Foram especificados bloqueio de segundo harmônico em 20\%, de quinto harmônico em 35\% e bloqueio cruzado entre fases, conforme o manual do P642 \cite{gev2025p64x}. As relações harmônicas foram expressas pela Equação~\eqref{eq:87_harmonicos}.
+
+\begin{equation}
+    h_2=\frac{|I_{d,2}|}{|I_{d,1}|}\cdot100,
+    \qquad h_5=\frac{|I_{d,5}|}{|I_{d,1}|}\cdot100.
+    \label{eq:87_harmonicos}
+\end{equation}
+
+Foi prevista a utilização do segundo harmônico para a energização e do quinto para a sobreexcitação. Esses ajustes não foram apresentados como resultados de oscilografias locais, pois não foram disponibilizados registros de energização.
+
+Foi escolhido $I_{\mathrm{s,HS1}}=32$~pu, com HS1 baseado em detecção de pico e condicionado à região de operação percentual. O estágio HS2, sem restrição percentual, foi mantido desabilitado, embora seu valor armazenado tenha sido de 32~pu. A decisão foi associada à ausência de comprovação transitória dos TCs e à preservação da supervisão percentual. Os bloqueios harmônicos não foram utilizados para inibir HS1.
+
+Como verificação de ordem de grandeza, foi utilizada a estimativa de energização de $8I_N$ do roteiro. Na hipótese conservadora de pico assimétrico de até $2\sqrt{2}$ vezes o valor eficaz de referência, foi obtida a Equação~\eqref{eq:87_inrush}.
+
+\begin{equation}
+    I_{\mathrm{inrush,pu}}=8,
+    \qquad I_{\mathrm{pico,inrush,pu}}=2\sqrt{2}\cdot8=22{,}63<32.
+    \label{eq:87_inrush}
+\end{equation}
+
+Para a maior corrente passante fornecida, obteve-se $2.918{,}4/261{,}481=11{,}161$~pu e pico de referência de $2\sqrt{2}\cdot11{,}161=31{,}57$~pu. Como esse valor ficou próximo do ajuste alto, a comparação não foi utilizada para comprovar imunidade na presença de erros ou saturação; foram preservadas a supervisão percentual e a desabilitação de HS2. A atuação para pequena corrente interna permaneceu atribuída ao estágio percentual. Não foi introduzido retardo intencional no disparo diferencial; o tempo efetivo de eliminação permaneceu dependente do processamento e da interrupção dos disjuntores.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Ajustes propostos para cada IED diferencial.}
+    \label{tab:87_ajustes}
+    \begin{tabular}{lc}
+        \hline
+        \textbf{Parâmetro} & \textbf{Valor adotado}\\
+        \hline
+        IED / entradas de corrente & MiCOM P642 / módulos sensíveis, 5 A\\
+        Potência / tensões de referência & 6,25 MVA / 69--13,8 kV\\
+        Relações de TC AT/MT & 800-5 / 400-5\\
+        Ligações de TC / grupo vetorial & Estrela--estrela / Dyn1, ABC\\
+        Fatores de casamento AT/MT & 15,2975 / 1,52975\\
+        Filtro de sequência zero MT & Habilitado\\
+        $I_{s1}$ / $K_1$ & 0,20 pu / 30\%\\
+        $I_{s2}$ / $K_2$ & 1,00 pu / 80\%\\
+        Segundo / quinto harmônico & 20\% / 35\%\\
+        Bloqueio cruzado / restrição transitória & Habilitado / habilitada\\
+        Detecção de saturação de TC & Habilitada\\
+        HS1 / estado de HS2 & 32 pu / desabilitado\\
+        Retardo intencional / religamento após 87 & Sem retardo / bloqueado\\
+        Disjuntores comandados & 12T1/11T1 ou 12T2/11T2\\
+        \hline
+    \end{tabular}
+    \par\vspace{2pt}
+    {\small Fonte: elaborado pelos autores.}
+\end{table}
+
 \subsection{Gerar a curva da função diferencial}
+
+A característica foi definida pelos parâmetros da Tabela~\ref{tab:87_parametros_slides} e pela implementação documentada do P642. O gráfico didático da página 24 dos slides foi utilizado para identificar as regiões de operação e restrição. Seu traçado esquemático não foi transcrito como algoritmo do IED: o fabricante apresentou um patamar inicial e dois trechos inclinados, com primeira mudança em $I_{s1}/K_1$.
+
+\begin{equation}
+    I_{r,1}=\frac{I_{s1}}{K_1}
+    =\frac{0{,}20}{0{,}30}=0{,}6667~\mathrm{pu},
+    \qquad I_{r,2}=I_{s2}=1{,}00~\mathrm{pu}.
+    \label{eq:87_ponto_mudanca}
+\end{equation}
+
+A fronteira estática, sem os acréscimos da restrição transitória, foi dada pela Equação~\eqref{eq:87_curva_final}.
+
+\begin{equation}
+    I_{d,\mathrm{lim}}(I_r)=
+    \begin{cases}
+        0{,}20, & 0\leq I_r\leq I_{r,1},\\
+        0{,}30I_r, & I_{r,1}<I_r\leq1{,}00,\\
+        0{,}30+0{,}80(I_r-1{,}00), & I_r>1{,}00.
+    \end{cases}
+    \label{eq:87_curva_final}
+\end{equation}
+
+Os trechos foram contínuos: na primeira mudança, $0{,}30\cdot0{,}6667\approx0{,}20$~pu; na segunda, ambos os trechos inclinados resultaram em 0,30~pu. Foi prevista atuação quando $I_{d,k}$ ultrapassasse a fronteira, sem bloqueio aplicável. Na presença de restrição transitória, a fronteira efetiva foi elevada pelos recursos internos.
+
+Para a falta externa trifásica, foi utilizado 576,54~A pela relação de transformação de 2.882,7~A. Após a compensação, as correntes foram opostas e de mesma magnitude.
+
+\begin{equation}
+    \begin{aligned}
+        J_{1,3\phi}&=\frac{576{,}54}{52{,}29622}=11{,}0245,\\
+        J_{2,3\phi}&=\frac{2.882{,}7}{261{,}48110}=11{,}0245,\\
+        I_{d,3\phi}&\approx0,\qquad I_{r,3\phi}=11{,}0245,\\
+        I_{d,\mathrm{lim}}&=0{,}30+0{,}80(11{,}0245-1)
+        =8{,}3196~\mathrm{pu}.
+    \end{aligned}
+    \label{eq:87_verificacao_externa}
+\end{equation}
+
+Para a falta externa fase-terra, a Equação~\eqref{eq:87_compensacao} produziu duas fases de magnitude $2.918{,}4/\sqrt{3}$ na base primária de média tensão e eliminou a sequência zero. A corrente nas fases correspondentes de alta foi de aproximadamente 336,99~A, com soma residual nula.
+
+\begin{equation}
+    \begin{aligned}
+        J_{1,1\phi}&=\frac{2.918{,}4/(5\sqrt{3})}{52{,}29622}=6{,}4438,\\
+        J_{2,1\phi}&=\frac{2.918{,}4/\sqrt{3}}{261{,}48110}=6{,}4438,\\
+        I_{d,1\phi}&\approx0,\qquad I_{r,1\phi}=6{,}4438,\\
+        I_{d,\mathrm{lim}}&=0{,}30+0{,}80(6{,}4438-1)
+        =4{,}6551~\mathrm{pu}.
+    \end{aligned}
+    \label{eq:87_verificacao_terra}
+\end{equation}
+
+As verificações representaram o casamento ideal, sem erros dos TCs ou saturação. Para uma falta interna exemplificativa com alimentação unilateral de $J=1$~pu, foram obtidos $I_d=1$~pu e $I_r=0{,}5$~pu, acima do patamar de operação de 0,20~pu, sem bloqueio harmônico.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Pontos estabelecidos para a representação da característica diferencial.}
+    \label{tab:87_pontos_curva}
+    \begin{tabular}{lccc}
+        \hline
+        \textbf{Condição} & \textbf{$I_r$ (pu)}
+        & \textbf{$I_d$ (pu)} & \textbf{$I_{d,\mathrm{lim}}$ (pu)}\\
+        \hline
+        Carga nominal ONAF ideal & 1,0000 & 0,0000 & 0,3000\\
+        Falta externa trifásica ideal & 11,0245 & 0,0000 & 8,3196\\
+        Falta externa fase-terra ideal & 6,4438 & 0,0000 & 4,6551\\
+        Primeira mudança de trecho & 0,6667 & 0,2000 & 0,2000\\
+        Segunda mudança de trecho & 1,0000 & 0,3000 & 0,3000\\
+        Fronteira de segunda declividade & 2,0000 & 1,1000 & 1,1000\\
+        Falta interna exemplificativa & 0,5000 & 1,0000 & 0,2000\\
+        \hline
+    \end{tabular}
+    \par\vspace{2pt}
+    {\small Fonte: elaborado pelos autores.}
+\end{table}
+
+Foram distinguidos os pontos de fronteira dos pontos de operação da Tabela~\ref{tab:87_pontos_curva}. Não foi inserida figura nesta etapa. A seletividade diferencial foi fundamentada na delimitação da zona e no equilíbrio das correntes compensadas, sem escalonamento com os alimentadores. A confirmação dos dados dos TCs, da faixa do comutador, dos fasores de carga e dos bloqueios permaneceu necessária para a implantação, assim como a confirmação da classe e das características dos novos TCs de alta.
