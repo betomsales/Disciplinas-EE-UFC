@@ -1,0 +1,49 @@
+\clearpage
+\renewcommand{\thesection}{\Alph{section}}
+\refstepcounter{section}
+\section*{\textbf{ANEXO~\thesection\ --- Código MATLAB para geração das ilustrações}}
+\addcontentsline{toc}{section}{ANEXO~\thesection\ --- Código MATLAB para geração das ilustrações}
+\label{anexo:codigo_matlab}
+
+Foi preparado o arquivo \texttt{gerar\_ilustracoes.m}, apresentado na Listagem~\ref{lst:matlab_ilustracoes}, para reproduzir os coordenogramas, os diagramas de tempo, a temporização de falha de disjuntor e a característica diferencial dos capítulos 4 e 5. Os ajustes finais foram reunidos em matrizes, e as operações comuns de cálculo e representação foram agrupadas em funções locais. Foi incluída a conferência dos tempos nominais de referência, mantendo-se a distinção entre os pré-ajustes, as características temporizadas e a estimativa analítica de 51N de Pici.
+
+Para contornar a falha de gravação observada na pasta utilizada para download, a exportação foi configurada para uma pasta temporária do sistema, com arquivos PNG a 300~dpi e PDF vetorial \cite{mathworks2026exportgraphics}. Foi prevista a leitura de cada PNG e a verificação dos marcadores inicial e final dos PDFs. Em seguida, foi prevista a compactação, a extração do ZIP e a comparação dos arquivos byte a byte, antes de sua cópia para a pasta de saída \cite{mathworks2026zip}. A conferência dos marcadores do PDF foi tratada como verificação básica de estrutura, complementada pela abertura e inspeção visual do arquivo.
+
+Foi prevista a execução em MATLAB com suporte a \texttt{exportgraphics}, sem utilização de ferramentas adicionais de proteção. Com o arquivo na pasta atual ou no caminho de busca do MATLAB, a chamada foi definida por:
+
+\begin{lstlisting}[language=Matlab,numbers=none]
+arquivoZIP = gerar_ilustracoes;
+\end{lstlisting}
+
+No MATLAB Online, foi previsto o download do ZIP indicado ao término da execução, seguido de sua extração no computador. A pasta de saída também pôde ser informada como argumento da função.
+
+\begingroup
+\SingleSpacing
+\renewcommand{\lstlistingname}{Listagem}
+\lstinputlisting[
+    language=Matlab,
+    basicstyle=\ttfamily\footnotesize,
+    keywordstyle=\bfseries\color{blue!60!black},
+    commentstyle=\itshape\color{black!60},
+    stringstyle=\color{black},
+    numbers=left,
+    numberstyle=\tiny\color{black!60},
+    numbersep=6pt,
+    columns=fullflexible,
+    keepspaces=true,
+    upquote=true,
+    breaklines=true,
+    showstringspaces=false,
+    caption={Código MATLAB para geração das oito ilustrações e conferência da exportação.},
+    label={lst:matlab_ilustracoes},
+    literate=
+        {á}{{\'a}}1 {à}{{\`a}}1 {â}{{\^a}}1 {ã}{{\~a}}1
+        {é}{{\'e}}1 {ê}{{\^e}}1 {í}{{\'i}}1
+        {ó}{{\'o}}1 {ô}{{\^o}}1 {õ}{{\~o}}1
+        {ú}{{\'u}}1 {ç}{{\c c}}1
+        {Á}{{\'A}}1 {À}{{\`A}}1 {Â}{{\^A}}1 {Ã}{{\~A}}1
+        {É}{{\'E}}1 {Ê}{{\^E}}1 {Í}{{\'I}}1
+        {Ó}{{\'O}}1 {Ô}{{\^O}}1 {Õ}{{\~O}}1
+        {Ú}{{\'U}}1 {Ç}{{\c C}}1 {—}{{\textemdash}}1
+]{MATLAB/gerar_ilustracoes.m}
+\endgroup
