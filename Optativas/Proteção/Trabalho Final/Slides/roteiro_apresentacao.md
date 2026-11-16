@@ -8,7 +8,7 @@ Foram preparados 10 slides, incluindo a capa, para uma exposição estimada em *
 | 2 | Sistema e premissas | 1:30 | 2:00 | Um transformador em serviço, outro em reserva; curtos fornecidos preservados. |
 | 3 | Dimensionamento dos TCs | 1:30 | 3:30 | Três critérios; 1200/5 na entrada e 800/5 nos primários. |
 | 4 | Curva e ajustes de fase | 1:30 | 5:00 | C2, limite de múltiplo 30 e função do aditivo de tempo. |
-| 5 | Coordenação de fase | 1:30 | 6:30 | Curvas na mesma base; menor margem nominal de aproximadamente 0,451 s. |
+| 5 | Coordenação de fase | 1:30 | 6:30 | Curvas combinadas; 51 do primário em 1,179 s; margem geral–primário de aproximadamente 0,403 s na falta bifásica Dyn1. |
 | 6 | Coordenação de neutro | 1:15 | 7:45 | Tempos de 0,303 / 0,753 / 1,203 s; sequência zero não transferida pelo triângulo. |
 | 7 | Proteção diferencial | 2:00 | 9:45 | Normalização, compensação e fronteira percentual; módulos sensíveis e limitações transitórias. |
 | 8 | Falha de disjuntor e religamento | 1:15 | 11:00 | A contagem de 0,25 s começou após TR; religamento bloqueado após 87T e 50BF. |

@@ -48,10 +48,12 @@ Os ajustes do relé foram inseridos em ampères secundários. A conversão foi f
 
 \begin{equation}
     \begin{aligned}
-        RTC_{\mathrm{12L1}}&=240,\quad RTC_{\mathrm{12T}}=160,\quad RTC_{\mathrm{11T}}=80,\quad RTC_{\mathrm{21L}}=RTC_{\mathrm{neutro}}=40,\\
-        I_{\mathrm{n,AT}}&=\frac{6{,}25\cdot10^6}{\sqrt{3}\cdot69\cdot10^3}=52{,}3~\mathrm{A},\qquad
-        I_{\mathrm{n,MT}}=\frac{6{,}25\cdot10^6}{\sqrt{3}\cdot13{,}8\cdot10^3}=261{,}5~\mathrm{A},\qquad
-        RTT=\frac{69}{13{,}8}=5.
+        RTC_{\mathrm{12L1}}&=240,\quad RTC_{\mathrm{12T}}=160,\\
+        RTC_{\mathrm{11T}}&=80,\quad RTC_{\mathrm{21L}}=RTC_{\mathrm{neutro}}=40,\\
+        I_{\mathrm{n,AT}}&=\frac{6{,}25\cdot10^6}{\sqrt{3}\cdot69\cdot10^3}
+            =52{,}3~\mathrm{A},\quad RTT=\frac{69}{13{,}8}=5,\\
+        I_{\mathrm{n,MT}}&=\frac{6{,}25\cdot10^6}{\sqrt{3}\cdot13{,}8\cdot10^3}
+            =261{,}5~\mathrm{A}.
     \end{aligned}
     \label{eq:oc_nominais}
 \end{equation}
@@ -378,7 +380,7 @@ Nos alimentadores, foi previsto um único religamento com tempo morto de 10~s, b
 
 O código MATLAB para a reprodução das ilustrações dos estudos de sobrecorrente e diferencial foi apresentado no Anexo~\ref{anexo:codigo_matlab}, com os ajustes finais e a rotina de conferência da exportação.
 
-Os coordenogramas foram traçados a partir das expressões de tempo e dos ajustes calculados. No diagrama de fase, as correntes foram referidas a 13,8~kV para faltas externas trifásicas. Os parâmetros foram reunidos na Tabela~\ref{tab:oc_bases_curvas}.
+Os coordenogramas foram traçados a partir das expressões de tempo e dos ajustes calculados, com representação combinada das funções 50/51 e 50N/51N nos vãos correspondentes. No diagrama de fase, as correntes foram referidas a 13,8~kV para faltas externas trifásicas. Os parâmetros dos trechos temporizados C2 foram reunidos na Tabela~\ref{tab:oc_bases_curvas}; os degraus de alta corrente foram associados aos ajustes da Tabela~\ref{tab:oc_oap_rapidas}.
 
 \begin{table}[htbp]
     \centering
@@ -412,48 +414,62 @@ Foram mantidos os patamares de múltiplo 30 e foram incluídos explicitamente os
     \label{eq:oc_tdef}
 \end{equation}
 
-O ajuste 50 de alta tensão foi referido a 4.992~A na base de média tensão, acima do curto máximo de 2.882,7~A. As curvas residuais de 69~kV foram tratadas em gráfico próprio, sem transferência de sequência zero pelo triângulo. A contribuição de Pici foi relacionada à corrente de média tensão somente no cenário trifásico informado, por $I_{\mathrm{PCI}}=(558/2.882{,}7)I_{\mathrm{MT}}$.
+Para a representação combinada, foi utilizado o menor tempo entre os elementos que apresentaram partida e habilitação no mesmo vão. A característica 50/51 foi expressa pela Equação~\eqref{eq:oc_curva_combinada}, no domínio de partida de 51, tendo sido aplicado o mesmo procedimento a 50N/51N.
 
-Na Figura~\ref{fig:oc_coordenograma_fase_mt}, foram representadas as curvas de fase dos alimentadores, do geral de média tensão, do primário e da entrada, na base comum de 13,8~kV. Foi incluído o pré-ajuste 50 da saída, com atraso de 0,10~s, sem atribuição de alcance comprovado ao longo do alimentador. O estágio 50 do primário permaneceu acima do domínio de corrente representado.
+\begin{equation}
+    t_{50/51}(I)=
+    \begin{cases}
+        t_{51}(I), & I<I_{\mathrm{p},50}\ \text{ou 50 desabilitada},\\
+        \min\!\left[t_{51}(I),t_{\mathrm{def}}\right],
+            & I\geq I_{\mathrm{p},50}\ \text{e 50 habilitada}.
+    \end{cases}
+    \label{eq:oc_curva_combinada}
+\end{equation}
+
+Os degraus resultantes identificaram a passagem para o atraso definido do estágio de alta corrente. Nos alimentadores, sua representação permaneceu condicional à liberação dos pré-ajustes de alcance. Os tempos de 51 e 51N apresentados nas tabelas continuaram correspondendo aos elementos temporizados isolados, mesmo quando a característica combinada apresentou menor tempo pela atuação de 50 ou 50N.
+
+O ajuste 50 de alta tensão foi referido a 4.992~A na base de média tensão, acima do curto máximo de 2.882,7~A. O eixo horizontal do coordenograma de fase foi estendido até 7.000~A para permitir a visualização desse degrau. A linha vertical tracejada identificou o limite de curto fornecido; o trecho à sua direita foi utilizado como extensão de representação da característica, sem alteração do nível de curto-circuito do projeto. As curvas residuais de 69~kV foram tratadas em gráfico próprio, sem transferência de sequência zero pelo triângulo.
+
+Na Figura~\ref{fig:oc_coordenograma_fase_mt}, foram representadas as características de fase dos alimentadores, do geral de média tensão, do primário e da entrada, na base comum de 13,8~kV. A curva da saída apresentou o degrau do pré-ajuste 50 em 2.306,4~A e 0,10~s, sem atribuição de alcance comprovado ao longo do alimentador. O degrau do primário foi mostrado em 4.992~A referidos à MT e 0,05~s, à direita do limite de curto de 2.882,7~A. Esse estágio não apresentou partida para as faltas trifásicas de média tensão fornecidas. Nos gerais e na entrada, a representação permaneceu limitada a 51, com 50 desabilitada.
 
 \begin{figure}[H]
     \centering
-    \caption{Coordenograma de fase na base de 13,8~kV.}
+    \caption{Coordenograma combinado 50/51 de fase na base de 13,8~kV.}
     \includegraphics[width=\textwidth]{Imagens/01_coordenograma_fase_MT.pdf}
     \label{fig:oc_coordenograma_fase_mt}
     \par\vspace{2pt}
     {\small Fonte: elaborado pelos autores.}
 \end{figure}
 
-Na Figura~\ref{fig:oc_coordenograma_neutro_mt}, foram reunidas as curvas 51N dos alimentadores e do geral e 51G do neutro do transformador, com os respectivos aditivos de tempo. Foram indicados também 51NS e o pré-ajuste 50N da saída, mantendo-se as condições de liberação já estabelecidas para esses elementos. A representação foi limitada às grandezas residuais e de neutro do setor de média tensão.
+Na Figura~\ref{fig:oc_coordenograma_neutro_mt}, foram reunidas a característica combinada 50N/51N dos alimentadores, a curva 51N do geral e a curva 51G do neutro do transformador, com os respectivos aditivos de tempo. Na saída, o degrau de 50N ocorreu em 2.334,8~A e 0,10~s, sob a condição de liberação do pré-ajuste. A linha vertical tracejada identificou o curto fase-terra máximo de 2.918,4~A, e a linha horizontal pontilhada correspondeu a 51NS em 60~s, condicionada ao histórico de desequilíbrio. O estágio 50N do geral permaneceu desabilitado. A representação foi limitada às grandezas residuais e de neutro do setor de média tensão.
 
 \begin{figure}[H]
     \centering
-    \caption{Coordenograma de neutro na base de 13,8~kV.}
+    \caption{Coordenograma combinado 50N/51N de neutro na base de 13,8~kV.}
     \includegraphics[width=\textwidth]{Imagens/02_coordenograma_neutro_MT.pdf}
     \label{fig:oc_coordenograma_neutro_mt}
     \par\vspace{2pt}
     {\small Fonte: elaborado pelos autores.}
 \end{figure}
 
-Foi verificada numericamente a ordenação das expressões nos intervalos comuns de partida até os máximos fornecidos. Para fase entre primário e entrada, foram obtidos, em 15.683,2~A, tempos de 0,317 e 0,748~s, preservando 0,43~s mesmo no patamar de múltiplo 30. Essa verificação corrigiu a insuficiência de margem que teria ocorrido com dials escalonados sem aditivo no setor de alta tensão. Entre geral e primário, a menor margem ocorreu na falta bifásica em média tensão (0,40~s), caso que definiu o dial de 0,68 do primário.
+Foi verificada numericamente a ordenação dos elementos temporizados nos intervalos comuns de partida até os máximos fornecidos. Para 51 do primário e da entrada, foram obtidos, em 15.683,2~A, tempos de 0,317 e 0,748~s e diferença de aproximadamente 0,431~s, considerando esses elementos isoladamente. Entre geral e primário, foram obtidas diferenças de aproximadamente 0,520~s na falta trifásica e 0,403~s na falta bifásica de referência em média tensão. A verificação bifásica da Equação~\eqref{eq:oc_bifasica_dyn} definiu o dial de 0,68 do primário e foi realizada separadamente da leitura da Figura~\ref{fig:oc_coordenograma_fase_mt}, cuja conversão comum de corrente correspondeu ao caso trifásico.
 
-As curvas de fase do setor de 69~kV foram apresentadas na Figura~\ref{fig:oc_coordenograma_fase_at}. A referência de Pici foi representada por um ponto correspondente à falta trifásica na barra, utilizando-se sua contribuição própria no cálculo do tempo da Equação~\eqref{eq:oc_tempo_pci}. A presença das curvas dos diferentes vãos no mesmo gráfico não significou corrente passante por todos eles para qualquer localização de falta.
+As características de fase do setor de 69~kV foram apresentadas na Figura~\ref{fig:oc_coordenograma_fase_at}. O primário foi representado pela combinação 50/51, com passagem ao atraso de 0,05~s a partir de 998,4~A; por isso, o patamar isolado de 51 em aproximadamente 0,317~s não constituiu o trecho visível da curva combinada nessa região. Na entrada, foi mantida apenas 51, pois 50 permaneceu desabilitada. A referência de Pici foi representada por um ponto correspondente à falta trifásica na barra, utilizando-se sua contribuição própria no cálculo do tempo da Equação~\eqref{eq:oc_tempo_pci}. A linha tracejada identificou 15.683,2~A. A presença das curvas dos diferentes vãos no mesmo gráfico não significou corrente passante por todos eles para qualquer localização de falta.
 
 \begin{figure}[H]
     \centering
-    \caption{Coordenograma de fase na base de 69~kV.}
+    \caption{Coordenograma combinado 50/51 de fase na base de 69~kV.}
     \includegraphics[width=\textwidth]{Imagens/03_coordenograma_fase_AT.pdf}
     \label{fig:oc_coordenograma_fase_at}
     \par\vspace{2pt}
     {\small Fonte: elaborado pelos autores.}
 \end{figure}
 
-Na Figura~\ref{fig:oc_coordenograma_neutro_at}, foram apresentadas separadamente as curvas residuais de alta tensão. O ponto de 51N de Pici correspondeu à extrapolação analítica da curva C2 para a contribuição fase-terra fornecida, cujo múltiplo ultrapassou 30. Esse ponto não foi utilizado como comprovação da resposta efetiva do relé da concessionária nem como representação de corrente residual transferida através do triângulo.
+Na Figura~\ref{fig:oc_coordenograma_neutro_at}, foram apresentadas separadamente as características residuais de alta tensão. No primário, a combinação 50N/51N apresentou o degrau de 0,05~s a partir de 200~A, enquanto na entrada permaneceu a característica 51N, com 50N desabilitada. A linha tracejada identificou o curto fase-terra máximo de 10.575,5~A. O ponto de 51N de Pici correspondeu à extrapolação analítica da curva C2 para a contribuição fase-terra fornecida, cujo múltiplo ultrapassou 30. Esse ponto não foi utilizado como comprovação da resposta efetiva do relé da concessionária nem como representação de corrente residual transferida através do triângulo.
 
 \begin{figure}[H]
     \centering
-    \caption{Coordenograma de neutro na base de 69~kV.}
+    \caption{Coordenograma combinado 50N/51N de neutro na base de 69~kV.}
     \includegraphics[width=\textwidth]{Imagens/04_coordenograma_neutro_AT.pdf}
     \label{fig:oc_coordenograma_neutro_at}
     \par\vspace{2pt}
@@ -497,6 +513,8 @@ Para evitar duplicidade, os tempos de processamento foram separados dos tempos i
 \end{table}
 
 Na Figura~\ref{fig:oc_tempos_mt}, foram comparados os tempos nominais para faltas trifásica e fase-terra próximas à saída, com as correntes máximas de referência. Cada barra foi contada desde o início da falta, na hipótese de sua permanência; não foi representada uma sequência obrigatória de aberturas. Na eliminação normal pela proteção de saída, as retaguardas tiveram sua temporização interrompida. Os estágios 50/50N foram identificados como condicionais, e os tempos de comunicação e interrupção não foram somados aos valores calculados.
+
+Com o dial de 0,68 no primário, a referência trifásica resultou em 0,202, 0,659, 1,179 e 1,778~s para 51 do alimentador, do geral, do primário e da entrada, respectivamente. Na falta fase-terra, foram mantidos 0,303, 0,753 e 1,203~s para 51N do alimentador, 51N do geral e 51G, com retaguarda de fase do primário em 2,219~s. Os atrasos condicionais de 0,100~s de 50/50N foram mostrados em barras próprias. Assim, foram distinguidos os tempos de cada elemento daqueles da característica combinada, que selecionou o menor tempo dos elementos habilitados.
 
 \begin{figure}[H]
     \centering
