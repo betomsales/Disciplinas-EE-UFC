@@ -7,8 +7,9 @@ if nargin < 1, pasta_saida = pwd; end
 if ~isfolder(pasta_saida), mkdir(pasta_saida); end
 
 % Colunas: RTC, TAP secundario, dial e aditivo de tempo.
+% Dial do primario AT = 0,68, definido pela falta bifasica na MT (Dyn1).
 fase = [40 3.13 .33 0; 80 4.10 .38 0; ...
-        160 .41 .64 0; 240 .32 .64 .45];
+        160 .41 .68 0; 240 .32 .64 .45];
 neutro = [40 .60 .65 0; 80 .75 .65 .45; 40 1.50 .65 .90; ...
           160 .38 .33 0; 240 .50 .33 .45];
 nomesF = {'51 alimentador','51 geral MT', ...
@@ -34,38 +35,53 @@ tRet = tempo51(337,fase(3,:));
 % Pici: contribuicoes proprias; 51N foi extrapolacao C2 sem patamar.
 tPCI = 13.5*.12/(15179.3/1161.6-1);
 tPCIN = 13.5*.55/(10235.1/160.8-1);
-esperados = [.202272348 .658644851 1.109383441 1.777900740 ...
+esperados = [.202272348 .658644851 1.178719906 1.777900740 ...
              .302586207 .752586207 1.202586207 .153620690 .603620690];
 assert(max(abs([tF tN]-esperados)) < 1e-8, ...
     'Os tempos diferem dos valores de referencia.');
+% Falta bifasica na MT: o primario em triangulo ve 2/sqrt(3) da corrente
+% refletida, ou seja, os mesmos 576,5 A da falta trifasica.
+I2 = sqrt(3)/2*I3;
+tGeral2F = tempo51(I2,fase(2,:));
+tAT2F = tempo51(2/sqrt(3)*I2/RTT,fase(3,:));
+assert(tAT2F - tGeral2F >= .40 - 1e-3, ...
+    'Margem geral-primario insuficiente na falta bifasica.');
 
-% 1 e 2: coordenogramas na base de media tensao.
-f(1) = coordenograma('Coordenograma de fase — base de 13,8 kV', ...
-    [110 I3],fase,[1 1 RTT RTT],nomesF, ...
-    {Ip50(1),.10,'50 saída: pré-ajuste','--'});
-rodape(f(1),{'Curvas C2 nominais. O estágio 50 da saída é um pré-ajuste de alcance.', ...
-    '50 AT = 4.992 A referidos à MT, acima do domínio de curto representado.'});
-f(2) = coordenograma('Coordenograma de neutro — base de 13,8 kV', ...
-    [10 I1],neutro(1:3,:),[1 1 1],nomesN(1:3), ...
-    {15.2,60,'51NS: verificar desequilíbrio',':'; ...
-     Ip50(2),.10,'50N saída: pré-ajuste','--'});
-rodape(f(2),{'51NS depende da verificação do desequilíbrio; 50N é pré-ajuste de alcance.', ...
+% Estagios instantaneos por linha de fase/neutro: [pick-up primario no
+% proprio vao (A), atraso (s)]; NaN = estagio desabilitado.
+inst50F = [Ip50(1) .10; NaN NaN; Ip50(3) .05; NaN NaN];
+inst50N = [Ip50(2) .10; NaN NaN; NaN NaN; Ip50(4) .05; NaN NaN];
+rotF = {'50/51 alimentador (50: pré-ajuste)','51 geral MT (50 desabilitado)', ...
+        '50/51 primário AT','51 entrada AT (50 desabilitado)'};
+rotN = {'50N/51N alimentador (50N: pré-ajuste)','51N geral MT (50N desabilitado)', ...
+        '51G neutro do transformador','50N/51N primário AT', ...
+        '51N entrada AT (50N desabilitado)'};
+
+% 1 e 2: coordenogramas 50/51 na base de media tensao.
+% O eixo vai alem do curto maximo para mostrar o 50 AT (4.992 A na MT).
+f(1) = coordenograma('Coordenograma 50/51 de fase — base de 13,8 kV', ...
+    [110 7000],fase,inst50F,[1 1 RTT RTT],rotF,{},I3,'I_{cc,3\phi} máx. MT');
+rodape(f(1),{'Curvas C2 com degrau do estágio 50 quando habilitado. O 50 da saída é pré-ajuste de alcance.', ...
+    '50 AT = 4.992 A referidos à MT, acima do curto máximo de 2.882,7 A: não atua para faltas na MT.'});
+f(2) = coordenograma('Coordenograma 50N/51N de neutro — base de 13,8 kV', ...
+    [10 4000],neutro(1:3,:),inst50N(1:3,:),[1 1 1],rotN(1:3), ...
+    {15.2,60,'51NS: verificar desequilíbrio',':'},I1,'I_{cc,1\phi} máx. MT');
+rodape(f(2),{'51NS depende da verificação do desequilíbrio; 50N da saída é pré-ajuste de alcance.', ...
     'As curvas residuais de 69 kV foram representadas separadamente.'});
 
-% 3 e 4: coordenogramas AT; o ponto PCI representou a falta de barra.
+% 3 e 4: coordenogramas 50/51 AT; o ponto PCI representou a falta de barra.
 for k = 3:4
     if k == 3
-        p = fase(3:4,:); rotulos = nomesF(3:4); imax = I3AT;
-        tipo = 'fase'; rapido = {Ip50(3),.05,'50 primário AT','--'};
+        p = fase(3:4,:); inst = inst50F(3:4,:); rotulos = rotF(3:4);
+        imax = I3AT; tipo = '50/51 de fase'; rotIcc = 'I_{cc,3\phi} máx. AT';
         tp = tPCI; legendaPCI = '51 PCI: referência para a falta na barra';
     else
-        p = neutro(4:5,:); rotulos = nomesN(4:5); imax = I1AT;
-        tipo = 'neutro'; rapido = {Ip50(4),.05,'50N primário AT','--'};
+        p = neutro(4:5,:); inst = inst50N(4:5,:); rotulos = rotN(4:5);
+        imax = I1AT; tipo = '50N/51N de neutro'; rotIcc = 'I_{cc,1\phi} máx. AT';
         tp = tPCIN; legendaPCI = '51N PCI: estimativa analítica, M > 30';
     end
-    f(k) = coordenograma(['Coordenograma de ' tipo ' — base de 69 kV'], ...
-        [40 imax],p,[1 1],rotulos,rapido);
-    ylim([.025 100]);
+    f(k) = coordenograma(['Coordenograma ' tipo ' — base de 69 kV'], ...
+        [40 1.3*imax],p,inst,[1 1],rotulos,{},imax,rotIcc);
     plot(imax,tp,'kx','MarkerSize',9,'LineWidth',2,'DisplayName',legendaPCI);
     legend('show','Location','northeast');
     rodape(f(k),{'A participação de cada vão depende da localização da falta.', ...
@@ -160,26 +176,46 @@ set(f,'DefaultAxesFontName','Times New Roman', ...
     'DefaultTextFontName','Times New Roman','DefaultAxesFontSize',10);
 end
 
-function f = coordenograma(titulo,faixa,p,escala,rotulos,rapidos)
+function t = tempo5051(I,p,inst)
+% Curva combinada: C2 da 51 e degrau de tempo definido da 50 a partir
+% do seu pick-up; inst = [Ip50 t50] no mesmo vao, NaN se desabilitado.
+t = tempo51(I,p);
+if ~isnan(inst(1))
+    m = I >= inst(1);
+    t(m) = min(t(m),inst(2));
+end
+end
+
+function f = coordenograma(titulo,faixa,p,inst,escala,rotulos,extras,icc,rotIcc)
 % A escala converte apenas a base de corrente do grafico.
 f = novafigura([20 15]);
 a = axes('Parent',f,'Position',[.13 .23 .82 .65]);
 set(a,'XScale','log','YScale','log','XMinorGrid','on','YMinorGrid','on');
 hold(a,'on'); grid(a,'on'); box(a,'on');
-I = logspace(log10(faixa(1)),log10(faixa(2)),1800);
+I = unique([logspace(log10(faixa(1)),log10(faixa(2)),1800) ...
+    inst(~isnan(inst(:,1)),1)'.*escala(~isnan(inst(:,1)))]);
 cores = [0 .35 .70; .85 .33 .10; .1 .55 .28; .49 .18 .56];
 for k = 1:size(p,1)
-    plot(I,tempo51(I/escala(k),p(k,:)), ...
+    plot(I,tempo5051(I/escala(k),p(k,:),inst(k,:)), ...
         'Color',cores(k,:),'LineWidth',1.6,'DisplayName',rotulos{k});
 end
-for k = 1:size(rapidos,1)
-    t = rapidos{k,2}*ones(size(I)); t(I<rapidos{k,1}) = NaN;
-    plot(I,t,rapidos{k,4},'Color',[.4 .4 .4], ...
-        'LineWidth',1.6,'DisplayName',rapidos{k,3});
+for k = 1:size(extras,1)
+    t = extras{k,2}*ones(size(I)); t(I<extras{k,1}) = NaN;
+    plot(I,t,extras{k,4},'Color',[.4 .4 .4], ...
+        'LineWidth',1.6,'DisplayName',extras{k,3});
 end
-xlim(faixa); ylim([.07 100]); title(titulo);
+plot([icc icc],[.025 100],'--','Color',[.55 .55 .55],'LineWidth',1, ...
+    'DisplayName',sprintf('%s = %s A',rotIcc,milhar(icc)));
+xlim(faixa); ylim([.025 100]); title(titulo);
 xlabel('Corrente primária na base indicada (A)'); ylabel('Tempo nominal (s)');
 legend('show','Location','northeast');
+end
+
+function s = milhar(x)
+% Formato brasileiro: 2882.7 -> '2.882,7'.
+s = strrep(sprintf('%.1f',x),'.',',');
+inteiro = regexprep(extractBefore(s,','),'(\d)(?=(\d{3})+$)','$1.');
+s = [inteiro ',' extractAfter(s,',')];
 end
 
 function diagrama(f,k,titulo,rotulos,t,xmax)
